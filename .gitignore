@@ -1,0 +1,9 @@
+# dotenv environment variables file
+.env
+.env.test
+
+# Dependency directories
+client/node_modules/
+server/node_modules/
+admin/node_modules/
+
