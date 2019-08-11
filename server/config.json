@@ -1,0 +1,8 @@
+{
+    "DB_USER":  "Nimix",
+    "DB_PASS": "8660523113",
+    "DB_NAME": "OnlineShop",
+    "User_Block_Duration_Minutes": 20,
+    "User_Wrong_Passwords_Attemps": 3 
+}
+    
