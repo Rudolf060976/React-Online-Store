@@ -46,7 +46,7 @@ module.exports = {
     },
     general: {
 
-    },
+    }, 
     db: {
         DB_USER: nconf.get('DB_USER'),
         DB_PASS: nconf.get('DB_PASS')        
@@ -56,6 +56,3 @@ module.exports = {
         USER_WRONG_PASSWORDS_ATTEMPS: nconf.get('User_Wrong_Passwords_Attemps')
     }
 };
-
-
-
