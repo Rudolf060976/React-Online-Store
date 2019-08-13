@@ -6,17 +6,16 @@ const nconf = require('nconf');
 
 
 nconf.argv()
-    .env()
-    .file( { file: path.join(__dirname + './../../' + 'config.json')});
+	.env()
+	.file( { file: path.join(__dirname + './../../' + 'config.json')});
 
 nconf.set('RANDOM_STRING10', randomstring.generate(10));
 
 nconf.defaults({
-
-        DB_USER: "root",
-        DB_PASS: null,
-        User_Block_Duration_Minutes: 10,
-        User_Wrong_Passwords_Attemps: 5
+	
+	User_Block_Duration_Minutes: 10,
+	User_Wrong_Passwords_Attemps: 5,
+	User_Session_Duration_Minutes: 30
 
 });
 
@@ -25,9 +24,9 @@ const env = nconf.get('NODE_ENV') || 'development';
 let mongoUri = nconf.get('MONGODB_URI');
 
 if (env === 'development') {
-    mongoUri = nconf.get('MONGODB_URI') + '/' + nconf.get('DB_NAME');
+	mongoUri = nconf.get('MONGODB_URI') + '/' + nconf.get('DB_NAME');
 } else if (env === 'test') {
-    mongoUri = nconf.get('MONGODB_URI') + '/' + nconf.get('DB_NAME') + '-Test';
+	mongoUri = nconf.get('MONGODB_URI') + '/' + nconf.get('DB_NAME') + '-Test';
 }
 
 console.log('env *****', env);
@@ -39,20 +38,17 @@ console.log('USER_WRONG_PASSWORDS_ATTEMPS = ', nconf.get('User_Wrong_Passwords_A
 
 module.exports = {
 
-    env: {
-        NODE_ENV: env,
-        MONGODB_URI: mongoUri,
-        PORT: nconf.get('PORT'),
-    },
-    general: {
-
-    }, 
-    db: {
-        DB_USER: nconf.get('DB_USER'),
-        DB_PASS: nconf.get('DB_PASS')        
-    },
-    user: {
-        USER_BLOCK_DURATION_MINUTES: nconf.get('User_Block_Duration_Minutes'),
-        USER_WRONG_PASSWORDS_ATTEMPS: nconf.get('User_Wrong_Passwords_Attemps')
-    }
+	env: {
+		NODE_ENV: env,
+		MONGODB_URI: mongoUri,
+		PORT: nconf.get('PORT'),
+	},
+	general: {
+		RANDOM_STRING: nconf.get('RANDOM_STRING10')
+	},
+	user: {
+		USER_BLOCK_DURATION_MINUTES: nconf.get('User_Block_Duration_Minutes'),
+		USER_WRONG_PASSWORDS_ATTEMPS: nconf.get('User_Wrong_Passwords_Attemps'),
+		USER_SESSION_DURATION_MINUTES: nconf.get('User_Session_Duration_Minutes')
+	}
 };
