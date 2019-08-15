@@ -1,21 +1,24 @@
 const express = require('express');
-const path = require('path');
 const flash = require('connect-flash');
 const logger = require('morgan');
 const session = require('express-session');
 const mongoose = require('./db/mongoose');
 const passport = require('passport');
 const uuidv4 = require('uuid/v4');
+const path = require('path');
 
 const MongoStore = require('connect-mongo')(session);
 
 const config = require('./config/config');
 
-const passportRoutes = require('./passport/Jwt/routesJwt').router; // Routes for Authentication
+const passportRoutes = require('./passport/Local/routes'); // Routes for Authentication
+
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
 app.use(logger('dev'));
+
 
 app.use(session({  // Session middleware always comes before passport.session()
 	secret: config.general.RANDOM_STRING,
@@ -42,5 +45,13 @@ app.use(flash());
 /* passport uses an "error" array inside flash object */
 
 app.use('/', passportRoutes);
+app.use('/users', userRoutes);
+
+
+app.all('*', (req, res) => {
+	
+	res.sendFile(path.join(__dirname,'../../dist','index.html'));
+
+});
 
 module.exports = app;

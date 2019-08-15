@@ -6,6 +6,8 @@ const mongoose = require('../mongoose');
 
 const User = require('../models/User');
 
+const bcrypt = require('bcryptjs');
+
 const db = mongoose.connection;
 
 const getUserById = (userId) => {
@@ -83,6 +85,40 @@ const getUserByUsername = (username) => {
 };
 
 
+const getUserByEmail = (email) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			
+			User.findOne({ email }).then(res => {
+
+				if(!res) {
+
+					throw createError(404, 'USER NOT FOUND');
+
+				}
+
+				return resolve(res);
+
+			}).catch(err => {
+
+				reject(err);
+
+			});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	})	
+
+};
+
+
 const registerUser = (username, password, firstname, lastname, email) => {
 
 	return new Promise((resolve, reject) => {
@@ -107,10 +143,16 @@ const registerUser = (username, password, firstname, lastname, email) => {
 					throw createError(409, 'EMAIL ALREADY EXISTS');
 
 				}
+			
+				// ENCRYPTS THE PASSWORD AND STORE THE USER IN THE DB
+
+				const salt = bcrypt.genSaltSync(10);
+				const hash = bcrypt.hashSync(password, salt);
+			
 
 				const doc = new User({
 					username,
-					password,
+					password:hash,
 					firstname,
 					lastname,
 					email
@@ -141,5 +183,6 @@ const registerUser = (username, password, firstname, lastname, email) => {
 module.exports = {
 	getUserById,
 	getUserByUsername,
-	registerUser
+	registerUser,
+	getUserByEmail
 }

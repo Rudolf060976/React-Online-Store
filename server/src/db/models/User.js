@@ -6,14 +6,14 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		trim: true,
 		minlength: 8,
-		maxlength: 50
+		maxlength: 100
 	},
 	password: {
 		type: String,
 		required: true,
 		trim: true,
 		minlength: 8,
-		maxlength: 20
+		maxlength: 100
 	},
 	firstname: {
 		type: String,
@@ -76,6 +76,10 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	failedLoginAttemps: {
+		type: Number,
+		default: 0
+	},
 	isSuspended: {
 		type: Boolean,
 		default: false
@@ -83,10 +87,6 @@ const userSchema = new mongoose.Schema({
 	SuspendedAt: {
 		type: Date,
 		default: Date.now
-	},
-	isTempPassword: {
-		type: Boolean,
-		default: false	
 	},
 	lastLogin: {
 		type: Date,

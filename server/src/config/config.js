@@ -1,4 +1,4 @@
-require('custom-env').env(true, './../../');
+require('custom-env').env(true);
 const randomstring = require('randomstring');
 const path = require('path');
 
@@ -9,13 +9,15 @@ nconf.argv()
 	.env()
 	.file( { file: path.join(__dirname + './../../' + 'config.json')});
 
-nconf.set('RANDOM_STRING10', randomstring.generate(10));
+nconf.set('USER_JWT_SECRET','32KJKK44/*/*--DF44T3AFSDAS');
+nconf.set('RANDOM_STRING',randomstring.generate(10));
 
 nconf.defaults({
 	
 	User_Block_Duration_Minutes: 10,
-	User_Wrong_Passwords_Attemps: 5,
-	User_Session_Duration_Minutes: 30
+	User_Max_Failed_Login_Attemps: 5,
+	User_Session_Duration_Minutes: 30,
+	User_Validation_Token_Duration_Minutes: 60
 
 });
 
@@ -32,9 +34,6 @@ if (env === 'development') {
 console.log('env *****', env);
 console.log('PORT = ', nconf.get('PORT'));
 console.log('MONGODB_URI = ', mongoUri);
-console.log('RANDOM_STRING = ', nconf.get('RANDOM_STRING10'));
-console.log('USER_BLOCK_DURATION_MINUTES = ', nconf.get('User_Block_Duration_Minutes'));
-console.log('USER_WRONG_PASSWORDS_ATTEMPS = ', nconf.get('User_Wrong_Passwords_Attemps'));
 
 module.exports = {
 
@@ -44,11 +43,13 @@ module.exports = {
 		PORT: nconf.get('PORT'),
 	},
 	general: {
-		RANDOM_STRING: nconf.get('RANDOM_STRING10')
+		RANDOM_STRING: nconf.get('RANDOM_STRING')
 	},
 	user: {
 		USER_BLOCK_DURATION_MINUTES: nconf.get('User_Block_Duration_Minutes'),
-		USER_WRONG_PASSWORDS_ATTEMPS: nconf.get('User_Wrong_Passwords_Attemps'),
-		USER_SESSION_DURATION_MINUTES: nconf.get('User_Session_Duration_Minutes')
+		USER_MAX_FAILED_LOGIN_ATTEMPS: nconf.get('User_Max_Failed_Login_Attemps'),
+		USER_SESSION_DURATION_MINUTES: nconf.get('User_Session_Duration_Minutes'),
+		USER_JWT_SECRET: nconf.get('USER_JWT_SECRET'),
+		USER_VALIDATION_TOKEN_DURATION_MINUTES: nconf.get('User_Validation_Token_Duration_Minutes')
 	}
 };

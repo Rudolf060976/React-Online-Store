@@ -1,6 +1,8 @@
 {
     "User_Block_Duration_Minutes": 20,
-	"User_Wrong_Passwords_Attemps": 3,
-	"User_Session_Duration_Minutes": 30
+	"User_Max_Failed_Login_Attemps": 3,
+	"User_Session_Duration_Minutes": 30,
+	"User_Validation_Token_Duration_Minutes": 60,
+	"DB_NAME": "OnlineStore"
 }
     
