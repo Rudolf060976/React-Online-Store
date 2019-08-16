@@ -3,6 +3,14 @@
 	"User_Max_Failed_Login_Attemps": 3,
 	"User_Session_Duration_Minutes": 30,
 	"User_Validation_Token_Duration_Minutes": 60,
-	"DB_NAME": "OnlineStore"
+	"DB_NAME": "OnlineStore",
+	"App_Email_Address": "onlinestoreintelligentzona@gmail.com",
+	"Email_Account_Port": 587,
+	"Email_Account_Host": "smtp.gmail.com",
+	"Email_Account_User": "onlinestoreintelligentzona@gmail.com",
+	"Email_Account_Password": "pelalo2018",
+	"Company_Name": "Intelligent Zone Online Store",
+	"Company_Address": "Venezuela",
+	"Company_Phone": "+58-414-46552211" 
 }
     

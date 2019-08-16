@@ -1,4 +1,4 @@
-require('custom-env').env(true);
+require('custom-env').env(true,__dirname + './../../');
 const randomstring = require('randomstring');
 const path = require('path');
 
@@ -17,7 +17,15 @@ nconf.defaults({
 	User_Block_Duration_Minutes: 10,
 	User_Max_Failed_Login_Attemps: 5,
 	User_Session_Duration_Minutes: 30,
-	User_Validation_Token_Duration_Minutes: 60
+	User_Validation_Token_Duration_Minutes: 60,
+	App_Email_Address: "onlinestoreintelligentzona@gmail.com",
+	Email_Account_Port: 587,
+	Email_Account_Host: "smtp.gmail.com",
+	Email_Account_User: "onlinestoreintelligentzona@gmail.com",
+	Email_Account_Password: "pelalo2018",
+	Company_Name: "ONLINE STORE",
+	Company_Address: "Venezuela",
+	Company_Phone: "+58-291-3150121" 
 
 });
 
@@ -43,7 +51,12 @@ module.exports = {
 		PORT: nconf.get('PORT'),
 	},
 	general: {
-		RANDOM_STRING: nconf.get('RANDOM_STRING')
+		RANDOM_STRING: nconf.get('RANDOM_STRING'),
+		APP_EMAIL_ADDRESS: nconf.get('App_Email_Address'),
+		EMAIL_ACCOUNT_PORT: nconf.get('Email_Account_Port'),
+		EMAIL_ACCOUNT_HOST: nconf.get('Email_Account_Host'),
+		EMAIL_ACCOUNT_USER: nconf.get('Email_Account_User'),
+		EMAIL_ACCOUNT_PASSWORD: nconf.get('Email_Account_Password')
 	},
 	user: {
 		USER_BLOCK_DURATION_MINUTES: nconf.get('User_Block_Duration_Minutes'),
@@ -51,5 +64,10 @@ module.exports = {
 		USER_SESSION_DURATION_MINUTES: nconf.get('User_Session_Duration_Minutes'),
 		USER_JWT_SECRET: nconf.get('USER_JWT_SECRET'),
 		USER_VALIDATION_TOKEN_DURATION_MINUTES: nconf.get('User_Validation_Token_Duration_Minutes')
+	},
+	company: {
+		name: nconf.get('Company_Name'),
+		address: nconf.get('Company_Address'),
+		phone: nconf.get('Company_Phone')
 	}
 };

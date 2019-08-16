@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style>
+		a {
+			display: block;	
+			padding: 5px;		
+		}
+		
+		button {
+			background-color: darkblue;
+			color: white;
+			padding: 10px;
+			border: 1px darkseagreen solid;
+			border-radius: 3px;
+			box-shadow: 10px 10px 10px #666;
+			transition: all 2s ease;
+			
+		}
+
+		button:hover {
+			color: darkblue;
+			background-color: cadetblue;
+			cursor: pointer;
+		}
+
+		h1 {
+			color: darkcyan;
+
+		}
+		#small {
+			font-size: 10px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Please verify your email address</h1>
+	<hr>
+	<img src="./../LOGO.jpg" alt="logo">
+	<p>Hi <%= user.firstname + ' ' + user.lastname %></p>
+	<p>Please verify your email address so we know that it's really you!</p>
+	<a href=<%= verifyLink %> >
+		<button type="button">Veryfy my email address</button>
+	</a>	
+	<p>Cheers,</p>
+	<h3><%= company.name %></h3>
+	<hr>
+	<p id="small">This message was sent to you by <%= company.name %></p>
+</body>
+</html>
