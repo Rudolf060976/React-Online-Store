@@ -10,6 +10,8 @@ const User = require('../db/models/User');
 
 const { generateUserToken, verifyUserToken } = require('../modules/JWT/userTokens');
 
+const { sendVerificationEmail, sendForgotPasswordEmail, sendChangedPasswordEmail } = require('../modules/Nodemailer/sendTemplates');
+
 const router = express.Router();
 
 
@@ -28,9 +30,13 @@ router.post('/register', (req, res) => {
 			const { _id } = user;
 			
 			const token = generateUserToken(_id);
-			
+						
 			// ******* SEND A VERIFICATION EMAIL TO THE REGISTERED EMAIL, WITH THE LINK http://localhost:3000/users/validate?id=xxxx&token=token ******** 
 
+			const link = `/users/validate?id=${_id}&token=${token}`;
+
+			sendVerificationEmail(user, link);
+			
 			res.status(200).json({
 				error: null,
 				ok: true,
@@ -86,9 +92,12 @@ router.post('/validate', (req, res) => {    // RECEIVES USER id AND THE TOKEN AN
 
 				const token = generateUserToken(user._id);
 
-				const { email } = user;
-			
+							
 				// ******* SEND A VERIFICATION EMAIL TO THE REGISTERED EMAIL, WITH THE LINK http://localhost:3000/users/validate?id=xxxx&token=token ********
+
+				const link = `/users/validate?id=${user._id}&token=${token}`;
+
+				sendVerificationEmail(user, link);
 							
 			});
 
@@ -115,7 +124,7 @@ router.post('/validate', (req, res) => {    // RECEIVES USER id AND THE TOKEN AN
 					error: null,
 					ok: true,
 					status: 200,
-					message: 'USER VALIDATED',
+					message: 'USER VALIDATED SUCCESSFULLY',
 					data: {
 						username: user.username,
 						fullname: `${user.firstname} ${user.lastname}`	
@@ -182,13 +191,18 @@ router.post('/forgotpassword', (req, res) => {
 
 			}
 
-			const { _id, email } = user;
+			const { _id } = user;
 
 			const token = generateUserToken(_id);
 			
 			// SEND AN EMAIL WITH THE USERNAME AND PASSWORD AS DATA, AND A LINK TO CHANGE PASSWORD PAGE....
 
-			// ******* SEND A CHANGE PASSWORD EMAIL TO THE REGISTERED EMAIL, WITH THE LINK http://localhost:3000/users/forgotpasswordchange?id=xxxx&token=token ******** 
+			// ******* SEND A CHANGE PASSWORD EMAIL TO THE REGISTERED EMAIL, WITH THE LINK http://localhost:3000/users/resetpassword?id=xxxx&token=token ******** 
+
+			const link = `/users/resetpassword?id=${_id}&token=${token}`;
+
+			sendForgotPasswordEmail(user, link);
+
 
 			res.status(200).json({
 				error: null,
@@ -226,7 +240,7 @@ router.post('/forgotpassword', (req, res) => {
 });
 
 
-router.post('/forgotpasswordchange', (req, res) => {
+router.post('/resetpassword', (req, res) => {
 
 	if(req.body && req.body.id && req.body.password && req.body.token) {
 
@@ -250,11 +264,22 @@ router.post('/forgotpasswordchange', (req, res) => {
 
 			User.findById(id).then(user => {
 
-				user.password = newPassword;
+				// ENCRYPTS THE PASSWORD AND STORE THE USER IN THE DB
+
+				const salt = bcrypt.genSaltSync(10);
+				const hash = bcrypt.hashSync(newPassword, salt);
+
+				user.password = hash;
 
 				return user.save();
 
 			}).then(user => {
+
+				const link = `/login`;
+
+				sendChangedPasswordEmail(user, link);
+
+				req.logout();				
 
 				res.status(200).json({
 					error: null,
@@ -348,6 +373,12 @@ router.post('/passwordchange', (req, res) => {
 			return user.save();
 			
 		}).then(user => {
+
+			const link = `/login`;
+
+			sendChangedPasswordEmail(user, link);
+
+			req.logout();
 
 			res.status(200).json({
 				error: null,

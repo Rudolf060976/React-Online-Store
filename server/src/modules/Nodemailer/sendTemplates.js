@@ -64,8 +64,39 @@ const sendForgotPasswordEmail = async function (user, resetLink) {
 
 };
 
+const sendChangedPasswordEmail = async function (user, loginLink) {
+
+	const images = {
+		link1: config.company.logo_link
+	}
+
+	const data = {
+		user,
+		company: config.company,
+		loginLink: config.app.base_url + loginLink,
+		images
+	};
+
+	const { email: to } = user;
+
+	try {
+
+		const html = await ejs.renderFile(path.join(__dirname, './templates', 'passwordChangedEmail.ejs'), data , {} );
+
+		const response = await sendEmail(to, "Your Password has been Changed", html);
+
+		return Promise.resolve(response);
+		
+	} catch (error) {
+		
+		return Promise.reject(error);
+	}
+
+};
+
 
 module.exports = {
 	sendVerificationEmail,
-	sendForgotPasswordEmail
+	sendForgotPasswordEmail,
+	sendChangedPasswordEmail
 }

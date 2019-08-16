@@ -1,60 +1,14 @@
 const passport = require('passport');
+
 const bcrypt = require('bcryptjs');
+
+const moment = require('moment');
+
 const LocalStrategy = require('passport-local').Strategy;
+
 const config = require('../../config/config');
 
 const User = require('../../db/models/User');
-
-passport.use(new LocalStrategy((username, password, done) => {
-
-	User.findOne({ username }).then( user => {
-
-		if (!user) {
-			return done(null, false, { message: 'Incorrect username!' });
-		}
-	
-
-		if (!bcrypt.compareSync(password, user.password)) {
-
-			let failedAttemps = user.failedLoginAttemps;
-
-			const maxAttemps = config.user.USER_MAX_FAILED_LOGIN_ATTEMPS;
-
-			failedAttemps +=1;
-			
-			if (failedAttemps >= maxAttemps) {
-				
-				user.isSuspended = true;
-				user.suspendedAt = Date.now();
-				user.failedLoginAttemps = 0;
-
-			} else {
-
-				user.failedLoginAttemps = failedAttemps;
-
-			}
-
-			user.save();
-			
-			return done(null, false, { message: 'Incorrect Password!!' });
-			
-		}
-
-		user.failedLoginAttemps = 0;
-
-		user.save();
-
-		return done(null, user);
-
-	}).catch(err => {
-
-		if(err) return done(err);
-
-		return err;
-
-	});
-
-}));
 
 // serializeUser and deserializeUser are only needed when using Sessions
 
@@ -85,7 +39,110 @@ passport.deserializeUser((id, done) => {
 	});
 	
 });
+
+let isStragegySetup = false;
+
+const passport_Setup_Strategy = function() {   // INSTEAD OF SETTING UP STRATEGY WHEN THE APPLICATION STARTS, WE SETUP WHEN THERE IS A REQUEST, SO WE CAN HAVE ACCESS TO
+	// req and res OBJECTS
+
+	return (req, res, next) => {
+
+		if(!isStragegySetup) {
+
+			
+			passport.use(new LocalStrategy((username, password, done) => {
+
+				(async () => {
+
+					try {
+						
+						let user = await User.findOne({ username });
+
+						if (!user) {
+
+							return done(null, false, { message: 'INCORRECT USERNAME' });
+
+						}
+
+						// CHECK IF USER IS SUSPENDED AND CHECK THE RESTING TIME TO FREE USER
+								
+						if (user.isSuspended) {
+				
+							const now = moment();
+							const suspendedTime = moment(user.suspendedAt);
+			
+							const durationConfig = config.user.USER_BLOCK_DURATION_MINUTES;
+			
+							const duration = moment.duration(now.diff(suspendedTime)).minutes();
+							
+							if (duration < durationConfig) {
+															
+								return done(null, false, { message: 'USER IS SUSPENDED' });
+			
+							} else {	// IF USER IS SUSPENDED BUT REACHED THE WAITING TIME, WE UNLOCKED THE USER
+			
+								user.isSuspended = false;
+								user.failedLoginAttemps = 0;
+			
+								user = await user.save();
+			
+							}
+			
+						}
+
+						if (!bcrypt.compareSync(password, user.password)) {
+			
+							let failedAttemps = user.failedLoginAttemps;
+				
+							const maxAttemps = config.user.USER_MAX_FAILED_LOGIN_ATTEMPS;
+				
+							failedAttemps +=1;
+							
+							if (failedAttemps >= maxAttemps) {
+								
+								user.isSuspended = true;
+								user.suspendedAt = Date.now();
+								user.failedLoginAttemps = 0;
+				
+							} else {
+				
+								user.failedLoginAttemps = failedAttemps;
+				
+							}
+				
+							user = await user.save();
+							
+							return done(null, false, { message: 'INCORRECT PASSWORD' });
+							
+						}
+
+						user.failedLoginAttemps = 0;
+						user.lastLogin = Date.now();
+			
+						user = await user.save();
+				
+						return done(null, user);
+
+					} catch (error) {
+
+						return done(error);
+								
+						
+					}
+
+				})();
+
+				
+			}));
+
+			isStragegySetup = true;
+		}
+
+		return next();
+
+	};
+
+};	
 	
-	
-module.exports = passport;
+module.exports = { passport, passport_Setup_Strategy };
 

@@ -84,7 +84,7 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
-	SuspendedAt: {
+	suspendedAt: {
 		type: Date,
 		default: Date.now
 	},

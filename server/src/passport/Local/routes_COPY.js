@@ -4,14 +4,18 @@ const createError = require('http-errors');
 
 const secure = require('../../middleware/secure');
 
-const { passport, passport_Setup_Strategy } = require('./config');
+const passport = require('./config');
+
+const config = require('../../config/config');
 
 const router = express.Router();
+
+const moment = require('moment');
 
 const crudUsers = require('../../db/crud_operations/crudUsers');
 
 
-router.post('/login', passport_Setup_Strategy(), 
+router.post('/login',
 	passport.authenticate('local',
 		{
 			failureRedirect: '/unauthorized',
@@ -27,6 +31,44 @@ router.post('/login', passport_Setup_Strategy(),
 
 			const user = await crudUsers.getUserById(req.user._id);
 
+
+			// CHECK IF USER IS SUSPENDED AND CHECK THE RESTING TIME TO FREE USER
+
+			if (user.isSuspended) {
+
+				const suspendedAt = moment(user.suspendedAt);
+				
+				const now = moment();
+
+				const durationConfig = config.user.USER_BLOCK_DURATION_MINUTES;
+
+				const duration = moment.duration(now.diff(suspendedAt)).minutes();
+
+				if (duration < durationConfig) {
+				
+					req.logout();
+
+					return res.status(423).json({
+						error: createError(423, 'LOCKED'),
+						ok: false,
+						status: 423,
+						message: 'USER IS SUSPENDED',
+						data: {
+							minutesRest: (durationConfig - duration),
+							username: user.username
+						}
+					});
+
+				} else {	// IF USER IS SUSPENDED BUT REACHED THE WAITING TIME, WE UNLOCKED THE USER
+
+					user.isSuspended = false;
+					user.failedLoginAttemps = 0;
+
+					await user.save();
+
+				}
+
+			}
 
 			// CHECK IF USER HAS BEEN VALIDATED....
 
@@ -93,41 +135,13 @@ router.get('/unauthorized', (req, res) => {
 
 		const i = req.session.flash.error.length - 1; //always use the last message in flash
 		
-		const errorMessage = req.session.flash.error[i];
-
-		switch(errorMessage) {
-
-		case 'INCORRECT USERNAME':
-
-			return res.status(401).json({
-				error: createError(401,errorMessage),
-				ok: false,
-				status: 401,
-				message: 'UNAUTHORIZED',
-				data: null
-			});
-
-		case 'INCORRECT PASSWORD':
-
-			return res.status(401).json({
-				error: createError(401,errorMessage),
-				ok: false,
-				status: 401,
-				message: 'UNAUTHORIZED',
-				data: null
-			});
-			
-		case 'USER IS SUSPENDED':
-			return res.status(423).json({
-				error: createError(423,errorMessage),
-				ok: false,
-				status: 423,
-				message: 'USER IS SUSPENDED',
-				data: null
-			});	
-
-		}
-
+		return res.status(401).json({
+			error: createError(401, req.session.flash.error[i]),
+			ok: false,
+			status: 401,
+			message: 'UNAUTHORIZED',
+			data: null
+		});
 
 	}
 
