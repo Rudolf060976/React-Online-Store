@@ -6,28 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Document</title>
 	<style>
-		a {
-			display: block;	
-			padding: 5px;		
-		}
-		
-		button {
-			background-color: darkblue;
-			color: white;
-			padding: 10px;
-			border: 1px darkseagreen solid;
-			border-radius: 3px;
-			box-shadow: 10px 10px 10px #666;
-			transition: all 2s ease;
-			
-		}
-
-		button:hover {
-			color: darkblue;
-			background-color: cadetblue;
-			cursor: pointer;
-		}
-
+	
 		h1 {
 			color: darkcyan;
 
@@ -35,17 +14,35 @@
 		#small {
 			font-size: 10px;
 		}
+
+		#image {
+			width: 200px;
+			height: 200px;
+		}
+
+		#button {
+			text-align: center;
+			margin: 40px 0;
+		}
+
 	</style>
 </head>
 <body>
 	<h1>Please verify your email address</h1>
 	<hr>
-	<img src="./../LOGO.jpg" alt="logo">
-	<p>Hi <%= user.firstname + ' ' + user.lastname %></p>
+	<div id="image" style="background-image: url('<%= images.link1 %>'); background-size:contain; background-repeat: no-repeat; background-position: center;">			
+	</div>
+	<p>Hi <%= user.firstname + ' ' + user.lastname %>. Thanks for your registration!</p>
 	<p>Please verify your email address so we know that it's really you!</p>
-	<a href=<%= verifyLink %> >
-		<button type="button">Veryfy my email address</button>
-	</a>	
+	<div id="button"><!--[if mso]>
+			<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://" style="height:53px;v-text-anchor:middle;width:200px;" arcsize="8%" stroke="f" fill="t">
+			  <v:fill type="tile" src=""https://imgur.com/5BIp9d0.gif"" color="#49a9ce" />
+			  <w:anchorlock/>
+			  <center style="color:#ffffff;font-family:sans-serif;font-size:13px;font-weight:bold;">Verify my email address</center>
+			</v:roundrect>
+		  <![endif]--><a href=<%= verifyLink %> style="background-color:#49a9ce;background-image:url('https://imgur.com/5BIp9d0.gif');border-radius:4px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:53px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;mso-hide:all;">Verify my email address</a>
+	
+	</div>
 	<p>Cheers,</p>
 	<h3><%= company.name %></h3>
 	<hr>

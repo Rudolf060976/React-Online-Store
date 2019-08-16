@@ -4,20 +4,20 @@ const config = require('../../config/config');
 
 let ejs = require('ejs');
 
-const sendVerificationEmail = async function (to) {
-
-	const user = {
-		firstname: 'Rafael',
-		lastname: 'Urbina'
-	};
-
-	const verifyLink = "http://localhost:3000/users/passwordchange";
+const sendVerificationEmail = async function (user, verifyLink) {
+	
+	const images = {
+		link1: config.company.logo_link
+	}
 
 	const data = {
 		user,
 		company: config.company,
-		verifyLink
+		verifyLink: config.app.base_url + verifyLink,
+		images
 	};
+
+	const { email: to } = user;
 
 	try {
 
@@ -34,11 +34,20 @@ const sendVerificationEmail = async function (to) {
 
 };
 
-const sendForgotPasswordEmail = async function (to) {
+const sendForgotPasswordEmail = async function (user, resetLink) {
+
+	const images = {
+		link1: config.company.logo_link
+	}
 
 	const data = {
-		message: "Ejemplo de data message FORGOT PASSWORD!!"
-	}
+		user,
+		company: config.company,
+		resetLink: config.app.base_url + resetLink,
+		images
+	};
+
+	const { email: to } = user;
 
 	try {
 

@@ -25,7 +25,9 @@ nconf.defaults({
 	Email_Account_Password: "pelalo2018",
 	Company_Name: "ONLINE STORE",
 	Company_Address: "Venezuela",
-	Company_Phone: "+58-291-3150121" 
+	Company_Phone: "+58-291-3150121",
+	Company_Logo_Link: "https://www.designevo.com/res/templates/thumb_small/store-and-black-shopping-trolley.png",
+	App_Base_Url: "http://localhost:3000"
 
 });
 
@@ -68,6 +70,10 @@ module.exports = {
 	company: {
 		name: nconf.get('Company_Name'),
 		address: nconf.get('Company_Address'),
-		phone: nconf.get('Company_Phone')
+		phone: nconf.get('Company_Phone'),
+		logo_link: nconf.get('Company_Logo_Link')
+	},
+	app: {
+		base_url: nconf.get('App_Base_Url')
 	}
 };

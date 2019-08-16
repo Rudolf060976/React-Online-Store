@@ -1,5 +1,6 @@
 const transporter = require('./transporter');
 const config = require('../../config/config');
+const path = require('path');
 
 
 // Consult Message format in:  https://nodemailer.com/message/
@@ -20,7 +21,8 @@ const sendEmail = ( to, subject, html ) => {
 		from: config.general.APP_EMAIL_ADDRESS,
 		to,
 		subject,
-		html
+		html,
+		attachments: []
 	};
 
 	return transporter.sendMail(message);
