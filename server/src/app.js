@@ -1,5 +1,6 @@
 const express = require('express');
 const flash = require('connect-flash');
+const createError = require('http-errors');
 const logger = require('morgan');
 const session = require('express-session');
 const mongoose = require('./db/mongoose');
@@ -52,6 +53,20 @@ app.all('*', (req, res) => {
 	
 	res.sendFile(path.join(__dirname,'../../dist','index.html'));
 
+});
+
+// error handler
+app.use( (err, req, res) => {
+		
+  
+	return res.status(err.status).json({
+		error: createError(err.status, err.message),
+		ok: false,
+		status: err.status,
+		message: 'ERROR',
+		data: null
+	});
+  
 });
 
 module.exports = app;
