@@ -3,7 +3,7 @@ const flash = require('connect-flash');
 const createError = require('http-errors');
 const logger = require('morgan');
 const session = require('express-session');
-const mongoose = require('./db/mongoose');
+const { mongoose } = require('./db/mongoose');
 const passport = require('passport');
 const uuidv4 = require('uuid/v4');
 const path = require('path');
@@ -15,6 +15,8 @@ const config = require('./config/config');
 const passportRoutes = require('./passport/Local/routes'); // Routes for Authentication
 
 const userRoutes = require('./routes/userRoutes');
+
+const itemRoutes = require('./routes/itemRoutes');
 
 const app = express();
 
@@ -47,6 +49,7 @@ app.use(flash());
 
 app.use('/', passportRoutes);
 app.use('/users', userRoutes);
+app.use('/items', itemRoutes);
 
 
 app.all('*', (req, res) => {

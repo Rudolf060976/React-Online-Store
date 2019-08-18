@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Grid = require('gridfs-stream');
 
 const config = require('../config/config');
 
@@ -8,19 +9,24 @@ mongoose.Promise = global.Promise;
 
 mongoose.connect(url, { useNewUrlParser: true });
 
-const db = mongoose.connection; // The Default connection of the Mongoose Module, the same as mongoose.connections[0]
+const conn = mongoose.connection; // The Default connection of the Mongoose Module, the same as mongoose.connections[0]
 
 
-db.on('error', () => {
+conn.on('error', () => {
 	
 	console.log('Unable to connect to the Database')
 
 });
 
-/* db.once('open',() => {
+let gfs = null;
 
-	console.log('Connected!!');
+conn.once('open',() => {
+	console.log("CONNECTED TO MONGODB!!");
+	gfs = Grid(conn, mongoose.mongo);
 
-}); */
+});
 
-module.exports = mongoose;
+module.exports = {
+	mongoose,
+	gfs	
+};

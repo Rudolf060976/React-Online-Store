@@ -2,7 +2,7 @@ const createError = require('http-errors');
 
 const { ObjectID } = require('mongodb');
 
-const mongoose = require('../mongoose');
+const { mongoose } = require('../mongoose');
 
 const User = require('../models/User');
 
