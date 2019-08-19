@@ -2,7 +2,9 @@ const createError = require('http-errors');
 
 const { ObjectID } = require('mongodb');
 
-const { mongoose, gfs } = require('../mongoose');
+const { mongoose } = require('../mongoose');
+
+const MongoGridFsStorage = require('mongo-gridfs-storage');
 
 const Item = require('../models/Item');
 
@@ -51,7 +53,7 @@ const addNewItem = (code, name, price) => {
 
 };
 
-const saveItemImage = (itemId, imageId ) => {
+const addItemImage = (itemId, imageId ) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -99,6 +101,49 @@ const saveItemImage = (itemId, imageId ) => {
 	});
 
 };
+
+
+const getItemById = (itemId) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(itemId)) {
+				
+				throw createError(400, 'INVALID ID');
+					
+			}
+						
+
+			Item.findById(itemId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ID NOT FOUND');
+					
+				}
+
+				return resolve(res);
+
+			}).catch(err => {
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
 
 const getItemImages = (itemId) => {
 
@@ -155,30 +200,22 @@ const deleteItemImage = (itemId, imageId) => {
 					
 				}
 				
-				const img = res.images.find(item => {
-					item === imageId;
-				})
-
+				const img = res.images.find(item => item.toString() === imageId.toString())
+				
 				if(!img) {
 
 					throw createError(404, 'IMAGE ID NOT FOUND');
 
 				}
 
-				const images = res.images.filter(item => {
-
-					item !== imageId;
-
-				});
-
+				const images = res.images.filter(item => item.toString() !== imageId.toString());
+				
 				res.images = images;
 
 				return res.save();
 
 			}).then(res => {
-
-				gfs.remove( { _id: imageId });
-
+				
 				resolve(res);					
 
 			}).catch(err => {
@@ -209,15 +246,7 @@ const deleteAllItemImages = (itemId) => {
 					throw createError(404, 'ITEM ID NOT FOUND');
 					
 				}				
-			
-				const images = res.images.slice(0);
-
-				for (let i = 0; i < images.length; i++) {
-
-					gfs.remove( { _id: images[i] });
-
-				}
-
+				
 				res.images = [];
 
 				return res.save();
@@ -242,7 +271,7 @@ const deleteAllItemImages = (itemId) => {
 };
 
 
-const setItemImagesOrder = (itemId, imagesArray) => {
+const updateItemImages = (itemId, imagesArray) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -278,7 +307,7 @@ const setItemImagesOrder = (itemId, imagesArray) => {
 
 };
 
-const getAllItemsByFilter = (filter) => {
+const getAllItemsByFilter = filter => {
 
 	return new Promise((resolve, reject) => {
 
@@ -309,12 +338,138 @@ const getAllItemsByFilter = (filter) => {
 	});
 };
 
+const updateItemByDataObject = (itemId, dataObj) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+
+			Item.findByIdAndUpdate(itemId, dataObj, { new: true }).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ITEM ID NOT FOUND');
+					
+				}
+
+				resolve(res);
+
+			}).catch(err => {
+
+				reject(err);
+			})
+
+		
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+
+	});
+
+};
+
+const getImageFromStore = imageId => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(imageId)) {
+				
+				throw createError(400, 'INVALID ID');
+						
+			} 
+
+			let gfs = new MongoGridFsStorage(mongoose.connection.db, { bucketName: 'images' });
+
+			const filter = {
+				_id: ObjectID.createFromHexString(imageId)
+			};
+			
+			gfs.read(filter).then(fileBuffer => {
+
+				resolve(fileBuffer);
+
+			}).catch(err => {
+
+				err = {
+					...err,
+					status: 500,
+					message: err.message
+				};
+
+				reject(err);
+
+			});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
+
+const deleteImageFromStore = imageId => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(imageId)) {
+				
+				throw createError(400, 'INVALID ID');
+						
+			} 
+
+			let gfs = new MongoGridFsStorage(mongoose.connection.db, { bucketName: 'images' });
+
+			const filter = {
+				id: ObjectID.createFromHexString(imageId)
+			};
+			
+			gfs.delete(filter).then(() => {
+
+				resolve();
+
+			}).catch(err => {
+
+				err = {
+					...err,
+					status: 500,
+					message: err.message
+				};
+
+				reject(err);
+
+			});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
 module.exports =  {
 	addNewItem,
-	saveItemImage,
+	addItemImage,
 	deleteItemImage,
 	deleteAllItemImages,
 	getItemImages,
-	setItemImagesOrder,
-	getAllItemsByFilter
+	updateItemImages,
+	getAllItemsByFilter,
+	getItemById,
+	updateItemByDataObject,
+	getImageFromStore,
+	deleteImageFromStore
 }

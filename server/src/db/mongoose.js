@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Grid = require('gridfs-stream');
 
 const config = require('../config/config');
 
@@ -18,15 +17,12 @@ conn.on('error', () => {
 
 });
 
-let gfs = null;
 
 conn.once('open',() => {
-	console.log("CONNECTED TO MONGODB!!");
-	gfs = Grid(conn, mongoose.mongo);
+	console.log("CONNECTED TO MONGODB!!");	
 
 });
 
 module.exports = {
-	mongoose,
-	gfs	
+	mongoose
 };

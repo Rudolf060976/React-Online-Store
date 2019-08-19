@@ -27,7 +27,9 @@ nconf.defaults({
 	Company_Address: "Venezuela",
 	Company_Phone: "+58-291-3150121",
 	Company_Logo_Link: "https://www.designevo.com/res/templates/thumb_small/store-and-black-shopping-trolley.png",
-	App_Base_Url: "http://localhost:3000"
+	App_Base_Url: "http://localhost:3000",
+	Items_Image_Max_Size_MBytes: 16,
+	Items_Images_Max_Count: 8
 
 });
 
@@ -74,6 +76,12 @@ module.exports = {
 		logo_link: nconf.get('Company_Logo_Link')
 	},
 	app: {
-		base_url: nconf.get('App_Base_Url')
-	}
+		base_url: nconf.get('App_Base_Url'),
+		items: {
+			ITEMS_IMAGE_MAX_SIZE_MBYTES: nconf.get('Items_Image_Max_Size_MBytes'),
+			ITEMS_IMAGES_MAX_COUNT: nconf.get('Items_Images_Max_Count')
+		}
+
+	},
+	
 };

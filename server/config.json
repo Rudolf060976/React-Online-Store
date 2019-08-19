@@ -13,6 +13,8 @@
 	"Company_Address": "Venezuela",
 	"Company_Phone": "+58-414-46552211",
 	"Company_Logo_Link": "https://www.designevo.com/res/templates/thumb_small/store-and-black-shopping-trolley.png",
-	"App_Base_Url": "http://localhost:3000"	
+	"App_Base_Url": "http://localhost:3000",
+	"Items_Image_Max_Size_MBytes": 20,
+	"Items_Images_Max_Count": 6
 }
     
