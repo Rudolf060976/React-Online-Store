@@ -1,6 +1,7 @@
 Building a complete Online Shopping App, using the lastest MERN Stack Technologies:
 
 Back-end:  Node.js, Express.js, Passport.js, MongoDB, Mongoose, GridFSBucket, multer, JSON Web Tokens.
+
 Front-end: Javascript, React.js, React-Router, Redux, React-Actions, Redux-Thunk, React-Bootstrap, Styled-Components, React-Icons, Immutable, Reselect, and other Libraries.
 
 BACK-END: 
