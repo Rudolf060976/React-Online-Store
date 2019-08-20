@@ -7,7 +7,7 @@ const secure = () => {
 
 		/* req.session.returnTo = req.originalUrl; */
 
-		res.redirect('/login');
+		res.redirect('/api/login');
 		
 	};
 

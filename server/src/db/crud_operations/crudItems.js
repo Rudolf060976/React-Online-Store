@@ -4,14 +4,14 @@ const { ObjectID } = require('mongodb');
 
 const { mongoose } = require('../mongoose');
 
-const MongoGridFsStorage = require('mongo-gridfs-storage');
+const MongoGridFsStorage = require('mongo-gridfs-storage'); /* WE USE THIS MODULE JUST FOR READ FILES FROM THE GRIDFSBUCKET */
 
 const Item = require('../models/Item');
 
 const db = mongoose.connection;
 
 
-const addNewItem = (code, name, price) => {
+const addNewItem = (categoryId, code, name, price) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -26,6 +26,8 @@ const addNewItem = (code, name, price) => {
 				}
 
 				const doc = new Item({
+					_id: new ObjectID(),
+					category: ObjectID.createFromHexString(categoryId),
 					code,
 					name,
 					price
@@ -38,6 +40,12 @@ const addNewItem = (code, name, price) => {
 				resolve(res);
 
 			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
 
 				reject(err);
 
@@ -88,6 +96,12 @@ const addItemImage = (itemId, imageId ) => {
 
 			}).catch(err => {
 
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
 				reject(err);
 			})
 
@@ -118,7 +132,7 @@ const getItemById = (itemId) => {
 			}
 						
 
-			Item.findById(itemId).then(res => {
+			Item.findById(itemId).populate({ path: 'category', select:'name' }).exec().then(res => {
 
 				if (!res) {
 					
@@ -129,6 +143,12 @@ const getItemById = (itemId) => {
 				return resolve(res);
 
 			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
 
 				reject(err);
 			})
@@ -171,6 +191,12 @@ const getItemImages = (itemId) => {
 				return resolve(res.images);
 
 			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
 
 				reject(err);
 			})
@@ -220,6 +246,12 @@ const deleteItemImage = (itemId, imageId) => {
 
 			}).catch(err => {
 
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
 				reject(err);
 			})
 		
@@ -256,6 +288,12 @@ const deleteAllItemImages = (itemId) => {
 				resolve(res);					
 
 			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
 
 				reject(err);
 			})
@@ -295,6 +333,12 @@ const updateItemImages = (itemId, imagesArray) => {
 
 			}).catch(err => {
 
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
 				reject(err);
 			})
 
@@ -319,11 +363,17 @@ const getAllItemsByFilter = filter => {
 
 			}
 
-			Item.find(filter).then(res => {
+			Item.find(filter).populate({ path: 'category', select:'name' }).exec().then(res => {
 
 				resolve(res);
 
 			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
 
 				reject(err);
 
@@ -357,6 +407,12 @@ const updateItemByDataObject = (itemId, dataObj) => {
 
 			}).catch(err => {
 
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
 				reject(err);
 			})
 
@@ -371,7 +427,7 @@ const updateItemByDataObject = (itemId, dataObj) => {
 
 };
 
-const getImageFromStore = imageId => {
+const getImageFromStore = imageId => {  // IMPORTANT  argument: imageId is STRING AND NOT ObjectID(String) SO IT WILL BE CONVERTED TO ObjectdID LATER
 
 	return new Promise((resolve, reject) => {
 
@@ -397,11 +453,11 @@ const getImageFromStore = imageId => {
 
 			}).catch(err => {
 
-				err = {
-					...err,
-					status: 500,
-					message: err.message
-				};
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
 
 				reject(err);
 
@@ -442,11 +498,11 @@ const deleteImageFromStore = imageId => {
 
 			}).catch(err => {
 
-				err = {
-					...err,
-					status: 500,
-					message: err.message
-				};
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
 
 				reject(err);
 
@@ -460,6 +516,47 @@ const deleteImageFromStore = imageId => {
 	});
 };
 
+const getItemsByCategory = categoryId => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(categoryId)) {
+				
+				throw createError(400, 'INVALID ID');
+						
+			}
+
+			Item.find({ category: ObjectID.createFromHexString(categoryId) })
+				.populate({ path: 'category', select:'name' }).exec().then(res => {
+
+					resolve(res);
+
+				}).catch(err => {
+
+					if (!err.status) {
+
+						err.status = 500;
+
+					}
+
+					reject(err);
+
+				});
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+
+};
+
 module.exports =  {
 	addNewItem,
 	addItemImage,
@@ -471,5 +568,6 @@ module.exports =  {
 	getItemById,
 	updateItemByDataObject,
 	getImageFromStore,
-	deleteImageFromStore
-}
+	deleteImageFromStore,
+	getItemsByCategory
+};

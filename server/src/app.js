@@ -18,6 +18,8 @@ const userRoutes = require('./routes/userRoutes');
 
 const itemRoutes = require('./routes/itemRoutes');
 
+const categoryRoutes = require('./routes/categoryRoutes');
+
 const app = express();
 
 app.use(logger('dev'));
@@ -47,9 +49,10 @@ app.use(flash());
 /* flash messages are stored on req.session.flash object */
 /* passport uses an "error" array inside flash object */
 
-app.use('/', passportRoutes);
-app.use('/users', userRoutes);
-app.use('/items', itemRoutes);
+app.use('/api', passportRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/categories', categoryRoutes);
 
 
 app.all('*', (req, res) => {

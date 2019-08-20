@@ -6,11 +6,11 @@ const { uploadImageFiles } = require('../middleware/multerImageFiles');
 
 const ObjectID = require('mongodb').ObjectID;
 
-const mongoose = require('mongoose');
-
 const config = require('../config/config');
 
 const crudItems = require('../db/crud_operations/crudItems');
+
+const secureAdmin = require('../middleware/secureAdmin');
 
 const router = express.Router();
 
@@ -112,6 +112,54 @@ router.get('/:itemId/images/:imageId', (req, res) => {
 	
 });
 
+
+router.get('/category/:categoryId', (req, res) => {
+	
+	if(req.params.categoryId) {
+
+		const { categoryId } = req.params;
+
+		crudItems.getItemsByCategory(categoryId).then(docs => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: {
+					items: docs
+				}
+			});
+	
+		}).catch(err => {
+	
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+	
+		});		
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ID',
+			data: null
+		});
+
+	}
+		
+			
+});
+
+
 router.get('/', (req, res) => {
 	// RESPONSES all items OR items by filter (query string)
 		
@@ -142,13 +190,13 @@ router.get('/', (req, res) => {
 		
 });
 
-router.post('/', (req, res) => {
+router.post('/', secureAdmin(), (req, res) => {
 	// RECEIVES A NEW item OBJECT AS JSON AND SAVES IT IN THE DB
-	if( req.body && req.body.code && req.body.name && req.body.price) {
+	if( req.body && req.body.category && req.body.code && req.body.name && req.body.price) {
 
-		const { code, name, price } = req.body;
+		const { category, code, name, price } = req.body;
 
-		crudItems.addNewItem(code, name, price).then(item => {
+		crudItems.addNewItem(category, code, name, price).then(item => {
 
 			res.status(200).json({
 				error: null,
@@ -187,7 +235,7 @@ router.post('/', (req, res) => {
 
 });
 
-router.post('/:itemId/images/all', uploadImageFiles.array('images', config.app.items.ITEMS_IMAGES_MAX_COUNT),
+router.post('/:itemId/images/all', secureAdmin, uploadImageFiles.array('images', config.app.items.ITEMS_IMAGES_MAX_COUNT),
 	(req, res) => {
 	// RECEIVES IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
 	// uploadImageFiles SAVES THE FILES ON GFS AND SAVES THE ID ON images FIELD IN THE ITEM DOCUMENT
@@ -236,7 +284,7 @@ router.post('/:itemId/images/all', uploadImageFiles.array('images', config.app.i
 	});
 
 
-router.post('/:itemId/images/one', uploadImageFiles.single('image'),
+router.post('/:itemId/images/one', secureAdmin, uploadImageFiles.single('image'),
 	(req, res) => {
 	// RECEIVES ONE IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
 	// uploadImageFiles SAVES THE FILE ON GFS AND SAVES THE ID ON images FIELD IN THE ITEM DOCUMENT
@@ -285,7 +333,7 @@ router.post('/:itemId/images/one', uploadImageFiles.single('image'),
 	});
 
 
-router.delete('/:itemId/images/one/:imageId', (req, res) => {
+router.delete('/:itemId/images/one/:imageId', secureAdmin(), (req, res) => {
 // DELETES AN IMAGE FROM item OBJECT AND GRIDFS
 
 	if(req.params.itemId && req.params.imageId) {
@@ -347,7 +395,7 @@ router.delete('/:itemId/images/one/:imageId', (req, res) => {
 });
 
 
-router.delete('/:itemId/images/all', (req, res) => {
+router.delete('/:itemId/images/all', secureAdmin(), (req, res) => {
 	// DELETES AN IMAGE FROM item OBJECT AND GRIDFS
 	
 	if(req.params.itemId) {
@@ -429,7 +477,7 @@ router.delete('/:itemId/images/all', (req, res) => {
 });
 	
 
-router.put('/:itemId', (req, res) => {
+router.put('/:itemId', secureAdmin(), (req, res) => {
 // 
 	if(req.params.itemId && req.body.itemdata) {
 

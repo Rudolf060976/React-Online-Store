@@ -14,7 +14,7 @@ const crudUsers = require('../../db/crud_operations/crudUsers');
 router.post('/login', passport_Setup_Strategy(), 
 	passport.authenticate('local',
 		{
-			failureRedirect: '/unauthorized',
+			failureRedirect: '/api/unauthorized',
 			failureFlash: true
 		}),
 	(req, res) => { // IF USER AUTHENTICATION IS ACCEPTED, THIS MIDDLEWARE WILL GET CALLED
