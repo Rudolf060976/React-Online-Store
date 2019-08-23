@@ -160,10 +160,65 @@ router.get('/category/:categoryId', (req, res) => {
 });
 
 
+router.get('/subcategory/:subcategoryId', (req, res) => {
+	
+	if(req.params.subcategoryId) {
+
+		const { subcategoryId } = req.params;
+
+		crudItems.getItemsBySubcategory(subcategoryId).then(docs => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: {
+					items: docs
+				}
+			});
+	
+		}).catch(err => {
+	
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+	
+		});		
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ID',
+			data: null
+		});
+
+	}
+		
+			
+});
+{}
+
 router.get('/', (req, res) => {
 	// RESPONSES all items OR items by filter (query string)
-		
-	crudItems.getAllItemsByFilter().then(docs => {
+	
+	let filter = {};
+
+	if(req.query) {
+
+		filter = { ...req.query };
+
+	}
+
+	crudItems.getItems(filter).then(docs => {
 
 		res.status(200).json({
 			error: null,
@@ -192,11 +247,57 @@ router.get('/', (req, res) => {
 
 router.post('/', secureAdmin(), (req, res) => {
 	// RECEIVES A NEW item OBJECT AS JSON AND SAVES IT IN THE DB
-	if( req.body && req.body.category && req.body.code && req.body.name && req.body.price) {
+	if( req.body && req.body.category && req.body.subcategory && req.body.code && req.body.name && req.body.price) {
 
-		const { category, code, name, price } = req.body;
+		const { category, subcategory, code, name, price } = req.body;
 
-		crudItems.addNewItem(category, code, name, price).then(item => {
+		crudItems.addNewItem(category, subcategory, code, name, price).then(item => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: {
+					item
+				}
+			});
+
+		}).catch(err => {
+
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+
+		});
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING DATA',
+			data: null
+		});
+
+	}
+
+});
+
+
+router.post('/byfilter', secureAdmin(), (req, res) => {
+	// RECEIVES A NEW item OBJECT AS JSON AND SAVES IT IN THE DB
+	if( req.body && req.body.filter) {
+
+		const { filter } = req.body;
+
+		crudItems.addNewItemByFilter(filter).then(item => {
 
 			res.status(200).json({
 				error: null,
@@ -479,12 +580,12 @@ router.delete('/:itemId/images/all', secureAdmin(), (req, res) => {
 
 router.put('/:itemId', secureAdmin(), (req, res) => {
 // 
-	if(req.params.itemId && req.body.itemdata) {
+	if(req.params.itemId && req.body && req.body.filter) {
 
 		const { itemId } = req.params;
-		const { itemdata } = req.body;
+		const { filter } = req.body;
 
-		crudItems.updateItemByDataObject(itemId, itemdata).then(item => {
+		crudItems.updateItem(itemId, filter).then(item => {
 
 			res.status(200).json({
 				error: null,
@@ -497,6 +598,12 @@ router.put('/:itemId', secureAdmin(), (req, res) => {
 			});
 
 		}).catch(err => {
+
+			if(!err.status) {
+
+				err.status = 500;
+
+			}
 
 			res.status(err.status).json({
 				error: err,

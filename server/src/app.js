@@ -54,7 +54,6 @@ app.use('/api/users', userRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/categories', categoryRoutes);
 
-
 app.all('*', (req, res) => {
 	
 	res.sendFile(path.join(__dirname,'../../dist','index.html'));

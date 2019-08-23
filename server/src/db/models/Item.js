@@ -10,6 +10,11 @@ const itemsSchema = new mongoose.Schema({
 		ref: 'Category',     // REQUIRED
 		required: true
 	},
+	subcategory: {
+		type: types.ObjectId,
+		ref: 'Subcategory',
+		required: true
+	},
 	code: {
 		type: String,
 		required: true,
@@ -36,6 +41,12 @@ const itemsSchema = new mongoose.Schema({
 		maxlength: 2000
 	},
 	keyFeatures: [String],
+	target: {
+		type: String,
+		enum: ['All','Men','Women','Girls','Boys','Children','Babies'],
+		required: true,
+		default: 'All'
+	},
 	price: {
 		type: types.Decimal128,
 		default: 0
@@ -83,6 +94,22 @@ const itemsSchema = new mongoose.Schema({
 	isActive: {
 		type: Boolean,
 		default: true
+	},
+	isDealofTheDay: {
+		type: Boolean,
+		default: false
+	},
+	isBestSeller: {
+		type: Boolean,
+		default: false
+	},
+	isSeasonDeal: {
+		type: Boolean,
+		default: false
+	},
+	isMustHave: {
+		type: Boolean,
+		default: false
 	},	
 	images: [types.ObjectId]
 });
