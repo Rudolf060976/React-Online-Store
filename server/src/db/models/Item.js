@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Int32 = require('mongoose-int32');
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 
 const types = mongoose.SchemaTypes;
 
@@ -114,6 +116,7 @@ const itemsSchema = new mongoose.Schema({
 	images: [types.ObjectId]
 });
 
+itemsSchema.plugin(mongoosePaginate);
 
 const Item = mongoose.model('Item', itemsSchema);
 

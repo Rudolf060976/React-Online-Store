@@ -534,7 +534,7 @@ const updateItemImages = (itemId, imagesArray) => {
 
 };
 
-const getItems = filter => {
+const getItems = (filter, page, limit) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -578,10 +578,36 @@ const getItems = filter => {
 
 			}
 
-		
-			Item.find(filter).populate({ path: 'category', select:'name' }).sort('name').exec().then(res => {
+			const options = {
+				page,
+				limit,
+				populate: [
+					{ path: 'category', select:'name' },
+					{ path: 'subcategory', select: 'name' }
+				],
+				sort: { name: 1 }
+			};
+			
+			Item.paginate(filter, options).then(result => {
 
-				resolve(res);
+				/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/					
+
+				resolve(result);
 
 			}).catch(err => {
 
@@ -777,7 +803,7 @@ const deleteImageFromStore = imageId => {
 	});
 };
 
-const getItemsByCategory = categoryId => {
+const getItemsByCategory = (categoryId, page, limit) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -791,22 +817,47 @@ const getItemsByCategory = categoryId => {
 						
 			}
 
-			Item.find({ category: ObjectID.createFromHexString(categoryId) })
-				.populate({ path: 'category', select:'name' }).populate({ path: 'subcategory', select: 'name' }).exec().then(res => {
-					
-					resolve(res);
+			const options = {
+				page,
+				limit,
+				populate: [
+					{ path: 'category', select:'name' },
+					{ path: 'subcategory', select: 'name' }
+				],
+				sort: { name: 1 }
+			};
 
-				}).catch(err => {
+			Item.paginate({ category: ObjectID.createFromHexString(categoryId) }, options).then(result => {
+			
+				/* result is an Object with the following properties:
 
-					if (!err.status) {
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/					
+				resolve(result);
 
-						err.status = 500;
+			}).catch(err => {
 
-					}
+				if (!err.status) {
 
-					reject(err);
+					err.status = 500;
 
-				});
+				}
+
+				reject(err);
+
+			});
 
 
 		} else {
@@ -819,7 +870,7 @@ const getItemsByCategory = categoryId => {
 };
 
 
-const getItemsBySubcategory = subcategoryId => {
+const getItemsBySubcategory = (subcategoryId, page, limit) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -833,22 +884,49 @@ const getItemsBySubcategory = subcategoryId => {
 						
 			}
 
-			Item.find({ subcategory: ObjectID.createFromHexString(subcategoryId) })
-				.populate({ path: 'category', select:'name' }).populate({ path: 'subcategory', select: 'name' }).exec().then(res => {
+			const options = {
+				page,
+				limit,
+				populate: [
+					{ path: 'category', select:'name' },
+					{ path: 'subcategory', select: 'name' }
+				],
+				sort: { name: 1 }
+			};
+
+
+			Item.paginate({ subcategory: ObjectID.createFromHexString(subcategoryId) }, options).then(result => {
+
+				/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/					
 					
-					resolve(res);
+				resolve(result);
 
-				}).catch(err => {
+			}).catch(err => {
 
-					if (!err.status) {
+				if (!err.status) {
 
-						err.status = 500;
+					err.status = 500;
 
-					}
+				}
 
-					reject(err);
+				reject(err);
 
-				});
+			});
 
 
 		} else {

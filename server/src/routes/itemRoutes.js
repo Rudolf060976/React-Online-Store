@@ -1,5 +1,7 @@
 const express = require('express');
 
+const paginate = require('express-paginate');
+
 const createError = require('http-errors');
 
 const { uploadImageFiles } = require('../middleware/multerImageFiles');
@@ -71,8 +73,13 @@ router.get('/:itemId/images/:imageId', (req, res) => {
 				
 			crudItems.getImageFromStore(imageId).then(fileBuffer => {
 
-				res.status(200).set('content-type','image/jpeg').send(fileBuffer);
-
+				res.status(200)
+					.set({
+						'content-type':'image/jpeg',
+						'item-url': '/api/items/',
+						'item-id': `${itemId}`
+					})
+					.send(fileBuffer);
 			}).catch(err => {
 
 				res.status(err.status).json({
@@ -113,13 +120,16 @@ router.get('/:itemId/images/:imageId', (req, res) => {
 });
 
 
-router.get('/category/:categoryId', (req, res) => {
+router.get('/category/:categoryId', paginate.middleware(10, 50), (req, res) => {
 	
+	const { page, limit } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
+		
+
 	if(req.params.categoryId) {
 
 		const { categoryId } = req.params;
 
-		crudItems.getItemsByCategory(categoryId).then(docs => {
+		crudItems.getItemsByCategory(categoryId, page, limit).then(docs => {
 
 			res.status(200).json({
 				error: null,
@@ -160,13 +170,15 @@ router.get('/category/:categoryId', (req, res) => {
 });
 
 
-router.get('/subcategory/:subcategoryId', (req, res) => {
+router.get('/subcategory/:subcategoryId', paginate.middleware(10, 50), (req, res) => {
 	
+	const { page, limit } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
+		
 	if(req.params.subcategoryId) {
 
 		const { subcategoryId } = req.params;
 
-		crudItems.getItemsBySubcategory(subcategoryId).then(docs => {
+		crudItems.getItemsBySubcategory(subcategoryId, page, limit).then(docs => {
 
 			res.status(200).json({
 				error: null,
@@ -205,20 +217,24 @@ router.get('/subcategory/:subcategoryId', (req, res) => {
 		
 			
 });
-{}
 
-router.get('/', (req, res) => {
+
+router.get('/', paginate.middleware(10, 50), (req, res) => {
 	// RESPONSES all items OR items by filter (query string)
+	
+	const { page, limit, ...rest } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
 	
 	let filter = {};
 
-	if(req.query) {
+	if(rest) {
 
-		filter = { ...req.query };
+		filter = { ...rest };
 
 	}
 
-	crudItems.getItems(filter).then(docs => {
+	console.log('filter: ', JSON.stringify(filter, null, 2));
+
+	crudItems.getItems(filter, page, limit).then(docs => {
 
 		res.status(200).json({
 			error: null,
