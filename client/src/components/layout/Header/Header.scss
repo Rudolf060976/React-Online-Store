@@ -1,0 +1,91 @@
+@import '../../../mainStyles/globalVariables.scss';
+
+#header-container {
+	width: 100%;
+	background: $Blue-Base;
+	padding: 15px;
+	padding-bottom: 0;
+	font-family: Rubik;
+	
+}
+
+.header-grid {
+	width: 100%;
+
+}
+
+#header-logo {
+	max-width: 100px;
+	border-radius: 20px;
+	display: block;
+	margin-bottom: 20px;
+	
+}
+
+#btnDepartments {
+	background: #4B5C96;
+	border: solid 0.5px white;
+	border-radius: 5px;
+	box-shadow: $Light-Header-Box-Shadow;
+	color: white;
+	@include fontSize(1.3);
+	padding: 0 20px;
+	transition: all .3s ease;
+	letter-spacing: $mainSpacing1;
+	
+	&:hover {
+		
+		color: $Yellow-Crazy;
+		box-shadow: none;
+		background: transparent;
+	}
+
+	&:focus {
+		outline: 0;
+	}
+
+}
+
+#icon-departments {
+	margin-right: 10px;
+}
+
+#header-new-user-container {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	margin: 0;
+	padding: 0;
+		
+}
+
+#new-to-bitzone {
+	color: white;
+	padding: 0;
+	margin: 50px 0 13px 0;
+	font-style: italic;
+	font-weight: 500;
+}
+
+#signup-container, #login-container {
+	padding: 0;
+	margin: 0;
+	@include fontSize(1.4);
+
+	a {
+		display: inline-block;
+		text-decoration: none;
+		color:$LightBlue;
+		font-weight: 500;
+		transition: $mainTransition;
+	}
+
+	a:hover {
+		color: $Yellow-Crazy;
+	}
+}
+
+.icon-signup, .icon-login {
+	color:$LightCoral;
+	
+}

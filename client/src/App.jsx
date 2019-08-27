@@ -1,26 +1,24 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import './assets/fontAwesome/library'; // LOADING FONTAWESOME LIBRARY
 import './App.scss';
-import Home from './pages/Home/Home';
-import Rooms from './pages/Rooms/Rooms';
-import ErrorPage from './pages/Error/Error';
-import SingleRoom from './pages/Rooms/SingleRoom/SingleRoom';
-import Navbar from './components/layout/Navbar/Navbar';
+import Header from './components/layout/Header/Header';
+import Footer from './components/layout/Footer/Footer';
+import Home from './pages/Home';
+
 
 function App() {
-
 	return (
 		<>
-			<Navbar />
-			<Switch>
-				<Route exact path="/" component={Home} />
-				<Route exact path="/rooms" component={Rooms} />
-				<Route path="/rooms/:slug" component={SingleRoom} />
-				<Route component={ErrorPage} />			
-			</Switch>
+			<Header />
+			<div id="app-container">
+				<Switch>
+					<Route path="/" component={Home} />
+				</Switch>
+			</div>			
+			<Footer />
 		</>
 	);
-
 }
 
 export default App;

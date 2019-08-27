@@ -1,0 +1,27 @@
+// ***** MODIFICAR AQUÍ LAS VARIABLES DE BOOTSTRAP
+
+// Grid breakpoints
+//
+// Define the minimum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  xs: 400px,
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1280px
+) !default;
+
+// Grid containers
+//
+// Define the maximum width of `.container` for different screen sizes.
+
+$container-max-widths: (
+  sm: 720px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px
+) !default;
+
+@import '../../node_modules/bootstrap/scss/bootstrap';

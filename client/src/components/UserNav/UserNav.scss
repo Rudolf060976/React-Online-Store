@@ -1,0 +1,36 @@
+@import '../../mainStyles/globalVariables.scss';
+
+#header-user-nav-list {
+	list-style-type: none;
+	display: flex;
+	flex-flow: row nowrap;
+		
+	@include fontSize(1.2);
+	
+	li {
+		padding: 3px 3px;
+		margin-right: 15px;
+		
+		a {
+			color: $Purple-Clear;
+			display: inline-block;
+			text-decoration: none;
+			transition: all .3s ease;
+			text-shadow: $Light-Header-Text-Shadow;
+			letter-spacing: $mainSpacing1;			
+		}
+
+		a:hover {
+			color: $Yellow-Crazy;			
+
+		}
+	}
+}
+
+.icon-user-nav {
+	margin-left: 7px;
+}
+
+.user-nav-active {
+	color: $Yellow-Crazy;	
+}

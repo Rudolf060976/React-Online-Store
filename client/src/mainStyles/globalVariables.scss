@@ -1,0 +1,58 @@
+$mainBlack: #000;
+$mainWhite: #FFF;
+$mainTransition: all 0.3s linear;
+
+$lightShadow: 2px 5px 3px 0px rgba(0, 0, 0, 0.5);
+$darkShadow: 4px 10px 5px 0px rgba(0, 0, 0, 0.5);
+
+$Yellow-Crazy: #F5DF4A;
+$Yellow-Dark: #ffc107;
+$Blue-Clear: #4B5C96;
+$Blue-Base: #354069;
+$Blue-Dark: #252D4A;
+$Purple-Clear: #EAC9FF;
+$Light-Header-Box-Shadow: 1px 1px 5px whitesmoke;
+$Light-Header-Text-Shadow: white 1px 1px 10px;
+$mainSpacing1: 2px;
+$LightBlue: #A6D3FA;
+$LightCoral: lightcoral;
+
+
+$PageMaxWidth: 1280px;
+
+
+
+// Font-face Mixin
+
+@mixin fontFace($font-family,$file-path) {
+    
+    @font-face {
+        
+        font: {
+            family: $font-family;
+            weight: normal;
+            style: normal;
+        }    
+        //Modern Browsers
+        src: url('#{$file-path}.ttf') format('truetype'),
+            url('#{$file-path}.woff') format('woff');
+    }
+        
+}
+
+// Pixels to Rems Mixin
+
+@mixin fontSize($sizeValue: 1.6) {  // 1rem = 10px , 1.6rem = 16px
+    
+    font-size: ($sizeValue * 10) + px;
+    font-size: $sizeValue + rem;
+    
+}
+
+
+//Desktop-first Media Query Mixin
+@mixin forSmallScreens($media) {
+    
+    @media (max-width: $media/16+em) { @content; }
+}
+

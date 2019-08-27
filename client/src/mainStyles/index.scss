@@ -1,0 +1,79 @@
+
+@import './globalVariables';
+@import './webFonts.scss';
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+  }
+
+
+//Base-10 model, assuming that base font for all browsers is 16px so we set
+//the base font-size for the root (html tag) in 10px.
+
+html { 
+    	
+	// font-size: calc(62.5%);
+	font-size: calc(30% + .35vw);
+	background: $mainWhite;
+   /** forLargeScreens(640) {
+        font-size: 75%;  //12px for large screens
+    }  **/
+}
+
+body {
+	color: $mainBlack;
+	background: $mainWhite;
+	font-family: Rubik,Verdana, Geneva, Tahoma, sans-serif;
+	@include fontSize(1.6); 
+	line-height: calc(12px + 1.4vw);
+}
+
+p {
+	@include fontSize(1.6); 
+}
+
+h1 { 
+	@include fontSize(6.7773);  // Values in rems = px /10
+	
+}
+
+h2 { 
+	@include fontSize(4.4092);
+
+}
+
+h3 { 
+
+	@include fontSize(4.1887);
+		
+}
+
+h4 {
+	
+	@include fontSize(2.7251);	
+	
+}
+
+h5 { 
+	
+	@include fontSize(2.5888);
+	
+}
+
+h6 {
+	@include fontSize(1.6842);
+	font-weight: bold;
+}
+
+h4, h5, h6 {
+
+	line-height: calc(20px + 1.4vw);
+}
+
+h1, h2, h3, h4, h5, h6 {
+
+	margin: calc(12px + 1.4vw) 0;
+
+}

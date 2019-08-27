@@ -1,0 +1,35 @@
+@import '../../mainStyles/globalVariables.scss';
+
+#header-main-nav-list {
+	list-style-type: none;
+	display: flex;
+	flex-flow: row nowrap;
+		
+	@include fontSize(1.4);
+	
+	li {
+		padding: 3px 10px;
+		margin-right: 15px;
+
+		a {
+			color: white;
+			display: inline-block;
+			text-decoration: none;
+			transition: all .3s ease;
+			
+		}
+
+		a:hover {
+			color: $Yellow-Crazy;			
+
+		}
+	}
+}
+
+.icon-main-nav {
+	margin-right: 7px;
+}
+
+.main-nav-active {
+	color: $Yellow-Crazy;	
+}

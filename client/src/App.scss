@@ -1,0 +1,8 @@
+@import './mainStyles/globalVariables.scss';
+
+
+#app-container {
+	max-width: $PageMaxWidth;
+	margin: 0 auto;
+	background: beige;
+}
