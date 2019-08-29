@@ -1,0 +1,81 @@
+@import '../../../mainStyles/globalVariables.scss';
+
+
+#footer-container {
+	width: 100%;
+	background: $Blue-Dark;
+	font-family: Rubik;	
+	border-top: $Yellow-Dark solid 2px;		
+}
+
+#footer-main-link {
+	text-align: center;
+	
+	
+	a {
+		color: white;
+		display: block;
+		width: 100%;
+		background: $Blue-Clear;
+		text-decoration: none;
+	
+	}
+
+	a:hover {
+		background: lighten($Blue-Clear, 10%);
+	}
+}
+
+#footer-body {
+	max-width: $PageMaxWidth;
+	margin: 0 auto;
+	padding: 0;
+	padding-top: 30px;		
+}
+
+#footer-columns {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+
+.footer-col {
+	color: white;
+	padding: 0 30px;
+	
+	h6 {
+		font-weight: 400;
+		margin: 0;
+	}
+
+	li {
+		list-style-type: none;
+		padding: 0;
+		line-height: 3rem;
+
+		a {
+			
+			display: block;
+			color: white;
+			@include fontSize(1.3);
+		}
+
+	}
+}
+
+
+#footer-col-about {
+	margin-right: 30px;
+}
+
+#footer-bottom {
+
+	p {
+		@include fontSize(1);
+		color: white;
+		padding-left: 100px;
+	}
+	
+}
+
+

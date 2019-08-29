@@ -1,5 +1,15 @@
 @import '../../mainStyles/globalVariables.scss';
 
+#main-nav-container {
+	display: block;
+
+	@include forSmallScreens(560) {
+
+		display: none;
+	}
+}
+
+
 #header-main-nav-list {
 	list-style-type: none;
 	display: flex;
@@ -7,9 +17,22 @@
 		
 	@include fontSize(1.4);
 	
+	
 	li {
 		padding: 3px 10px;
 		margin-right: 15px;
+
+		@include forSmallScreens(1280) {
+
+			@include fontSize(1.2);
+		}
+
+		@include forSmallScreens(1150) {
+
+			padding: 3px 2px;
+		}
+
+		
 
 		a {
 			color: white;
@@ -27,9 +50,104 @@
 }
 
 .icon-main-nav {
-	margin-right: 7px;
+	margin-right: 5px;
+
+	@include forSmallScreens(560) {
+
+		margin-right: 2px;
+
+	}
 }
 
 .main-nav-active {
 	color: $Yellow-Crazy;	
 }
+
+
+#main-nav-button {
+
+	display: none;
+
+	@include forSmallScreens(560) {
+
+		display: block;
+		padding: 2px;
+		margin: 10px 0 5px 0;
+		
+		border: none;
+		color: white;
+		background: transparent;
+		border-radius: 3px;
+		width: 50px;
+
+		&:hover {
+			background-color: lighten($Blue-Base, 20%);
+		}
+
+		&:active {
+			background-color: lighten($Blue-Base, 20%);
+		}
+
+		&:focus {
+			outline: 0;
+		}
+
+	}
+	
+}
+
+
+.mobil-main-nav-list {   // initial styles of the animation (transition)
+	display: flex;
+	flex-flow: column nowrap;
+	
+	
+	li {
+		list-style-type: none;
+		width: 100%;	
+		padding: 3px 5px;
+		
+		a {
+			display: block;
+			text-decoration: none;	
+			color: white;
+			transition: all .3s linear;
+		}
+
+		a:hover {
+
+			background-color: lighten($Blue-Base, 20%);
+
+		}
+
+		a:active {
+
+			background-color: lighten($Blue-Base, 20%);
+
+		}
+	}	
+
+}
+
+.mobil-main-nav-enter {
+	height: 0;
+	overflow: hidden;	
+}
+
+.mobil-main-nav-enter-active {
+	height: 90px;	
+	transition: height .3s linear;
+}
+
+.mobil-main-nav-exit {
+	height: 90px;
+	
+}
+
+.mobil-main-nav-exit-active {
+	height: 0;
+	overflow: hidden;
+	transition: height .3s linear;	
+}
+
+

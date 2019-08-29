@@ -4,25 +4,10 @@ import { Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
-const StyledCart = styled.div.attrs(props => ({
-	size: props.size || 'sm',	
-	width: () => {
-		switch (props.size) {
-		case 'lg':
-			return '130px';
-		case 'sm':
-			return '90px';
-		default:
-			return '90px';
-		}			
-	}
-	
-}))`
-	width: ${props => props.width()};	
+const StyledCart = styled.div`
 	box-shadow: 1px 1px 5px whitesmoke;
 	border-radius: 5px;	
-	transition: all 0.3s linear;
-	margin: ${props => props.margin};	
+	transition: all 0.3s linear;	
 	
 	&:focus {
 		outline: 0;
@@ -30,64 +15,66 @@ const StyledCart = styled.div.attrs(props => ({
 `;
 
 const Button = styled.button.attrs(props => ({
-	size: props.size || 'sm',	
-	width: () => {
-		switch (props.size) {
-		case 'lg':
-			return '130px';
-		case 'sm':
-			return '90px';
-		default:
-			return '90px';
-		}			
-	},
+	size: props.size || 'sm',		
 	fontSize: () => {
 		switch (props.size) {
 		case 'lg':
-			return '1.8rem';
+			return '1.7rem';
 		case 'sm':
-			return '1.3rem';
+			return '1.4rem';
 		default:
-			return '1.3rem';
+			return '1.4rem';
 		}			
 	},
 	counterFontSize: () => {
 		switch (props.size) {
 		case 'lg':
-			return '1.6rem';
+			return '1.3rem';
 		case 'sm':
-			return '1.1rem';
+			return '1.2rem';
 		default:
-			return '1.1rem';
+			return '1.2rem';
 		}			
 	},
-	leftMarginCounter: () => {
+	counterMargin: () => {
 		switch (props.size) {
 		case 'lg':
-			return '6px';
+			return '0 0 0 5px';
 		case 'sm':
-			return '1px';
+			return '0 0 0 1px';
 		default:
-			return '1px';
+			return '0 0 0 1px';
 		}			
-	}
-
+	},
+	padding: () => {
+		switch (props.size) {
+		case 'lg':
+			return '5px 12px';
+		case 'sm':
+			return '2px 5px';
+		default:
+			return '2px 5px';
+		}			
+	},
+	defaultFgColor: 'blue',
+	defaultCounterColor: 'black'
 }))`
-	width: ${props => props.width()};	
-	color: ${props => props.fgColor};
-	border: ${props => props.fgColor} solid 1px;
-	background: ${props => props.bgColor};
+	width:100%;
+	color: ${props => props.fgColor || props.defaultFgColor};
+	border: ${props => props.fgColor || props.defaultFgColor} solid 1px;
+	background: ${props => props.bgColor || 'white'};
 	border-radius: 5px;
 	transition: all 0.3s linear;
 	font-size: ${props => props.fontSize()};
+	padding: ${props => props.padding()};
 	
 	&:hover {
-		border: ${props => props.bgColor} solid 1px;
-		background: ${props => props.fgColor};
-		color: ${props => props.bgColor};
+		border: ${props => props.bgColor || 'white'} solid 1px;
+		background: ${props => props.fgColor || props.defaultFgColor};
+		color: ${props => props.bgColor || 'white'};
 
 		#cart-counter {
-			color: ${props => props.bgColor};
+			color: ${props => props.bgColor || 'white'};
 		}
 	}
 
@@ -96,28 +83,36 @@ const Button = styled.button.attrs(props => ({
 	}
 	
 	#cart-counter {
-		margin-left: ${props => props.leftMarginCounter()};;
-		color: white;
+		margin: ${props => props.counterMargin()};
+		padding: 0;
+		color: ${props => props.counterColor || props.defaultCounterColor};
 		font-size: ${props => props.counterFontSize()};	
 		transition: all 0.3s linear;	
 	}
 `;
 
 
-class Cart extends Component {
-	render() {
-		
-		return (
-			<StyledCart size={this.props.size} margin={this.props.margin}>
-				<Link to="/">
-					<Button size={this.props.size} fgColor={this.props.fgColor} bgColor={this.props.bgColor}>
-						<FontAwesomeIcon icon="shopping-cart" className="icon-main-nav icon-cart" />Cart
-						<Badge variant="outline-warning" id="cart-counter">{this.props.value}</Badge>
-					</Button>
-				</Link>
-			</StyledCart>
-		);
-	}
-}
+const Cart = function (props) {
+	
+	const {
+		fgColor,
+		bgColor,
+		size,		
+		value,
+		counterColor,
+	} = props;
+	
+	return (
+		<StyledCart size={size}>
+			<Link to="/">
+				<Button size={size} fgColor={fgColor} bgColor={bgColor} counterColor={counterColor}>
+					<FontAwesomeIcon icon="shopping-cart" className="icon-main-nav icon-cart" />Cart
+					<Badge variant="outline-warning" id="cart-counter">{`( ${value} )`}</Badge>
+				</Button>
+			</Link>
+		</StyledCart>
+	);
+	
+};
 
 export default Cart;

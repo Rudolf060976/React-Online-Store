@@ -11,7 +11,7 @@ function Search() {
 				<InputGroup.Prepend>
 					<Button variant="outline-warning"><FontAwesomeIcon icon="search" /></Button>
 				</InputGroup.Prepend>
-				<FormControl placeholder="Search here for Products, Brands and More..." />
+				<FormControl id="input-search" placeholder="Search here for Products, Brands and More..." />
 			</InputGroup>
 		</div>
 	);

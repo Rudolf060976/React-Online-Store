@@ -12,8 +12,14 @@ import {
 	faSignInAlt,
 	faCaretDown,
 	faSearch,
-	faShoppingCart
+	faShoppingCart,
+	faUserCheck,
+	faAngleDoubleRight,
+	faAngleDoubleLeft,
+	faAngleDoubleDown,
+	faAngleDoubleUp
+
 } from '@fortawesome/free-solid-svg-icons';
 
 
-library.add(faAlignLeft, faAlignRight, faAlignJustify, faHome, faGifts, faFileSignature, faUserShield, faUserPlus, faSignInAlt, faCaretDown, faSearch, faShoppingCart);
+library.add(faAlignLeft, faAlignRight, faAlignJustify, faHome, faGifts, faFileSignature, faUserShield, faUserPlus, faSignInAlt, faCaretDown, faSearch, faShoppingCart, faUserCheck, faAngleDoubleRight, faAngleDoubleLeft, faAngleDoubleDown, faAngleDoubleUp);
