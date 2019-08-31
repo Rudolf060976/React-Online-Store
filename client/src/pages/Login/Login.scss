@@ -1,0 +1,258 @@
+@import '../../mainStyles/globalVariables.scss';
+
+
+#login-form-container {
+
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	background: $Blue-Dark;
+	padding: 80px 0 40px 0;	
+	height: 100vh;
+
+	@include forSmallScreens(700) {
+
+		padding-top: 40px;
+
+	}
+
+	@include forSmallScreens(550) {
+
+		padding-top: 20px;
+
+	}
+	
+}
+
+#login-form {
+
+	background: white;	
+	border-radius: 10px;
+	width: 30%;
+	padding: 30px 20px;
+	
+	box-shadow: 0 0 5px black inset;
+	height: max-content;
+
+	@include forSmallScreens(1500) {
+
+		width: 37%;
+
+	}
+	
+	@include forSmallScreens(1300) {
+
+		width: 40%;
+
+	}
+
+	@include forSmallScreens(1150) {
+
+		width: 45%;
+
+	}
+
+	@include forSmallScreens(1000) {
+
+		width: 50%;
+
+	}
+
+	@include forSmallScreens(850) {
+
+		width: 60%;
+
+	}
+
+	@include forSmallScreens(700) {
+
+		width: 70%;
+
+	}
+
+	@include forSmallScreens(550) {
+
+		width: 80%;
+
+	}
+
+	@include forSmallScreens(450) {
+
+		width: 90%;
+
+	}
+
+	@include forSmallScreens(400) {
+
+		width: 95%;
+
+	}
+
+	form {
+
+		padding: 0 30px;
+
+
+		@include forSmallScreens(360) {
+
+			padding: 10px;
+	
+		}
+	}
+
+}
+
+#login-form-header {
+
+	width: 100%;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+
+	img {
+		max-width: 100px;
+
+	}
+
+	h6 {
+		margin: 15px 0;
+		padding: 0;
+		color: $Blue-Clear;
+	}
+}
+
+.login-form-text-div {
+	position: relative; // FOR THE BOTTOM BORDER EFFECT
+	width: 100%;
+	padding: 0;
+	margin-bottom: 10px;
+	border-bottom: rgba($Blue-Clear,.2) solid 2px;	
+
+	p {
+		padding: 0;
+		margin: 0;
+		@include fontSize(1.4);
+		letter-spacing: 1px;
+		
+		label {
+			padding: 0;
+			margin: 0;
+			color: Black;
+						
+		}
+	}
+
+	input {
+		width: 100%;
+		border: none;
+		background: rgba($Blue-Clear,.05);		
+		@include fontSize(1.4);
+		letter-spacing: 1px;
+		padding: 0;
+		padding-left: 5px;	
+
+		
+		
+	}
+
+	// THIS STYLES BELOW ARE FOR STOPPING GOOGLE CHROM FROM ASIGNNING STYLES TO AUTOCOMPLETE INPUTS....
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover, 
+	input:-webkit-autofill:focus, 
+	input:-webkit-autofill:active  {
+		transition: background-color 5000s ease-in-out 0s;	
+	}
+
+	input:focus {
+		outline: 0;
+
+		
+		
+	}
+
+	
+	
+
+}
+
+#login-form-button {
+	margin: 30px 0 20px 0;
+	@include fontSize(1.5);
+}
+
+#login-form-footer {
+
+	padding: 0 15px;
+	margin: 0;
+	margin-top: 20px;
+		
+	p {
+		@include fontSize(1.1);
+		padding: 0;
+		margin: 0;
+		line-height: 1.6rem;
+		margin-bottom: 10px;
+	}
+
+	p:first-child {
+		text-align: center;
+		margin-bottom: 50px;
+
+	}
+}
+
+
+.focus-effect-border-bottom {
+	position: absolute;
+	display: block;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	pointer-events: none;
+  }
+  
+  .focus-effect-border-bottom::before {
+	content: "";
+	display: block;
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 0;
+	height: 2px;
+  
+	-webkit-transition: all 0.4s;
+	-o-transition: all 0.4s;
+	-moz-transition: all 0.4s;
+	transition: all 0.4s;
+  
+	background: $Blue-Clear;
+  }
+
+  .effect-border-bottom:focus + .focus-effect-border-bottom::before {
+	width: 100%;
+  }
+  
+
+#login-form-error-container {
+
+	background: $ErrorColor;
+	padding: 2px 10px;
+	color: white;
+	border-radius: 3px;
+	@include fontSize(1.4);
+}
+
+#login-form-error-message {
+	  margin-left: 10px;
+  }
+
+.login-form-error-effect-appear {
+	opacity: 0;
+}
+
+.login-form-error-effect-appear-active {
+	opacity: 1;
+	transition: opacity .5s linear;
+}
+

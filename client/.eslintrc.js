@@ -53,6 +53,7 @@ module.exports = {
 		"jsx-a11y/label-has-associated-control": ["off"],
         "jsx-a11y/label-has-for": ["off"],
         "react-hooks/rules-of-hooks": "error",
-        "react-hooks/exhaustive-deps": "warn"	
+		"react-hooks/exhaustive-deps": "warn",
+		"react/jsx-props-no-spreading": "off"	
     }
 };
