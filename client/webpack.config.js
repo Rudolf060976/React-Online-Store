@@ -21,13 +21,13 @@ module.exports = {
 	devServer: {
 		contentBase: path.join(__dirname, 'dist'),
 		publicPath: '/',
-		port: 3000,
+		port: 4000,
 		hot: true,
 		open: true,
 		historyApiFallback: true,
 		proxy: {
 			'/api': {
-				target: 'http://localhost:8080',
+				target: 'http://localhost:3000',
 				pathRewrite: { '^/api': '' }
 			} 	  
 		}

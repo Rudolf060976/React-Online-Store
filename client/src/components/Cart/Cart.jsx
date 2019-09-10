@@ -16,7 +16,7 @@ const StyledCart = styled.div`
 
 const Button = styled.button.attrs(props => ({
 	size: props.size || 'sm',		
-	fontSize: () => {
+	fontSz: () => {
 		switch (props.size) {
 		case 'lg':
 			return '1.7rem';
@@ -65,7 +65,7 @@ const Button = styled.button.attrs(props => ({
 	background: ${props => props.bgColor || 'white'};
 	border-radius: 5px;
 	transition: all 0.3s linear;
-	font-size: ${props => props.fontSize()};
+	font-size: ${props => props.fontSz()};
 	padding: ${props => props.padding()};
 	
 	&:hover {
@@ -107,7 +107,7 @@ const Cart = function (props) {
 			<Link to="/">
 				<Button size={size} fgColor={fgColor} bgColor={bgColor} counterColor={counterColor}>
 					<FontAwesomeIcon icon="shopping-cart" className="icon-main-nav icon-cart" />Cart
-					<Badge variant="outline-warning" id="cart-counter">{`( ${value} )`}</Badge>
+					{ value !== null ? <Badge variant="outline-warning" id="cart-counter">{`( ${value} )`}</Badge> : ''}
 				</Button>
 			</Link>
 		</StyledCart>

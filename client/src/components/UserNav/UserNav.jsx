@@ -12,12 +12,12 @@ function UserNav() {
 	const mobilMenu = (
 		<CSSTransition in={menuVisible} timeout={300} classNames="mobil-user-nav" unmountOnExit>
 			<ul className="mobil-user-nav-list">
-				<li><Link to="/" activeClassName="user-nav-active">Browsing History<FontAwesomeIcon icon="caret-down" className="icon-user-nav" /></Link></li>
-				<li><Link to="/" activeClassName="user-nav-active">Shopping Cart</Link></li>
-				<li><Link to="/" activeClassName="user-nav-active">Your Orders</Link></li>
-				<li><Link to="/" activeClassName="user-nav-active">Your Account</Link></li>
-				<li><Link to="/" activeClassName="user-nav-active">Your Wishlist</Link></li>
-				<li><Link to="/" activeClassName="user-nav-active">Help</Link></li>	
+				<li><Link to="/">Browsing History<FontAwesomeIcon icon="caret-down" className="icon-user-nav" /></Link></li>
+				<li><Link to="/">Shopping Cart</Link></li>
+				<li><Link to="/">Your Orders</Link></li>
+				<li><Link to="/">Your Account</Link></li>
+				<li><Link to="/">Your Wishlist</Link></li>
+				<li><Link to="/">Help</Link></li>	
 			</ul>
 		</CSSTransition>
 	);
@@ -28,12 +28,12 @@ function UserNav() {
 			{mobilMenu}
 			<div id="user-nav-container">
 				<ul id="header-user-nav-list">
-					<li><Link to="/" activeClassName="user-nav-active">Browsing History<FontAwesomeIcon icon="caret-down" className="icon-user-nav" /></Link></li>
-					<li><Link to="/" activeClassName="user-nav-active">Shopping Cart</Link></li>
-					<li><Link to="/" activeClassName="user-nav-active">Your Orders</Link></li>
-					<li><Link to="/" activeClassName="user-nav-active">Your Account</Link></li>
-					<li><Link to="/" activeClassName="user-nav-active">Your Wishlist</Link></li>
-					<li><Link to="/" activeClassName="user-nav-active">Help</Link></li>	
+					<li><Link to="/">Browsing History<FontAwesomeIcon icon="caret-down" className="icon-user-nav" /></Link></li>
+					<li><Link to="/">Shopping Cart</Link></li>
+					<li><Link to="/">Your Orders</Link></li>
+					<li><Link to="/">Your Account</Link></li>
+					<li><Link to="/">Your Wishlist</Link></li>
+					<li><Link to="/">Help</Link></li>	
 				</ul>
 			</div>
 		</>

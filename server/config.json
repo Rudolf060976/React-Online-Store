@@ -9,13 +9,14 @@
 	"Email_Account_Host": "smtp.gmail.com",
 	"Email_Account_User": "onlinestoreintelligentzona@gmail.com",
 	"Email_Account_Password": "pelalo2018",
-	"Company_Name": "Intelligent Zone Online Store",
+	"Company_Name": "BitZone E-store",
 	"Company_Address": "Venezuela",
 	"Company_Phone": "+58-414-46552211",
-	"Company_Logo_Link": "https://www.designevo.com/res/templates/thumb_small/store-and-black-shopping-trolley.png",
-	"App_Base_Url": "http://localhost:3000",
+	"Company_Logo_Link": "/5937cd68e08cc1bba14167005641ed3c.png",
+	"App_Base_Url": "http://localhost:4000",
 	"Items_Image_Max_Size_MBytes": 20,
 	"Items_Images_Max_Count": 6,
 	"User_Admin_Username": "rafaelurbinan@hotmail.com"
 }
-    
+	
+

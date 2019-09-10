@@ -1,0 +1,59 @@
+@import '../../mainStyles/globalVariables.scss';
+
+
+#email-notification-container {
+
+	max-width: $PageMaxWidth;
+	margin: 0 auto;
+
+}
+
+#email-notification-header {
+	width: 100%;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	border-bottom: gray 1px solid;
+
+	img {
+		max-width: 70px;
+		max-height: 70px;
+		margin-right: 20px;
+	}
+
+	h5 {
+		
+	}
+}
+
+
+#email-notification-body {
+
+	max-width: 60%;
+	margin: 50px auto 0 auto;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+	img {
+		max-width: 7rem;
+	
+	}
+
+	@include forSmallScreens(560) {
+
+		max-width: 80%;
+
+	}
+}
+
+.content-different {
+
+	color: $Blue-Clear;
+	font-style: italic;
+}
+
+#email-notification-button {
+	margin-top: 20px;
+	width: 18rem;
+}

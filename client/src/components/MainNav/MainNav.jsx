@@ -23,7 +23,7 @@ function MainNav() {
 
 	return (
 		<>
-			<button type="button" id="main-nav-button" onClick={() => setMenuVisible(!menuVisible)}>{menuVisible ? <FontAwesomeIcon icon="angle-double-up" className="icon-main-nav" /> : <span><FontAwesomeIcon icon="angle-double-down" className="icon-main-nav" /> Menu</span> } </button>
+			<button type="button" id="main-nav-button" onClick={() => setMenuVisible(!menuVisible)}>{menuVisible ? <FontAwesomeIcon icon="chevron-up" className="icon-main-nav" /> : <span><FontAwesomeIcon icon="chevron-down" className="icon-main-nav" /> Menu</span> } </button>
 			{mobilMenu}			
 			<div id="main-nav-container">
 				<ul id="header-main-nav-list">

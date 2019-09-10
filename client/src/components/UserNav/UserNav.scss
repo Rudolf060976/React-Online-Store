@@ -1,7 +1,7 @@
 @import '../../mainStyles/globalVariables.scss';
 
 #user-nav-container {
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		display: none;
 	}
@@ -34,19 +34,20 @@
 			color: $Purple-Clear;
 			display: inline-block;
 			text-decoration: none;
-			transition: all .3s linear;
+			transition: all .2s linear;
 			text-shadow: $Light-Header-Text-Shadow;
 			letter-spacing: $mainSpacing1;
 			
-			@include forSmallScreens(630) {
+			@include forSmallScreens(650) {
 
 				letter-spacing: 1px;
+
 			}
 		}
 
 		a:hover {
 			color: $Yellow-Crazy;			
-
+			text-shadow: none;
 		}
 	}
 }
@@ -120,11 +121,11 @@
 
 	display: none;
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		display: block;
 		padding: 2px;
-		margin: 10px 0 5px 0;
+		margin: 0 0 5px 0;
 		
 		border: none;
 		color: white;

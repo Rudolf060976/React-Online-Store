@@ -17,10 +17,30 @@ const router = express.Router();
 
 // ************* REGISTER USER ****************
 
+router.use((req, res, next) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+
+	const origin = req.get('Origin');
+	res.set('Access-Control-Allow-Origin', origin);
+	res.set('Access-Control-Allow-Credentials', 'true');
+
+	next();
+});
+
+router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+		
+	res.set('Access-Control-Allow-Methods','POST, GET, PUT, PATCH, DEL');
+	res.set('Access-Control-Allow-Credentials', 'true');
+	res.set('Access-Control-Allow-Headers','Content-Type');	
+	res.set('Access-Control-Max-Age', 86400);
+		
+	res.status(200).send();
+});
+
+
 router.post('/register', (req, res) => {
 
 	if (req.body && req.body.username && req.body.password && req.body.firstname && req.body.lastname && req.body.email) {
-
+		
 		const { username, password, firstname, lastname, email } = req.body;
 
 		crudUsers.registerUser(username, password, firstname, lastname, email).then(user => {
@@ -50,8 +70,8 @@ router.post('/register', (req, res) => {
 			
 
 		}).catch(err => {
-			console.log('ERROR *************', err);
-			return res.status(err.status).json({
+			
+			res.status(err.status).json({
 				error: err,
 				ok: false,
 				status: err.status,
@@ -62,8 +82,8 @@ router.post('/register', (req, res) => {
 		});
 
 	} else {
-
-		return res.status(400).json({
+		
+		res.status(400).json({
 			error: createError(400, 'BAD REQUEST'),
 			ok: false,
 			status: 400,
@@ -82,44 +102,56 @@ router.post('/validate', (req, res) => {    // RECEIVES USER id AND THE TOKEN AN
 	if(req.body && req.body.id && req.body.token) {
 
 		const { id, token } = req.body;
+	
 
-		const obj = verifyUserToken(token);
+		// FIRST WE HAVE TO FIND THE USER A CHECK IF ITS NOT VALIDATED.
 
-		if(!obj.isValid) {  // IF THE TOKEN IS NOT VALID ITS BECAUSE IT REACHED THE LIMIT DURATION TIME, SO WE HAVE TO GENERATE A NEW TOKEN AND RESEND..
-			
+		crudUsers.getUserById(id).then(user => {
 
-			crudUsers.getUserById(id).then(user => {
+			if (user.isValidated) {
 
-				const token = generateUserToken(user._id);
+				return res.status(409).json({
+					error: createError(409, 'CONFLICT'),
+					ok: false,
+					status: 409,
+					message: 'USER IS ALREADY VALIDATED',
+					data: null
+				});
+
+			}
+
+			// NOW WE VERIFY THE TOKEN VALIDITY
+
+			const obj = verifyUserToken(token);
+
+			if(!obj.isValid) {  // IF THE TOKEN IS NOT VALID ITS BECAUSE IT REACHED THE LIMIT DURATION TIME, SO WE HAVE TO GENERATE A NEW TOKEN AND RESEND..
+
+				const token2 = generateUserToken(user._id);
 
 							
 				// ******* SEND A VERIFICATION EMAIL TO THE REGISTERED EMAIL, WITH THE LINK http://localhost:3000/users/validate?id=xxxx&token=token ********
 
-				const link = `/users/validate?id=${user._id}&token=${token}`;
+				const link = `/users/validate?id=${user._id}&token=${token2}`;
 
 				sendVerificationEmail(user, link);
-							
-			});
 
-			return res.status(401).json({
-				error: createError(401, 'UNAUTHORIZED'),
-				ok: false,
-				status: 401,
-				message: 'INVALID TOKEN',
-				data: null
-			});
-		}
+				return res.status(401).json({
+					error: createError(401, 'UNAUTHORIZED'),
+					ok: false,
+					status: 401,
+					message: 'INVALID TOKEN',
+					data: null
+				});
 
-		if(id === obj.id) {  // IF THE TOKEN IS VALID AND ID === ID IN THE TOKEN...CONTINUES
+			}
 
-			crudUsers.getUserById(id).then(user => {
+
+			if(id === obj.id) {  // IF THE TOKEN IS VALID AND ID === ID IN THE TOKEN...CONTINUES
 					
 				user.isValidated = true;
 	
-				return user.save();
-	
-			}).then(user => {
-	
+				user.save();
+		
 				res.status(200).json({
 					error: null,
 					ok: true,
@@ -129,32 +161,33 @@ router.post('/validate', (req, res) => {    // RECEIVES USER id AND THE TOKEN AN
 						username: user.username,
 						fullname: `${user.firstname} ${user.lastname}`	
 					}
+				
 				});
 	
-			}).catch(err => {
-	
-				return res.status(err.status).json({
-					error: err,
+			
+			} else {
+
+				return res.status(401).json({
+					error: createError(401, 'UNAUTHORIZED'),
 					ok: false,
-					status: err.status,
-					message: err.message,
+					status: 401,
+					message: 'USER ID IS DIFFERENT TO ID IN THE TOKEN',
 					data: null
 				});
-	
-			})	
-	
 
-		} else {
+			}
 
-			return res.status(401).json({
-				error: createError(401, 'UNAUTHORIZED'),
+		}).catch(err => {
+
+			return res.status(err.status).json({
+				error: err,
 				ok: false,
-				status: 401,
-				message: 'USER ID IS DIFFERENT TO ID IN THE TOKEN',
+				status: err.status,
+				message: err.message,
 				data: null
 			});
 
-		}
+		});
 
 	} else {
 

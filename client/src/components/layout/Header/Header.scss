@@ -3,21 +3,27 @@
 #header-container {
 	width: 100%;
 	background: $Blue-Base;
-	padding: 20px 20px 15px 20px;
+	padding: 20px 20px 5px 20px;
 	font-family: Rubik;	
 	border-bottom: $Yellow-Dark solid 2px;
 	
 	
+	@include forSmallScreens(1105) {
+
+		padding-bottom: 0;
+
+	}
+	
 	@include forSmallScreens(1050) {
 
-		padding: 10px 10px 10px 10px;
+		
 
 	}
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		padding: 5px;
-
+		position: relative;
 	}
 
 	
@@ -38,10 +44,11 @@
 				
 	}
 
-	@include forSmallScreens(560) {
-
+	@include forSmallScreens(570) {
+		
 		flex-flow: column nowrap;
 		justify-content: flex-start;
+		height: max-content;
 	}
 
 }
@@ -49,15 +56,14 @@
 #header-flex-col1 {
 	margin-right: 30px;	
 	min-width: 120px;
-	position: relative;
-	
+		
 
 	@include forSmallScreens(1050) {
-
+		min-width: 100px;
 		margin-right: 10px;
 	}
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		display: flex;
 		flex-flow: row nowrap;
@@ -107,10 +113,11 @@
 	}
 
 	@include forSmallScreens(1050) {
-
+		
 		min-width: 200px;
 		flex-flow: column wrap;
 		justify-content: flex-start;
+		align-items: center;
 	}
 
 	@include forSmallScreens(740) {
@@ -119,27 +126,66 @@
 		margin: 0 0 0 130px;		
 	}
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 		display: none;
 	}
 
 }
 
-#header-flex-col4 {
+
+#mobil-header-user {
+
 	display: none;
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
+
+		position: absolute;
+		top: 10px;
+		left: 80px;
 		display: flex;
 		flex-flow: row nowrap;
-		width: 100%;
-		justify-content: space-between;
+		align-items: center;
+		
+	}
+
+}
+
+#mobil-header-cart {
+
+	display: none; 
+
+	@include forSmallScreens(570) {
+		display: block;
+		position: absolute;
+		top: 45px;
+		right: 20px;
+
+		button {
+			@include fontSize(2);
+			padding: 5px;
+		}
+
+		#cart-counter {
+			@include fontSize(1.5);
+			margin-left: 2px;
+		}
+
 	}
 }
 
-#mobil-header-user {
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
+#mobil-icon-avatar {
+
+	display: none;
+
+	@include forSmallScreens(570) {
+
+		display: block;
+		position: absolute;
+		top: 45px;
+		right: 120px;
+		@include fontSize(1.6);
+	}
+
 }
 
 
@@ -168,27 +214,36 @@
 #new-to-bitzone {
 	color: white;
 	padding: 0;
-	margin: 20px 0 0 0;
+	margin: 30px 0 0 0;
 	font-style: italic;
 	font-weight: 500;
 
 	@include forSmallScreens(1050) {
 
 		margin: 0;
+		margin-top: 10px;
 
 	}
 
 	@include forSmallScreens(740) {
 
 		margin: 3px;
-		margin-top: 8px;
+		margin-top: 5px;
 
 	}
 }
 
 #hello-user {
-	margin: 0;
+	margin: 80px 20px 0 40px;
 	padding: 0;
+
+	@include forSmallScreens(1060) {
+
+		
+		margin: 20px 20px 0 20px;
+
+	}
+	
 }
 
 #signup-container, #login-container {
@@ -208,7 +263,7 @@
 		color: $Yellow-Crazy;
 	}
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		margin-right: 20px;
 
@@ -238,10 +293,21 @@
 		
 	}
 
+	@include forSmallScreens(900) {
+
+		margin-top: 15px;
+		
+	}
+
 	@include forSmallScreens(740) {
 
-		margin-top: 50px;
-		margin-left: 80px;
+		margin-top: 0;
+		margin-left: 120px;
+	}
+
+	@include forSmallScreens(650) {
+
+		margin-left: 90px;
 	}
 	
 }
@@ -250,26 +316,54 @@
 	max-width: 100px;
 	border-radius: 20px;
 	display: block;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
 	box-shadow: $Light-Header-Box-Shadow;
 	
+	@include forSmallScreens(1600) {
+	
+		margin-bottom: 25px;
+	}
+
+	@include forSmallScreens(1450) {
+	
+		margin-bottom: 20px;
+	}
+
 	@include forSmallScreens(1280) {
 		border-radius: 15px;
 		max-width: 80px;
+		margin-bottom: 25px;
+	}
+
+	@include forSmallScreens(1150) {
+	
+		margin-bottom: 25px;
 	}
 
 	@include forSmallScreens(1050) {
 
 		min-width: 60px;
-		
+		margin-bottom: 10px;
+	}
+
+	@include forSmallScreens(950) {
+
+		margin-bottom: 7px;
 	}
 
 	@include forSmallScreens(740) {
 		border-radius: 10px;
 		max-width: 50px;
+		
 	}
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(650) {
+	
+		margin-bottom: 0;
+		
+	}
+
+	@include forSmallScreens(570) {
 
 		max-width: 30px;
 		margin: 0;
@@ -278,22 +372,60 @@
 
 }
 
+#mobile-btnDepartments {
+
+	display: none;
+
+	@include forSmallScreens(570) {
+		display: block;
+		position: static;		
+		margin: 0;
+		height: 25px;
+		align-self: flex-start;
+		padding: 0 5px;	
+		background: transparent;
+		border: 1px solid white;
+		color: $LightBlue;
+		box-shadow: none;
+		letter-spacing: 1px;
+		@include fontSize(1.4);
+
+		&:focus {
+			outline: 0;
+		}
+
+		&:hover {
+		
+			background: $Blue-Clear;			
+			box-shadow: $Light-Header-Box-Shadow;
+			color: white;
+		
+		}
+
+	}
+
+}
+
 #btnDepartments {
-	background: $Blue-Clear;
-	border: solid 0.5px white;
-	border-radius: 5px;
-	box-shadow: $Light-Header-Box-Shadow;
-	color: white;
+	
 	@include fontSize(1.3);
 	padding: 0 20px;
-	transition: all .3s ease;
+	transition: all .1s linear;
 	letter-spacing: $mainSpacing1;
+	border: 1px solid white;
+	color: $LightBlue;
+	box-shadow: none;
+	background: transparent;
 	
 	@include forSmallScreens(1445) {
 
 		letter-spacing: 1px;
 		padding: 0 10px;
 		@include fontSize(1.1);
+	}
+	@include forSmallScreens(1280) {
+		
+		margin-top: 10px;		
 	}
 
 	@include forSmallScreens(1235) {
@@ -303,7 +435,7 @@
 
 	@include forSmallScreens(1050) {
 
-		margin-top: 30px;
+		margin-top: 20px;
 
 	}
 
@@ -314,26 +446,27 @@
 	}
 
 	@include forSmallScreens(740) {
-
-		//margin-top: 0;
 		position: absolute;
-		top: 125px;
-		left: 0;
+		left: 20px;
+		top: 130px;
 	}
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(650) {
 
-		position: static;
-		margin: 0;
-		height: 25px;
+		margin-top: 12px;
+
+	}
+
+	@include forSmallScreens(570) {
+
+		display: none;
 		
 	}
 
 	&:hover {
-		
-		color: $Yellow-Crazy;
-		box-shadow: none;
-		background: transparent;
+		background: $Blue-Clear;			
+		box-shadow: $Light-Header-Box-Shadow;
+		color: white;
 	}
 
 	&:focus {
@@ -345,6 +478,17 @@
 #icon-departments {
 
 	margin-right: 10px;
+	
 
 }
+
+#mobile-icon-departments {
+
+	margin-left: 10px;
+	
+
+}
+
+
+
 

@@ -3,7 +3,7 @@
 #main-nav-container {
 	display: block;
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		display: none;
 	}
@@ -52,7 +52,7 @@
 .icon-main-nav {
 	margin-right: 5px;
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		margin-right: 2px;
 
@@ -68,7 +68,7 @@
 
 	display: none;
 
-	@include forSmallScreens(560) {
+	@include forSmallScreens(570) {
 
 		display: block;
 		padding: 2px;

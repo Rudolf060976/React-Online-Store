@@ -11,6 +11,25 @@ const router = express.Router();
 const crudUsers = require('../../db/crud_operations/crudUsers');
 
 
+router.use((req, res, next) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+
+	const origin = req.get('Origin');
+	res.set('Access-Control-Allow-Origin', origin);
+	res.set('Access-Control-Allow-Credentials', true);
+
+	next();
+});
+
+router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+		
+	res.set('Access-Control-Allow-Methods','POST, GET, PUT, PATCH, DEL');
+	res.set('Access-Control-Allow-Credentials', true);
+	res.set('Access-Control-Allow-Headers','Content-Type');	
+	res.set('Access-Control-Max-Age', 86400);
+		
+	res.status(200).send();
+});
+
 router.post('/login', passport_Setup_Strategy(), 
 	passport.authenticate('local',
 		{
@@ -40,6 +59,7 @@ router.post('/login', passport_Setup_Strategy(),
 					status: 423,
 					message: 'USER IS NOT VALIDATED',
 					data: {
+						_id: user._id,
 						username: user.username
 					}
 				});
@@ -48,6 +68,7 @@ router.post('/login', passport_Setup_Strategy(),
 
 			// IF USER PASSES ALL CONDITIONS ABOVE, THEN LOGIN
 			
+			const { _id, username, firstname, lastname } = user;
 			
 			res.status(200).json({
 				error: null,
@@ -55,8 +76,14 @@ router.post('/login', passport_Setup_Strategy(),
 				status: 200,
 				message: 'AUTHENTICATION ACCEPTED',
 				data: {
-					username: user.username,
-					fullname: `${user.firstname} ${user.lastname}`
+
+					user: {
+						_id,
+						username,
+						firstname,
+						lastname
+					}
+					
 				}
 			});
 
@@ -89,13 +116,14 @@ router.get('/logout', secure(), (req, res) => {
 
 
 router.get('/unauthorized', (req, res) => {
-
+	
+	
 	if (req.session.flash && req.session.flash.error.length > 0) {
 
 		const i = req.session.flash.error.length - 1; //always use the last message in flash
 		
 		const errorMessage = req.session.flash.error[i];
-
+		
 		switch(errorMessage) {
 
 		case 'INCORRECT USERNAME':
@@ -158,14 +186,20 @@ router.get('/login', (req, res) => {
 	
 	}
 
+	const { _id, username, firstname, lastname } = req.user;
+
 	res.status(200).json({
 		error: null,
 		ok: true,
 		status: 200,
 		message: 'AUTHENTICATION ACCEPTED',
 		data: {
-			username: req.user.username,
-			fullname: `${req.user.firstname} ${req.user.lastname}`
+			user: {
+				_id,
+				username,
+				firstname,
+				lastname			
+			}			
 		}
 	});
 

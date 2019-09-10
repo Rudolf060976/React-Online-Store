@@ -41,7 +41,7 @@ app.use(session({  // Session middleware always comes before passport.session()
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static('dist'));
+app.use(express.static(path.join(__dirname,'./../../','dist')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(flash());
@@ -56,7 +56,7 @@ app.use('/api/categories', categoryRoutes);
 
 app.all('*', (req, res) => {
 	
-	res.sendFile(path.join(__dirname,'../../dist','index.html'));
+	res.sendFile(path.join(__dirname,'./../../dist','index.html'));
 
 });
 

@@ -2,10 +2,18 @@
 
 
 #header-search-container {
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 	box-shadow: $Light-Header-Box-Shadow;
 	border-radius: 5px;
-		
+	
+	@include forSmallScreens(1280) {
+		margin-bottom: 25px;
+	}
+	
+	@include forSmallScreens(740) {
+		margin-bottom: 20px;
+	}
+
 }
 
 #input-search {

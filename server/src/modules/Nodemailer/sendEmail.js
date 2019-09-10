@@ -1,6 +1,5 @@
 const transporter = require('./transporter');
 const config = require('../../config/config');
-const path = require('path');
 
 
 // Consult Message format in:  https://nodemailer.com/message/

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Badge } from 'react-bootstrap';
 
-const StyledAvatar = styled('div')`
+const StyledAvatar = styled('span')`
 	
 	padding: 0;
 	background:  rgba(${props => props.bgColor || 'transparent'},.5);

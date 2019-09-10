@@ -7,7 +7,7 @@ let ejs = require('ejs');
 const sendVerificationEmail = async function (user, verifyLink) {
 	
 	const images = {
-		link1: config.company.logo_link
+		link1: config.app.base_url + config.company.logo_link
 	}
 
 	const data = {
