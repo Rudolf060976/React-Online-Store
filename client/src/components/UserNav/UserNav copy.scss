@@ -1,0 +1,148 @@
+@import '../../mainStyles/globalVariables.scss';
+
+#user-nav-container {
+	@include forSmallScreens(570) {
+
+		display: none;
+	}
+}
+
+#header-user-nav-list {
+	list-style-type: none;
+	display: flex;
+	flex-flow: row nowrap;
+	line-height: 1.5rem;
+		
+	@include fontSize(1.2);
+	
+	li {
+		padding: 3px 3px;
+		margin-right: 15px;
+		
+		@include forSmallScreens(1280) {
+
+			@include fontSize(1.1);
+		}
+
+		@include forSmallScreens(1150) {
+
+			padding: 3px 0;
+			margin-right: 10px;
+		}
+
+		a {
+			color: $Purple-Clear;
+			display: inline-block;
+			text-decoration: none;
+			transition: all .2s linear;
+			text-shadow: $Light-Header-Text-Shadow;
+			letter-spacing: $mainSpacing1;
+			
+			@include forSmallScreens(650) {
+
+				letter-spacing: 1px;
+
+			}
+		}
+
+		a:hover {
+			color: $Yellow-Crazy;			
+			text-shadow: none;
+		}
+	}
+}
+
+.icon-user-nav {
+	margin-left: 7px;
+}
+
+.user-nav-active {
+	color: $Yellow-Crazy;	
+}
+
+
+.mobil-user-nav-list {   // initial styles of the animation (transition)
+	display: flex;
+	flex-flow: column nowrap;
+	
+	
+	li {
+		list-style-type: none;
+		width: 100%;
+		padding: 3px 5px;	
+		
+		a {
+			display: block;
+			text-decoration: none;	
+			color: $Purple-Clear;
+			transition: all .3s linear;
+			text-shadow: $Light-Header-Text-Shadow;
+			letter-spacing: $mainSpacing1;
+		}
+
+		a:hover {
+			color: $Yellow-Crazy;	
+			background-color: lighten($Blue-Base, 20%);
+
+		}
+
+		a:active {
+			color: $Yellow-Crazy;	
+			background-color: lighten($Blue-Base, 20%);
+
+		}
+
+	}	
+
+}
+
+.mobil-user-nav-enter {
+	height: 0;
+	overflow: hidden;	
+}
+
+.mobil-user-nav-enter-active {
+	height: 90px;	
+	transition: height .3s linear;
+}
+
+.mobil-user-nav-exit {
+	height: 90px;
+	
+}
+
+.mobil-user-nav-exit-active {
+	height: 0;
+	overflow: hidden;
+	transition: height .3s linear;	
+}
+
+#user-nav-button {
+
+	display: none;
+
+	@include forSmallScreens(570) {
+
+		display: block;
+		padding: 2px;
+		margin: 0 0 5px 0;
+		
+		border: none;
+		color: white;
+		background: transparent;
+		border-radius: 3px;
+		width: 100px;
+
+		&:hover {
+			background-color: lighten($Blue-Base, 20%);
+		}
+
+		&:active {
+			background-color: lighten($Blue-Base, 20%);
+		}
+
+		&:focus {
+			outline: 0;
+		}
+	}
+}

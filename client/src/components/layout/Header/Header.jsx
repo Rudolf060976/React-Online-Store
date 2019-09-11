@@ -14,7 +14,7 @@ import Avatar from '../../Avatar/Avatar';
 import { getIsLoggedUser, getUserProfile } from '../../../redux/selectors';
 import { fetchGetLoginUser } from '../../../modules/fetchFunctions/users';
 import { actionsUser } from '../../../redux/actions/actions';
-
+import home from '../../../assets/images/home.svg';
 
 class Header extends Component {
 
@@ -63,8 +63,7 @@ class Header extends Component {
 						<UserNav />
 					</div>
 					<div id="header-flex-col3">
-						<div id="header-new-user">
-							
+						<div id="header-new-user">							
 							{
 								!isLoggedUser ? (
 									<>
@@ -91,7 +90,7 @@ class Header extends Component {
 								<p id="signup-container"><Link to="/signup"><FontAwesomeIcon icon="user-shield" className="icon-main-nav icon-signup" />Sign Up</Link>
 								</p>
 								<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link>
-								</p>																	
+								</p>													
 							</div>
 						) : null
 					}					
@@ -101,11 +100,10 @@ class Header extends Component {
 								<Avatar small avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" />
 							</div>
 						) : null
-					}		
-					<div id="mobil-header-cart">
-						<Cart size="sm" value={isLoggedUser ? 0 : null} fgColor={this.props.theme.colorYellowDark} bgColor={this.props.theme.colorBlueBase} counterColor="white" />	
-					</div>						
-					
+					}					
+				</div>
+				<div id="mobil-header-icon-home">
+					<Link to="/"><img src={home} alt="" /><span>Home</span></Link>
 				</div>
 			</header>
 		);

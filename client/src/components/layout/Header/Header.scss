@@ -123,7 +123,8 @@
 	@include forSmallScreens(740) {
 
 		flex-flow: row nowrap;
-		margin: 0 0 0 130px;		
+		margin: 0 0 0 130px;
+			
 	}
 
 	@include forSmallScreens(570) {
@@ -146,31 +147,11 @@
 		flex-flow: row nowrap;
 		align-items: center;
 		
+		p {
+			@include fontSize(1.8);
+		}
 	}
 
-}
-
-#mobil-header-cart {
-
-	display: none; 
-
-	@include forSmallScreens(570) {
-		display: block;
-		position: absolute;
-		top: 45px;
-		right: 20px;
-
-		button {
-			@include fontSize(2);
-			padding: 5px;
-		}
-
-		#cart-counter {
-			@include fontSize(1.5);
-			margin-left: 2px;
-		}
-
-	}
 }
 
 #mobil-icon-avatar {
@@ -181,9 +162,47 @@
 
 		display: block;
 		position: absolute;
-		top: 45px;
-		right: 120px;
-		@include fontSize(1.6);
+		top: 55px;
+		right: 40px;
+		@include fontSize(1.8);
+	}
+
+}
+
+#mobil-header-icon-home {
+
+	display: none;
+
+	@include forSmallScreens(570) {
+
+		display: block;		
+		position: absolute;
+		top: 35px;
+		left: 90px;
+		@include fontSize(1.8);	
+		transition: all .3s linear;
+		border-radius: 5px;	
+		padding: 5px 10px;	
+		
+		img {
+			max-width: 25px;
+		}
+
+		a {
+			color: white;
+			display: inline-block;
+			text-decoration: none;
+			display: flex;
+			flex-flow: column nowrap;	
+			
+		}
+
+		&:hover {
+			color: $Yellow-Crazy;	
+			background-color: lighten($Blue-Base, 15%);
+		}
+	
+
 	}
 
 }
@@ -205,8 +224,7 @@
 
 	@include forSmallScreens(740) {
 
-		margin-right: 15px;
-
+		margin-right: 15px;		
 	}
 
 }
@@ -241,6 +259,13 @@
 
 		
 		margin: 20px 20px 0 20px;
+
+	}
+	@include forSmallScreens(740) {
+		
+		position: absolute;
+		top: -10px;
+		right:-10px;
 
 	}
 	
@@ -300,14 +325,17 @@
 	}
 
 	@include forSmallScreens(740) {
-
-		margin-top: 0;
-		margin-left: 120px;
+		margin: 10px 0 10px 230px;
+		
 	}
 
 	@include forSmallScreens(650) {
 
-		margin-left: 90px;
+		margin-left: 150px;
+
+		& div button {
+			padding: 5px 5px;
+		}
 	}
 	
 }
@@ -382,13 +410,12 @@
 		margin: 0;
 		height: 25px;
 		align-self: flex-start;
-		padding: 0 5px;	
+		padding: 0 8px;	
 		background: transparent;
 		border: 1px solid white;
 		color: $LightBlue;
-		box-shadow: none;
-		letter-spacing: 1px;
-		@include fontSize(1.4);
+		box-shadow: none;		
+		@include fontSize(1.8);
 
 		&:focus {
 			outline: 0;

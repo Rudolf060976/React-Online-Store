@@ -72,13 +72,14 @@
 
 		display: block;
 		padding: 2px;
-		margin: 10px 0 5px 0;
+		margin: 10px 0 10px 0;
 		
 		border: none;
-		color: white;
+		color: $LightBlue;
 		background: transparent;
 		border-radius: 3px;
-		width: 50px;
+		width: 60px;
+		@include fontSize(1.8);
 
 		&:hover {
 			background-color: lighten($Blue-Base, 20%);

@@ -18,4 +18,8 @@
 
 #input-search {
 	font-size: 1.8rem;
+
+	@include forSmallScreens(570) {
+		font-size: 2rem;
+	}
 }
