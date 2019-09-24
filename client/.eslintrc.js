@@ -56,6 +56,8 @@ module.exports = {
 		"react-hooks/exhaustive-deps": "warn",
 		"react/jsx-props-no-spreading": "off",
 		"no-return-await": "off",
-		"object-curly-newline": "warn"
+		"object-curly-newline": "warn",
+		"class-methods-use-this":"off",
+		"react/state-in-constructor": "off"
     }
 };

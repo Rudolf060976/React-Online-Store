@@ -19,14 +19,14 @@
 		padding: 3px 3px;
 		margin-right: 15px;
 		
-		@include forSmallScreens(1280) {
+		@include forSmallScreens(1340) {
 
-			@include fontSize(1.1);
+			@include fontSize(1.2);
+			padding: 3px 0;
 		}
 
-		@include forSmallScreens(1150) {
-
-			padding: 3px 0;
+		@include forSmallScreens(1240) {
+			
 			margin-right: 10px;
 		}
 
@@ -38,7 +38,7 @@
 			text-shadow: $Light-Header-Text-Shadow;
 			letter-spacing: $mainSpacing1;
 			
-			@include forSmallScreens(650) {
+			@include forSmallScreens(1240) {
 
 				letter-spacing: 1px;
 

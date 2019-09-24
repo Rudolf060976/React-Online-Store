@@ -24,9 +24,11 @@ import {
 	faCaretRight,
 	faAngleRight,
 	faChevronDown,
-	faChevronUp
+	faChevronUp,
+	faEyeSlash,
+	faEye
 
 } from '@fortawesome/free-solid-svg-icons';
 
 
-library.add(faAlignLeft, faAlignRight, faAlignJustify, faHome, faGifts, faFileSignature, faUserShield, faUserPlus, faSignInAlt, faCaretDown, faSearch, faShoppingCart, faUserCheck, faAngleDoubleRight, faAngleDoubleLeft, faAngleDoubleDown, faAngleDoubleUp, faExclamationCircle, faExclamationTriangle, faChevronRight, faCaretRight, faAngleRight, faChevronUp, faChevronDown);
+library.add(faAlignLeft, faAlignRight, faAlignJustify, faHome, faGifts, faFileSignature, faUserShield, faUserPlus, faSignInAlt, faCaretDown, faSearch, faShoppingCart, faUserCheck, faAngleDoubleRight, faAngleDoubleLeft, faAngleDoubleDown, faAngleDoubleUp, faExclamationCircle, faExclamationTriangle, faChevronRight, faCaretRight, faAngleRight, faChevronUp, faChevronDown, faEyeSlash, faEye);

@@ -32,7 +32,7 @@ app.use(session({  // Session middleware always comes before passport.session()
 		console.log(`Request object sessionID from client: ${req.sessionID}`);
 		return uuidv4();
 	},
-	cookie: { maxAge: parseInt(config.user.USER_SESSION_DURATION_MINUTES * 60 * 60) },
+	cookie: { maxAge: parseInt(config.user.USER_SESSION_DURATION_MINUTES * 60 * 1000) },
 	saveUninitialized: true,
 	resave: false,
 	name: 'pswSid',

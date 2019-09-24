@@ -6,7 +6,7 @@
 	padding: 20px 20px 5px 20px;
 	font-family: Rubik;	
 	border-bottom: $Yellow-Dark solid 2px;
-	position: relative;
+	
 	
 	@include forSmallScreens(1105) {
 
@@ -17,7 +17,7 @@
 	@include forSmallScreens(570) {
 
 		padding: 5px;
-		
+		position: relative;
 	}
 
 	
@@ -48,22 +48,13 @@
 }
 
 #header-flex-col1 {
-	margin-right: 40px;	
-	width: 15%;	
-	
-	@include forSmallScreens(870) {
+	margin-right: 30px;	
+	min-width: 120px;
 		
-		margin-right: 20px;
-	}
 
-	@include forSmallScreens(760) {
-		
-		width: 17%;
-	}
-
-	@include forSmallScreens(740) {
-		
-		
+	@include forSmallScreens(1050) {
+		min-width: 100px;
+		margin-right: 10px;
 	}
 
 	@include forSmallScreens(570) {
@@ -78,13 +69,12 @@
 }
 
 #header-flex-col2 {
-	width: 55%;
+	min-width: 600px;
 	margin-right: 30px;
-	margin-bottom: 10px;
 
-	@include forSmallScreens(1200) {
+	@include forSmallScreens(1190) {
 
-		width: 58%;
+		min-width: 380px;
 	}
 
 	@include forSmallScreens(1050) {
@@ -94,202 +84,39 @@
 
 	@include forSmallScreens(740) {
 		margin-right: 0;
-		width: 75%;
-		margin-bottom: 5px;
+		min-width: 0;
 
-	}
-
-	@include forSmallScreens(570) {
-		
-		width: 100%;
-		
 	}
 
 }
 
 #header-flex-col3 {
-	position: relative;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
 	width: 30%;
 	
-	@include forSmallScreens(1200) {
+
+
+	@include forSmallScreens(1050) {
 		
-		width: 27%;
+		min-width: 200px;
+		flex-flow: column wrap;
+		justify-content: flex-start;
+		align-items: center;
 	}
 
 	@include forSmallScreens(740) {
-		width: 80%;
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: flex-start;
-		align-items: flex-start;
-		margin-left: 250px;
 
+		flex-flow: row nowrap;
+		margin: 0 0 0 130px;
+			
 	}
 
 	@include forSmallScreens(570) {
 		display: none;
 	}
 
-}
-
-#header-cart {
-	position: absolute;
-	top: 55%;
-	left: 10%;
-
-	@include forSmallScreens(1200) {
-
-		left: 45%;
-		top: 60%;
-		
-	}
-
-	@include forSmallScreens(1100) {
-
-		left: 40%;
-		
-		
-	}
-
-	@include forSmallScreens(840) {
-		
-		left: 35%;
-		
-	}
-
-	@include forSmallScreens(780) {
-		
-		left: 30%;
-		
-	}
-
-	@include forSmallScreens(740) {
-
-		position: static;
-		margin-top: 10px;
-		margin-bottom: 10px;
-	}
-	
-}
-
-#header-new-user {
-	position: absolute;
-	top: 0;
-	left: 40%;
-
-	@include forSmallScreens(1200) {
-
-		left: 20%;
-
-	}
-
-	@include forSmallScreens(1100) {
-
-		left: 10%;
-	
-	}
-
-	@include forSmallScreens(870) {
-
-		left: 0;
-	
-	}
-
-	@include forSmallScreens(740) {
-
-		position: static;
-		margin-left: 40px;
-	}
-
-}
-
-#new-to-bitzone {
-	color: white;	
-	font-style: italic;
-	font-weight: 500;
-
-	
-}
-
-
-
-#signup-container, #login-container {
-	padding: 0;
-	margin: 0;
-	@include fontSize(1.4);
-
-	a {
-		display: inline-block;
-		text-decoration: none;
-		color:$LightBlue;
-		font-weight: 500;
-		transition: $mainTransition;
-	}
-
-	a:hover {
-		color: $Yellow-Crazy;
-	}
-
-	@include forSmallScreens(570) {
-
-		margin-right: 20px;
-
-	}
-
-
-}
-
-.icon-signup, .icon-login {
-	color:$LightCoral;
-	
-}
-
-.icon-signup {
-	margin-left: 10px;
-}
-
-
-#hello-user {
-	position: absolute;
-	top: 0;
-	left: 45%;
-
-	@include forSmallScreens(1350) {
-
-		left: 40%;
-
-	}
-
-	@include forSmallScreens(1200) {
-
-		left: 20%;
-
-	}
-
-	@include forSmallScreens(950) {
-
-		left: 10%;
-
-	}
-
-	@include forSmallScreens(840) {
-
-		left: 5%;
-
-	}
-
-	@include forSmallScreens(780) {
-
-		left: 0;
-
-	}
-
-	@include forSmallScreens(740) {
-
-		left: 40%;
-		top: 20%;
-	}
-	
 }
 
 
@@ -366,6 +193,138 @@
 
 }
 
+
+#header-new-user {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	margin: 0;
+	margin-right: 10px;
+	padding: 0;
+	min-width: 120px;
+	@include forSmallScreens(1050) {
+
+		margin-bottom: 5px;
+
+	}
+
+	@include forSmallScreens(740) {
+
+		margin-right: 15px;		
+	}
+
+}
+
+#new-to-bitzone {
+	color: white;
+	padding: 0;
+	margin: 30px 0 0 0;
+	font-style: italic;
+	font-weight: 500;
+
+	@include forSmallScreens(1050) {
+
+		margin: 0;
+		margin-top: 10px;
+
+	}
+
+	@include forSmallScreens(740) {
+
+		margin: 3px;
+		margin-top: 5px;
+
+	}
+}
+
+#hello-user {
+	margin: 0 20px 0 40px;
+	padding: 0;
+
+	@include forSmallScreens(1060) {
+
+		
+		margin: 20px 20px 0 20px;
+
+	}
+	@include forSmallScreens(740) {
+		
+		position: absolute;
+		top: -10px;
+		right:-10px;
+
+	}
+	
+}
+
+#signup-container, #login-container {
+	padding: 0;
+	margin: 0;
+	@include fontSize(1.4);
+
+	a {
+		display: inline-block;
+		text-decoration: none;
+		color:$LightBlue;
+		font-weight: 500;
+		transition: $mainTransition;
+	}
+
+	a:hover {
+		color: $Yellow-Crazy;
+	}
+
+	@include forSmallScreens(570) {
+
+		margin-right: 20px;
+
+	}
+
+
+}
+
+.icon-signup, .icon-login {
+	color:$LightCoral;
+	
+}
+
+.icon-signup {
+	margin-left: 10px;
+}
+
+#header-cart {
+	min-width: 100px;
+	margin: 80px 10px 0 0;
+
+	@include forSmallScreens(1050) {
+
+		margin: 0;
+		align-self: center;
+		margin-top: 10px;
+		
+	}
+
+	@include forSmallScreens(900) {
+
+		margin-top: 15px;
+		
+	}
+
+	@include forSmallScreens(740) {
+		margin: 10px 0 10px 185px;
+		
+	}
+
+	@include forSmallScreens(650) {
+
+		margin-left: 110px;
+
+		& div button {
+			padding: 5px 5px;
+		}
+	}
+	
+}
 
 #header-logo {
 	max-width: 100px;
@@ -467,7 +426,6 @@
 	transition: all .1s linear;
 	letter-spacing: $mainSpacing1;
 	border: 1px solid white;
-	border-radius: 4px;
 	color: $LightBlue;
 	box-shadow: none;
 	background: transparent;
@@ -475,25 +433,27 @@
 	@include forSmallScreens(1445) {
 
 		letter-spacing: 1px;
-		padding: 0 15px;
+		padding: 0 10px;
 		@include fontSize(1.1);
 	}
 	@include forSmallScreens(1280) {
 		
-		margin-top: 10px;	
-		@include fontSize(1.1);	
+		margin-top: 10px;		
 	}
 
-	
+	@include forSmallScreens(1235) {
+		
+		padding: 0 5px;		
+	}
+
 	@include forSmallScreens(1050) {
 
 		margin-top: 20px;
-		@include fontSize(1.1);
 
 	}
 
 	@include forSmallScreens(850) {
-		padding: 0 10px;
+
 		margin-top: 20px;
 
 	}
@@ -506,7 +466,7 @@
 
 	@include forSmallScreens(650) {
 
-		margin-top: 22px;
+		margin-top: 12px;
 
 	}
 
@@ -541,34 +501,6 @@
 	
 
 }
-
-
-.header-error-effect-appear {
-	opacity: 0;
-}
-
-.header-error-effect-appear-active {
-	opacity: 1;
-	transition: opacity .5s linear;
-}
-
-#header-error-container {
-
-	background: $ErrorColor;
-	padding: 2px 10px;
-	color: white;
-	border-radius: 3px;
-	@include fontSize(1.4);
-	margin-bottom: 10px;
-}
-
-#header-error-message {
-	margin-left: 10px;
-	color:white;
-}
-
-
-
 
 
 

@@ -3,6 +3,7 @@ import { Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { CSSTransition } from 'react-transition-group';
 import { withTheme } from 'styled-components';
 import './Header.scss';
 import Logo from '../../../assets/images/LOGO.png';
@@ -11,12 +12,23 @@ import UserNav from '../../UserNav/UserNav';
 import Search from '../../Search/Search';
 import Cart from '../../Cart/Cart';
 import Avatar from '../../Avatar/Avatar';
-import { getIsLoggedUser, getUserProfile } from '../../../redux/selectors';
-import { fetchGetLoginUser } from '../../../modules/fetchFunctions/users';
+import { getIsLoggedUser, getUserProfile, getErrorMessages } from '../../../redux/selectors';
+import { fetchGetLoginUser, fetchGetLogoutUser } from '../../../modules/fetchFunctions/users';
 import { actionsUser } from '../../../redux/actions/actions';
 import home from '../../../assets/images/home.svg';
 
 class Header extends Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			error: false,
+			errorMessage: null
+		};
+
+		this.handleLogout = this.handleLogout.bind(this);
+	}
 
 	componentDidMount() {
 
@@ -42,8 +54,42 @@ class Header extends Component {
 
 	}
 
+	handleLogout() {
+
+		const { logoutUser, getErrorMessage } = this.props;
+
+		fetchGetLogoutUser().then(response => {
+
+			this.setState({
+				error: false,
+				errorMessage: null
+			});
+			
+			logoutUser();
+
+		}).catch(err => {
+			
+			this.setState({
+				error: true,
+				errorMessage: getErrorMessage('009') + err.message + getErrorMessage('010')
+			});
+
+		});
+
+	}
+	
 	render() {
 		const { isLoggedUser, userProfile } = this.props;
+		const { error, errorMessage } = this.state;
+
+		const errorIcon = (<FontAwesomeIcon icon="exclamation-triangle" size="sm" />);
+		
+		const ErrorAlert = ({ msg }) => (
+			<CSSTransition appear in timeout={300} classNames="header-error-effect">
+				<div id="header-error-container">{errorIcon}<span id="header-error-message">{msg}</span> 
+				</div>
+			</CSSTransition>
+		);
 
 		return (
 			<header id="header-container">
@@ -58,31 +104,30 @@ class Header extends Component {
 						</button>							
 					</div>
 					<div id="header-flex-col2">
+						{error ? <ErrorAlert msg={errorMessage} /> : null}
 						<MainNav />
 						<Search />
 						<UserNav />
 					</div>
 					<div id="header-flex-col3">
-						<div id="header-new-user">							
-							{
-								!isLoggedUser ? (
-									<>
-										<p id="new-to-bitzone"><Badge variant="warning">New</Badge> to BitZone? <span id="signup-container"><Link to="/signup"><FontAwesomeIcon icon="user-shield" className="icon-main-nav icon-signup" />Sign Up</Link></span></p>
-										<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link></p>
-									</>
-								) : null
-							}							
-							{ 
-								isLoggedUser ? (
-									<p id="hello-user">
-										<Avatar avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" />
-									</p>
-								) : null
-							}					
-						</div>
 						<div id="header-cart">
 							<Cart size="lg" value={isLoggedUser ? 0 : null} fgColor={this.props.theme.colorYellowDark} bgColor={this.props.theme.colorBlueBase} counterColor="white" />	
-						</div>						
+						</div>													
+						{
+							!isLoggedUser ? (
+								<div id="header-new-user">
+									<p id="new-to-bitzone"><Badge variant="warning">New</Badge> to BitZone? <span id="signup-container"><Link to="/signup"><FontAwesomeIcon icon="user-shield" className="icon-main-nav icon-signup" />Sign Up</Link></span></p>
+									<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link></p>
+								</div>
+							) : null
+						}							
+						{ 
+							isLoggedUser ? (
+								<div id="hello-user">
+									<Avatar avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorBg1} handleLogout={this.handleLogout} />
+								</div>
+							) : null
+						}										
 					</div>
 					{ 
 						!isLoggedUser ? (
@@ -97,7 +142,7 @@ class Header extends Component {
 					{ 
 						isLoggedUser ? (
 							<div id="mobil-icon-avatar">
-								<Avatar small avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" />
+								<Avatar small avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorLightBlue} handleLogout={this.handleLogout} />
 							</div>
 						) : null
 					}					
@@ -115,7 +160,8 @@ const mapStateToProps = state => {
 	return {
 		
 		isLoggedUser: getIsLoggedUser(state),
-		userProfile: getUserProfile(state)
+		userProfile: getUserProfile(state),
+		getErrorMessage: code => getErrorMessages(state)[code]
 	};
 
 };

@@ -130,8 +130,8 @@ function Login({ setUserLogin, getErrorMessage }) {
 										{({ field }) => (
 											<div className="login-form-text-div">
 												<p><label htmlFor="login-username">Email :</label></p>
-												<input {...field} autoComplete="off" type="text" className="effect-border-bottom" id="login-username" autoFocus />
-												<span className="focus-effect-border-bottom" />
+												<input {...field} autoComplete="off" type="text" className="form-effect-border-bottom" id="login-username" autoFocus />
+												<span className="focus-form-effect-border-bottom" />
 											</div>
 										)}
 									</Field>							
@@ -139,8 +139,8 @@ function Login({ setUserLogin, getErrorMessage }) {
 										{({ field }) => (
 											<div className="login-form-text-div">
 												<p><label htmlFor="login-password">Password :</label></p>
-												<input {...field} autoComplete="off" type="text" className="effect-border-bottom" id="login-password" />
-												<span className="focus-effect-border-bottom" />
+												<input {...field} autoComplete="off" type="text" className="form-effect-border-bottom" id="login-password" />
+												<span className="focus-form-effect-border-bottom" />
 											</div>
 										)}
 									</Field>								
@@ -149,7 +149,7 @@ function Login({ setUserLogin, getErrorMessage }) {
 							)}
 						</Formik>
 						<div id="login-form-footer">
-							<p><Link to="/">Forgot your password?</Link></p>
+							<p><Link to="/login/forgotpassword">Forgot your password?</Link></p>
 							<p>Don&apos;t have an account? <Link to="/signup">Sign In</Link></p>
 						</div>
 					</div>
