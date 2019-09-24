@@ -139,6 +139,9 @@
 		margin: 0;
 		@include fontSize(1.4);
 		letter-spacing: 1px;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
 		
 		label {
 			padding: 0;

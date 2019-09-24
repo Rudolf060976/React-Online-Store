@@ -74,6 +74,18 @@ const ErrorAlert = ({ msg }) => (
 	</CSSTransition>
 );
 
+const eyeIcon = (visible, handleClick) => {
+
+	if (visible) {
+		// eslint-disable-next-line
+		return (<button type="button" className="resetpsw-form-eye-button" onClick={handleClick}><FontAwesomeIcon icon="eye" size="lg" /></button>);
+		// eslint-disable-next-line
+	} else {
+		// eslint-disable-next-line
+		return (<button type="button" className="resetpsw-form-eye-button" onClick={handleClick}><FontAwesomeIcon icon="eye-slash" size="lg" /></button>);
+	}
+
+};
 
 function Signup({ getErrorMessage }) {
 
@@ -83,7 +95,32 @@ function Signup({ getErrorMessage }) {
 	const [success, setSuccess] = useState(false);
 	const [notificationTitle, setNotificationTitle] = useState(null);
 	const [notificationContent, setNotificationContent] = useState(null);
+	const [pswVisible, setPswVisible] = useState(false);
+	const [psw1Type, setPsw1Type] = useState('password');
 
+	const handleEyeClick = (e) => {
+
+		if (pswVisible) {
+
+			setPswVisible(false);
+			setPsw1Type('password');
+			
+		} else {
+
+			setPswVisible(true);
+			setPsw1Type('text');
+			
+			setTimeout(() => {
+				
+				setPswVisible(false);
+				setPsw1Type('password');
+				
+			}, 1000);
+
+
+		}
+
+	};
 			
 	return (	
 		<>
@@ -126,8 +163,8 @@ function Signup({ getErrorMessage }) {
 									<Field name="password">
 										{({ field }) => (
 											<div className="signup-form-text-div">
-												<p><label htmlFor="signup-password">Password :</label></p>
-												<input {...field} autoComplete="off" type="text" className="effect-border-bottom" id="signup-password" />
+												<p><label htmlFor="signup-password">Password :</label>{eyeIcon(pswVisible, handleEyeClick)}</p>
+												<input {...field} autoComplete="off" type={psw1Type} className="effect-border-bottom" id="signup-password" />
 												<span className="focus-effect-border-bottom" />
 											</div>
 										)}

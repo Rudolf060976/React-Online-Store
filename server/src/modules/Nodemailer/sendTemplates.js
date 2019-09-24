@@ -37,7 +37,7 @@ const sendVerificationEmail = async function (user, verifyLink) {
 const sendForgotPasswordEmail = async function (user, resetLink) {
 
 	const images = {
-		link1: config.company.logo_link
+		link1: config.app.base_url + config.company.logo_link
 	}
 
 	const data = {
@@ -67,7 +67,7 @@ const sendForgotPasswordEmail = async function (user, resetLink) {
 const sendChangedPasswordEmail = async function (user, loginLink) {
 
 	const images = {
-		link1: config.company.logo_link
+		link1: config.app.base_url + config.company.logo_link
 	}
 
 	const data = {

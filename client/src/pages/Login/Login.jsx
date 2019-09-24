@@ -85,6 +85,18 @@ const ErrorAlert = ({ msg }) => (
 	</CSSTransition>
 );
 
+const eyeIcon = (visible, handleClick) => {
+
+	if (visible) {
+		// eslint-disable-next-line
+		return (<button type="button" className="resetpsw-form-eye-button" onClick={handleClick}><FontAwesomeIcon icon="eye" size="lg" /></button>);
+		// eslint-disable-next-line
+	} else {
+		// eslint-disable-next-line
+		return (<button type="button" className="resetpsw-form-eye-button" onClick={handleClick}><FontAwesomeIcon icon="eye-slash" size="lg" /></button>);
+	}
+
+};
 
 function Login({ setUserLogin, getErrorMessage }) {
 		
@@ -94,7 +106,32 @@ function Login({ setUserLogin, getErrorMessage }) {
 	const [notificationTitle, setNotificationTitle] = useState(null);
 	const [notificationContent, setNotificationContent] = useState(null);
 	const [success, setSuccess] = useState(false);
+	const [pswVisible, setPswVisible] = useState(false);
+	const [psw1Type, setPsw1Type] = useState('password');
 
+	const handleEyeClick = (e) => {
+
+		if (pswVisible) {
+
+			setPswVisible(false);
+			setPsw1Type('password');
+			
+		} else {
+
+			setPswVisible(true);
+			setPsw1Type('text');
+			
+			setTimeout(() => {
+				
+				setPswVisible(false);
+				setPsw1Type('password');
+				
+			}, 1000);
+
+
+		}
+
+	};
 
 	return (
 		<>
@@ -138,8 +175,8 @@ function Login({ setUserLogin, getErrorMessage }) {
 									<Field name="password">
 										{({ field }) => (
 											<div className="login-form-text-div">
-												<p><label htmlFor="login-password">Password :</label></p>
-												<input {...field} autoComplete="off" type="text" className="form-effect-border-bottom" id="login-password" />
+												<p><label htmlFor="login-password">Password :</label>{eyeIcon(pswVisible, handleEyeClick)}</p>
+												<input {...field} autoComplete="off" type={psw1Type} className="form-effect-border-bottom" id="login-password" />
 												<span className="focus-form-effect-border-bottom" />
 											</div>
 										)}
