@@ -63,7 +63,6 @@ Remember to set "App_Base_Url" in the config.json file on the server to the valu
 
 ```
 cd client
-
 npm start
 ```
 Now you can open your browser and type the App URL.
