@@ -93,59 +93,63 @@ class Header extends Component {
 
 		return (
 			<header id="header-container">
-				<div id="header-flexbox">
-					<div id="header-flex-col1">							
-						<img id="header-logo" src={Logo} alt="Logo" />
-						<button type="button" id="btnDepartments">
-							<FontAwesomeIcon id="icon-departments" icon="caret-down" />
-							Departments
-						</button>
-						<button type="button" id="mobile-btnDepartments">Departments<FontAwesomeIcon id="mobile-icon-departments" icon="chevron-right" />
-						</button>							
-					</div>
-					<div id="header-flex-col2">
-						{error ? <ErrorAlert msg={errorMessage} /> : null}
-						<MainNav />
-						<Search />
-						<UserNav />
-					</div>
-					<div id="header-flex-col3">
-						<div id="header-cart">
-							<Cart size="lg" value={isLoggedUser ? 0 : null} fgColor={this.props.theme.colorYellowDark} bgColor={this.props.theme.colorBlueBase} counterColor="white" />	
-						</div>													
-						{
-							!isLoggedUser ? (
-								<div id="header-new-user">
-									<p id="new-to-bitzone"><Badge variant="warning">New</Badge> to BitZone? <span id="signup-container"><Link to="/signup"><FontAwesomeIcon icon="user-shield" className="icon-main-nav icon-signup" />Sign Up</Link></span></p>
-									<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link></p>
-								</div>
-							) : null
-						}							
-						{ 
-							isLoggedUser ? (
-								<div id="hello-user">
-									<Avatar avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorBg1} handleLogout={this.handleLogout} />
-								</div>
-							) : null
-						}										
-					</div>
+				<div id="header-logo-container">							
+					<img id="header-logo" src={Logo} alt="Logo" />
+				</div>
+				<button type="button" id="btnDepartments">
+					<FontAwesomeIcon id="icon-departments" icon="caret-down" />
+					Departments
+				</button>
+				<button type="button" id="mobile-btnDepartments">Departments<FontAwesomeIcon id="mobile-icon-departments" icon="chevron-right" />
+				</button>		
+				<div id="header-main-nav">
+					{error ? <ErrorAlert msg={errorMessage} /> : null}
+					<MainNav />
+				</div>
+				<div id="header-search">
+					<Search />
+				</div>
+				<div id="header-user-nav">
+					<UserNav />
+				</div>
+				<div id="header-cart">
+					<Cart size="lg" value={isLoggedUser ? 0 : null} fgColor={this.props.theme.colorYellowDark} bgColor={this.props.theme.colorBlueBase} counterColor="white" pxChangeLargeToSmall="680px" />	
+				</div>						
+				<div id="header-new-user">										
+					{ 
+						!isLoggedUser ? (	
+							<>						
+								<p id="new-to-bitzone"><Badge variant="warning">New</Badge> to BitZone? <span id="signup-container"><Link to="/signup"><FontAwesomeIcon icon="user-shield" className="icon-main-nav icon-signup" />Sign Up</Link></span></p>
+								<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link></p>							
+							</>
+						) : null
+					}										
+				</div>
+				<div id="header-logged-user">									
+					{ 
+						isLoggedUser ? (							
+							<Avatar avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorBg1} handleLogout={this.handleLogout} />	
+						) : null
+					}										
+				</div>
+				<div id="header-mobile-new-user">				
 					{ 
 						!isLoggedUser ? (
-							<div id="mobil-header-user">							
+							<>
 								<p id="signup-container"><Link to="/signup"><FontAwesomeIcon icon="user-shield" className="icon-main-nav icon-signup" />Sign Up</Link>
 								</p>
 								<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link>
-								</p>													
-							</div>
+								</p>						
+							</>
 						) : null
-					}					
+					}
+				</div>
+				<div id="header-mobile-logged-user">				
 					{ 
-						isLoggedUser ? (
-							<div id="mobil-icon-avatar">
-								<Avatar small avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorLightBlue} handleLogout={this.handleLogout} />
-							</div>
+						isLoggedUser ? (						
+							<Avatar small avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorLightBlue} handleLogout={this.handleLogout} />						
 						) : null
-					}					
+					}
 				</div>
 				<div id="mobil-header-icon-home">
 					<Link to="/"><img src={home} alt="" /><span>Home</span></Link>

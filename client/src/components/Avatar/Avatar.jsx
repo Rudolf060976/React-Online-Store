@@ -152,7 +152,7 @@ const StyledAvatar = styled('div')`
 				padding: 0 0 0 20px;				
 				text-decoration: none;
 				color: ${props => props.theme.colorPurpleDark};
-				font-size: 1.3rem;
+				font-size: 1.2rem;
 				font-weight: bold;
 				letter-spacing: 1px;
 				transition: color .1s linear;
@@ -170,9 +170,9 @@ const StyledAvatar = styled('div')`
 				display: inline-block;
 				width: 100%;
 				margin: 0;
-				padding: 0 0 8px 20px;
+				padding: 0 0 0 20px;
 				color: ${props => props.theme.colorPurpleDark};
-				font-size: 1.3rem;
+				font-size: 1.2rem;
 				font-weight: bold;
 				letter-spacing: 1px;
 				transition: color .1s linear;
@@ -192,11 +192,11 @@ const StyledAvatar = styled('div')`
 		}
 
 		li:first-child a {
-			padding-top: 10px;			
+			padding-top: 5px;			
 		}
 		
-		li:last-child a {
-			padding-bottom: 10px;
+		li:last-child button {
+			padding-bottom: 5px;
 		}
 		
 

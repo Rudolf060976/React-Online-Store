@@ -3,217 +3,224 @@
 #header-container {
 	width: 100%;
 	background: $Blue-Base;
-	padding: 20px 20px 5px 20px;
+	padding: 20px 20px 10px 20px;
 	font-family: Rubik;	
 	border-bottom: $Yellow-Dark solid 2px;
-	position: relative;
-	
-	@include forSmallScreens(1105) {
+	display: grid;
+	grid-template-areas:
+	 "logo  main  user  user"
+	 "logo  search user  user"
+	 "logo   usernav user user"
+	 "dep   usernav cart cart";
+	 grid-template-columns: 1fr 4fr 1fr .5fr;
+	 grid-template-rows: repeat(4, auto);
+	 grid-gap: 10px 25px;
 
-		padding-bottom: 0;
+	 @include forSmallScreens(740) {
 
-	}
-		
-	@include forSmallScreens(570) {
+		grid-gap: 10px 15px;
 
-		padding: 5px;
-		
-	}
+	 }
 
-	
-	
-}
-
-#header-flexbox {
-	width: 100%;
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-between;
-	
-	
-	@include forSmallScreens(740) {
-
-		flex-flow: row wrap;
-		justify-content: flex-start;
-				
+	@include forSmallScreens(680) {
+		grid-template-areas:
+	 "logo  main    main    main"
+	 "logo  search  search  search"
+	 "logo 	usernav usernav usernav"
+	 "dep 	user    user    cart";
+	 grid-template-columns: 1.2fr 2fr 2fr 1.5fr;
+	 grid-template-rows: repeat(4, auto);
+	 grid-gap: 5px 30px;
 	}
 
 	@include forSmallScreens(570) {
-		
-		flex-flow: column nowrap;
-		justify-content: flex-start;
-		height: max-content;
+		grid-template-areas:
+	 "logo    home    dep     dep"
+	 "main    main    user    user"
+	 "search  search  search  search"
+	 "usernav usernav usernav usernav"
+	 "... 	  ...     cart    cart";
+	 grid-template-columns: 1fr 2fr 2fr 1.5fr;
+	 grid-template-rows: repeat(5, auto);
+	 grid-gap: 5px 5px;
 	}
 
 }
 
-#header-flex-col1 {
-	margin-right: 40px;	
-	width: 15%;	
-	
-	@include forSmallScreens(870) {
-		
-		margin-right: 20px;
-	}
-
-	@include forSmallScreens(760) {
-		
-		width: 17%;
-	}
-
-	@include forSmallScreens(740) {
-		
-		
-	}
-
-	@include forSmallScreens(570) {
-
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: space-between;
-		width: 100%;
-		margin: 0;
-		align-items: center;
-	}
+#header-logo-container {
+	grid-area: logo;	
 }
 
-#header-flex-col2 {
-	width: 55%;
-	margin-right: 30px;
-	margin-bottom: 10px;
+#header-logo {
+	max-width: 100px;
+	border-radius: 20px;
+	display: block;
+	box-shadow: $Light-Header-Box-Shadow;
 
-	@include forSmallScreens(1200) {
-
-		width: 58%;
+	@include forSmallScreens(1280) {
+		border-radius: 15px;
+		max-width: 80px;		
 	}
 
 	@include forSmallScreens(1050) {
 
-		margin-right: 20px;
+		min-width: 60px;	
 	}
 
 	@include forSmallScreens(740) {
-		margin-right: 0;
-		width: 75%;
-		margin-bottom: 5px;
+		border-radius: 10px;
+		max-width: 50px;		
+	}
+}
 
+#btnDepartments {
+	grid-area: dep;
+	justify-self: start;
+	align-self: flex-end;
+	@include fontSize(1.3);
+	padding: 0 20px;
+	transition: all .1s linear;
+	letter-spacing: $mainSpacing1;
+	border: 1px solid white;
+	border-radius: 4px;
+	color: $LightBlue;
+	box-shadow: none;
+	background: transparent;
+	max-width: 200px;
+
+	&:hover {
+		background: $Blue-Clear;			
+		box-shadow: $Light-Header-Box-Shadow;
+		color: white;
+	}
+
+	&:focus {
+		outline: 0;
+	}
+
+	@include forSmallScreens(1100) {
+
+		padding: 0 10px;
+	}
+
+	@include forSmallScreens(950) {
+
+		letter-spacing: 1px;
+	}
+
+	@include forSmallScreens(840) {
+		padding: 0 5px;
+		@include fontSize(1.2);
+	}
+
+	@include forSmallScreens(740) {
+		align-self: flex-end;
+	}
+
+	@include forSmallScreens(680) {
+
+		grid-column: 1 / span 2;
+		
 	}
 
 	@include forSmallScreens(570) {
-		
-		width: 100%;
+
+		display: none;
 		
 	}
 
 }
 
-#header-flex-col3 {
-	position: relative;
-	width: 30%;
-	
-	@include forSmallScreens(1200) {
-		
-		width: 27%;
-	}
+#icon-departments {
+
+	margin-right: 10px;
 
 	@include forSmallScreens(740) {
-		width: 80%;
-		display: flex;
-		flex-flow: row nowrap;
-		justify-content: flex-start;
-		align-items: flex-start;
-		margin-left: 250px;
+		margin-right: 5px;
+	}
+}
 
+#header-main-nav {
+	grid-area: main;
+	width: 100%;
+		
+}
+
+#header-search {
+	grid-area: search;
+	width: 100%;
+	
+}
+
+#header-user-nav {
+	grid-area: usernav;
+	width: 100%;
+}
+
+#header-cart {
+	grid-area: cart;
+	justify-self: center;
+	align-self: flex-start;
+	max-width: 200px;
+
+	@include forSmallScreens(680) {
+		align-self: flex-end;
+		grid-column: 3 / span 2;
+		justify-self: flex-end;
+	}	
+	@include forSmallScreens(570) {
+		justify-self: end;
+	}	
+}
+
+#header-new-user {
+	grid-area: user;
+	justify-self: center;
+	align-self: flex-start;
+	grid-row: 1 / span 4;
+	z-index: 10;
+	
+	@include forSmallScreens(680) {
+		grid-row: auto;
+		grid-area: user;
+		grid-column: 2 / span 2;
 	}
 
 	@include forSmallScreens(570) {
 		display: none;
 	}
-
 }
 
-#header-cart {
-	position: absolute;
-	top: 55%;
-	left: 10%;
-
-	@include forSmallScreens(1200) {
-
-		left: 45%;
-		top: 60%;
-		
+#header-logged-user {
+	grid-area: user;
+	justify-self: center;
+	align-self: flex-start;
+	grid-row: 1 / span 4;
+	z-index: 10;
+	
+	@include forSmallScreens(680) {
+		grid-row: 1 / span 3;
+		grid-column: 3 / span 2;
+		justify-self: end;
+		align-self: flex-start;
 	}
 
-	@include forSmallScreens(1100) {
-
-		left: 40%;
-		
-		
+	@include forSmallScreens(570) {
+		display: none;
 	}
+}
 
-	@include forSmallScreens(840) {
-		
-		left: 35%;
-		
-	}
-
-	@include forSmallScreens(780) {
-		
-		left: 30%;
-		
-	}
-
-	@include forSmallScreens(740) {
-
-		position: static;
-		margin-top: 10px;
-		margin-bottom: 10px;
-	}
+.icon-signup, .icon-login {
+	color:$LightCoral;
 	
 }
 
-#header-new-user {
-	position: absolute;
-	top: 0;
-	left: 40%;
-
-	@include forSmallScreens(1200) {
-
-		left: 20%;
-
-	}
-
-	@include forSmallScreens(1100) {
-
-		left: 10%;
-	
-	}
-
-	@include forSmallScreens(870) {
-
-		left: 0;
-	
-	}
-
-	@include forSmallScreens(740) {
-
-		position: static;
-		margin-left: 40px;
-	}
-
+.icon-signup {
+	margin-left: 10px;
 }
-
-#new-to-bitzone {
-	color: white;	
-	font-style: italic;
-	font-weight: 500;
-
-	
-}
-
-
 
 #signup-container, #login-container {
+
 	padding: 0;
 	margin: 0;
 	@include fontSize(1.4);
@@ -230,100 +237,72 @@
 		color: $Yellow-Crazy;
 	}
 
-	@include forSmallScreens(570) {
-
-		margin-right: 20px;
-
-	}
-
-
-}
-
-.icon-signup, .icon-login {
-	color:$LightCoral;
-	
-}
-
-.icon-signup {
-	margin-left: 10px;
-}
-
-
-#hello-user {
-	position: absolute;
-	top: 0;
-	left: 45%;
-
-	@include forSmallScreens(1350) {
-
-		left: 40%;
-
-	}
-
-	@include forSmallScreens(1200) {
-
-		left: 20%;
-
-	}
-
-	@include forSmallScreens(950) {
-
-		left: 10%;
-
-	}
-
-	@include forSmallScreens(840) {
-
-		left: 5%;
-
-	}
-
-	@include forSmallScreens(780) {
-
-		left: 0;
-
-	}
-
 	@include forSmallScreens(740) {
-
-		left: 40%;
-		top: 20%;
-	}
 	
-}
-
-
-#mobil-header-user {
-
-	display: none;
+		@include fontSize(1.3);
+	}
 
 	@include forSmallScreens(570) {
-
-		position: absolute;
-		top: 10px;
-		left: 80px;
-		display: flex;
-		flex-flow: row nowrap;
-		align-items: center;
 		
-		p {
-			@include fontSize(1.8);
-		}
+		@include fontSize(1.6);
 	}
 
 }
 
-#mobil-icon-avatar {
+#login-container {
+	@include forSmallScreens(570) {
+		
+		margin-left: 15px;
+		margin-right: 5px;
+	}
+}
+
+#new-to-bitzone {
+	color: white;	
+	font-style: italic;
+	font-weight: 500;
+	
+	@include forSmallScreens(740) {
+	
+		@include fontSize(1.3);
+	}
+}
+
+
+
+//  ******** MOBILE RULES *******
+
+#mobile-btnDepartments {
 
 	display: none;
 
 	@include forSmallScreens(570) {
 
-		display: block;
-		position: absolute;
-		top: 55px;
-		right: 40px;
-		@include fontSize(1.8);
+		display: block;	
+		grid-area: dep;	
+		align-self: start;
+		justify-self: end;	
+		margin: 0;
+		height: 25px;
+		padding: 0 8px;	
+		background: transparent;
+		border: 1px solid white;
+		color: $LightBlue;
+		box-shadow: none;		
+		@include fontSize(1.6);
+
+		&:focus {
+			outline: 0;
+		}
+
+		&:hover {
+		
+			background: $Blue-Clear;			
+			box-shadow: $Light-Header-Box-Shadow;
+			color: white;
+		
+		}
+
 	}
 
 }
@@ -334,11 +313,11 @@
 
 	@include forSmallScreens(570) {
 
-		display: block;		
-		position: absolute;
-		top: 35px;
-		left: 90px;
-		@include fontSize(1.8);	
+		display: block;	
+		grid-area: home;
+		justify-self: end;
+		align-self: start;		
+		@include fontSize(1.6);	
 		transition: all .3s linear;
 		border-radius: 5px;	
 		padding: 5px 10px;	
@@ -366,210 +345,35 @@
 
 }
 
-
-#header-logo {
-	max-width: 100px;
-	border-radius: 20px;
-	display: block;
-	margin-bottom: 25px;
-	box-shadow: $Light-Header-Box-Shadow;
-	
-	@include forSmallScreens(1600) {
-	
-		margin-bottom: 25px;
-	}
-
-	@include forSmallScreens(1450) {
-	
-		margin-bottom: 20px;
-	}
-
-	@include forSmallScreens(1280) {
-		border-radius: 15px;
-		max-width: 80px;
-		margin-bottom: 25px;
-	}
-
-	@include forSmallScreens(1150) {
-	
-		margin-bottom: 25px;
-	}
-
-	@include forSmallScreens(1050) {
-
-		min-width: 60px;
-		margin-bottom: 10px;
-	}
-
-	@include forSmallScreens(950) {
-
-		margin-bottom: 7px;
-	}
-
-	@include forSmallScreens(740) {
-		border-radius: 10px;
-		max-width: 50px;
-		
-	}
-
-	@include forSmallScreens(650) {
-	
-		margin-bottom: 0;
-		
-	}
-
-	@include forSmallScreens(570) {
-
-		max-width: 30px;
-		margin: 0;
-	}
-
-
-}
-
-#mobile-btnDepartments {
-
+#header-mobile-new-user {
 	display: none;
 
 	@include forSmallScreens(570) {
-		display: block;
-		position: static;		
-		margin: 0;
-		height: 25px;
-		align-self: flex-start;
-		padding: 0 8px;	
-		background: transparent;
-		border: 1px solid white;
-		color: $LightBlue;
-		box-shadow: none;		
-		@include fontSize(1.8);
-
-		&:focus {
-			outline: 0;
-		}
-
-		&:hover {
-		
-			background: $Blue-Clear;			
-			box-shadow: $Light-Header-Box-Shadow;
-			color: white;
-		
-		}
-
+		grid-area: user;
+		display: flex;		
+		flex-flow: row nowrap;		
+		justify-self: end;
+		align-self: center;
 	}
 
 }
 
-#btnDepartments {
-	
-	@include fontSize(1.3);
-	padding: 0 20px;
-	transition: all .1s linear;
-	letter-spacing: $mainSpacing1;
-	border: 1px solid white;
-	border-radius: 4px;
-	color: $LightBlue;
-	box-shadow: none;
-	background: transparent;
-	
-	@include forSmallScreens(1445) {
-
-		letter-spacing: 1px;
-		padding: 0 15px;
-		@include fontSize(1.1);
-	}
-	@include forSmallScreens(1280) {
-		
-		margin-top: 10px;	
-		@include fontSize(1.1);	
-	}
-
-	
-	@include forSmallScreens(1050) {
-
-		margin-top: 20px;
-		@include fontSize(1.1);
-
-	}
-
-	@include forSmallScreens(850) {
-		padding: 0 10px;
-		margin-top: 20px;
-
-	}
-
-	@include forSmallScreens(740) {
-		position: absolute;
-		left: 20px;
-		top: 130px;
-	}
-
-	@include forSmallScreens(650) {
-
-		margin-top: 22px;
-
-	}
+#header-mobile-logged-user {
+	display: none;
 
 	@include forSmallScreens(570) {
-
-		display: none;
-		
+		grid-area: user;
+		display: flex;		
+		flex-flow: row nowrap;		
+		grid-row: 2 / span 3;
+		z-index: 50;
+		justify-self: flex-end;
 	}
-
-	&:hover {
-		background: $Blue-Clear;			
-		box-shadow: $Light-Header-Box-Shadow;
-		color: white;
-	}
-
-	&:focus {
-		outline: 0;
-	}
-
-}
-
-#icon-departments {
-
-	margin-right: 10px;
-	
 
 }
 
 #mobile-icon-departments {
 
-	margin-left: 10px;
-	
+	margin-left: 5px;	
 
 }
-
-
-.header-error-effect-appear {
-	opacity: 0;
-}
-
-.header-error-effect-appear-active {
-	opacity: 1;
-	transition: opacity .5s linear;
-}
-
-#header-error-container {
-
-	background: $ErrorColor;
-	padding: 2px 10px;
-	color: white;
-	border-radius: 3px;
-	@include fontSize(1.4);
-	margin-bottom: 10px;
-}
-
-#header-error-message {
-	margin-left: 10px;
-	color:white;
-}
-
-
-
-
-
-
-

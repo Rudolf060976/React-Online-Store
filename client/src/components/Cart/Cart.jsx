@@ -5,12 +5,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styled from 'styled-components';
 
 const StyledCart = styled.div`
-	box-shadow: 1px 1px 5px whitesmoke;
+	box-shadow: 1px 1px 8px whitesmoke;
 	border-radius: 5px;	
-	transition: all 0.3s linear;	
+	transition: all 0.1s linear;	
 	
 	&:focus {
 		outline: 0;
+	}
+
+	&:active {
+		box-shadow: none;
 	}
 `;
 
@@ -21,9 +25,9 @@ const Button = styled.button.attrs(props => ({
 		case 'lg':
 			return '1.7rem';
 		case 'sm':
-			return '1.4rem';
+			return '1.6rem';
 		default:
-			return '1.4rem';
+			return '1.6rem';
 		}			
 	},
 	counterFontSize: () => {
@@ -31,9 +35,9 @@ const Button = styled.button.attrs(props => ({
 		case 'lg':
 			return '1.3rem';
 		case 'sm':
-			return '1.2rem';
+			return '1.4rem';
 		default:
-			return '1.2rem';
+			return '1.4rem';
 		}			
 	},
 	counterMargin: () => {
@@ -49,11 +53,11 @@ const Button = styled.button.attrs(props => ({
 	padding: () => {
 		switch (props.size) {
 		case 'lg':
-			return '5px 12px';
+			return '5px 20px';
 		case 'sm':
-			return '2px 5px';
+			return '4px 10px';
 		default:
-			return '2px 5px';
+			return '4px 10px';
 		}			
 	},
 	defaultFgColor: 'blue',
@@ -67,6 +71,13 @@ const Button = styled.button.attrs(props => ({
 	transition: all 0.3s linear;
 	font-size: ${props => props.fontSz()};
 	padding: ${props => props.padding()};
+
+	@media (max-width: ${props => props.pxChange}) {
+		
+		padding: 4px 10px;
+		font-size: 1.6rem;
+		
+	}
 	
 	&:hover {
 		border: ${props => props.bgColor || 'white'} solid 1px;
@@ -87,7 +98,13 @@ const Button = styled.button.attrs(props => ({
 		padding: 0;
 		color: ${props => props.counterColor || props.defaultCounterColor};
 		font-size: ${props => props.counterFontSize()};	
-		transition: all 0.3s linear;	
+		transition: all 0.3s linear;
+		
+		@media (max-width: ${props => props.pxChange}) {
+				
+			font-size: 1.3rem;
+			margin: 0 0 0 1px;
+		}
 	}
 `;
 
@@ -100,12 +117,13 @@ const Cart = function (props) {
 		size,		
 		value,
 		counterColor,
+		pxChangeLargeToSmall
 	} = props;
 	
 	return (
 		<StyledCart size={size}>
 			<Link to="/">
-				<Button size={size} fgColor={fgColor} bgColor={bgColor} counterColor={counterColor}>
+				<Button size={size} fgColor={fgColor} bgColor={bgColor} counterColor={counterColor} pxChange={pxChangeLargeToSmall}>
 					<FontAwesomeIcon icon="shopping-cart" className="icon-main-nav icon-cart" />Cart
 					{ value !== null ? <Badge variant="outline-warning" id="cart-counter">{`( ${value} )`}</Badge> : ''}
 				</Button>
