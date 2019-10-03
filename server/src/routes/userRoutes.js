@@ -15,8 +15,6 @@ const { sendVerificationEmail, sendForgotPasswordEmail, sendChangedPasswordEmail
 const router = express.Router();
 
 
-// ************* REGISTER USER ****************
-
 router.use((req, res, next) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
 
 	const origin = req.get('Origin');
@@ -36,6 +34,7 @@ router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fet
 	res.status(200).send();
 });
 
+// ************* REGISTER USER ****************
 
 router.post('/register', (req, res) => {
 

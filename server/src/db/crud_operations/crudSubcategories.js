@@ -4,6 +4,8 @@ const { ObjectID } = require('mongodb');
 
 const { mongoose } = require('../mongoose');
 
+const MongoGridFsStorage = require('mongo-gridfs-storage'); /* WE USE THIS MODULE JUST FOR READ FILES FROM THE GRIDFSBUCKET */
+
 const Subcategory = require('../models/Subcategory');
 
 const Category = require('../models/Category');
@@ -265,10 +267,400 @@ const getSubcategories = categoryId => {
 };
 
 
+const addSubcategoryImage = (subcategoryId, imageId ) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(subcategoryId)) {
+				
+				throw createError(400, 'INVALID ID');
+				
+			} 
+
+			Subcategory.findById(subcategoryId).then(res => {
+
+
+				if (!res) {
+					
+					throw createError(404, 'ID NOT FOUND');
+					
+				}
+
+				res.images.push(imageId);
+
+				return res.save();
+
+
+			}).then(res => {
+
+				resolve(res);
+
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+		
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const getSubcategoryImages = (subcategoryId) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(subcategoryId)) {
+				
+				throw createError(400, 'INVALID ID');
+					
+			} 
+
+
+			Subcategory.findById(subcategoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ID NOT FOUND');
+					
+				}
+
+				return resolve(res.images);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const deleteSubcategoryImage = (subcategoryId, imageId) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			Subcategory.findById(subcategoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ITEM ID NOT FOUND');
+					
+				}
+				
+				const img = res.images.find(item => item.toString() === imageId.toString())
+				
+				if(!img) {
+
+					throw createError(404, 'IMAGE ID NOT FOUND');
+
+				}
+
+				const images = res.images.filter(item => item.toString() !== imageId.toString());
+				
+				res.images = images;
+
+				return res.save();
+
+			}).then(res => {
+				
+				resolve(res);					
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+		
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const deleteAllSubcategoryImages = (subcategoryId) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			Subcategory.findById(subcategoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ITEM ID NOT FOUND');
+					
+				}				
+				
+				res.images = [];
+
+				return res.save();
+
+			}).then(res => {				
+
+				resolve(res);					
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+		
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const updateSubcategoryImages = (subcategoryId, imagesArray) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+			
+			Subcategory.findById(subcategoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ITEM ID NOT FOUND');
+					
+				}	
+
+				res.images = imagesArray;
+
+				return res.save();
+
+			}).then(res => {
+
+				resolve(res);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+	});
+
+};
+
+
+const getImageFromStore = imageId => {  // IMPORTANT  argument: imageId is STRING AND NOT ObjectID(String) SO IT WILL BE CONVERTED TO ObjectdID LATER
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(imageId)) {
+				
+				throw createError(400, 'INVALID ID');
+						
+			} 
+
+			let gfs = new MongoGridFsStorage(mongoose.connection.db, { bucketName: 'images' });
+
+			const filter = {
+				_id: ObjectID.createFromHexString(imageId)
+			};
+			
+			gfs.read(filter).then(fileBuffer => {
+
+				resolve(fileBuffer);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
+const deleteImageFromStore = imageId => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(imageId)) {
+				
+				throw createError(400, 'INVALID ID');
+						
+			} 
+
+			let gfs = new MongoGridFsStorage(mongoose.connection.db, { bucketName: 'images' });
+
+			const filter = {
+				id: ObjectID.createFromHexString(imageId)
+			};
+			
+			gfs.delete(filter).then(() => {
+
+				resolve();
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
+
+const getSubcategoryById = subcategoryId => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(subcategoryId)) {
+				
+				throw createError(400, 'INVALID ID');
+					
+			}
+						
+
+			Subcategory.findById(subcategoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ID NOT FOUND');
+					
+				}
+
+				return resolve(res);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
 module.exports = {
 	addSubcategory,
 	deleteSubcategory,
 	updateSubcategory,
-	getSubcategories
+	getSubcategories,
+	getSubcategoryById,
+	addSubcategoryImage,
+	getSubcategoryImages,
+	deleteSubcategoryImage,
+	deleteAllSubcategoryImages,
+	updateSubcategoryImages,
+	getImageFromStore,
+	deleteImageFromStore
 };
 

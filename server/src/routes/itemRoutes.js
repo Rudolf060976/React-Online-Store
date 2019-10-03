@@ -4,7 +4,7 @@ const paginate = require('express-paginate');
 
 const createError = require('http-errors');
 
-const { uploadImageFiles } = require('../middleware/multerImageFiles');
+const { uploadImageFiles } = require('../middleware/multerItemImageFiles');
 
 const ObjectID = require('mongodb').ObjectID;
 
@@ -15,6 +15,27 @@ const crudItems = require('../db/crud_operations/crudItems');
 const secureAdmin = require('../middleware/secureAdmin');
 
 const router = express.Router();
+
+
+router.use((req, res, next) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+
+	const origin = req.get('Origin');
+	res.set('Access-Control-Allow-Origin', origin);
+	res.set('Access-Control-Allow-Credentials', 'true');
+
+	next();
+});
+
+router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+		
+	res.set('Access-Control-Allow-Methods','POST, GET, PUT, PATCH, DEL');
+	res.set('Access-Control-Allow-Credentials', 'true');
+	res.set('Access-Control-Allow-Headers','Content-Type');	
+	res.set('Access-Control-Max-Age', 86400);
+		
+	res.status(200).send();
+});
+
 
 	
 router.get('/:itemId', (req, res) => {

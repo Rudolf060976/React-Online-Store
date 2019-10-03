@@ -28,7 +28,8 @@ const subcategorySchema = new mongoose.Schema({
 		type: String,
 		trim: true,			//REQUIRED
 		maxlength: 200
-	}
+	},
+	images: [types.ObjectId]
 });
 
 const Subcategory = mongoose.model('Subcategory', subcategorySchema);

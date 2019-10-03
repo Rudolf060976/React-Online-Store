@@ -23,7 +23,8 @@ const categorySchema = new mongoose.Schema({
 		type: String,
 		trim: true,			//REQUIRED
 		maxlength: 200
-	}
+	},
+	images: [types.ObjectId]
 });
 
 const Category = mongoose.model('Category', categorySchema);

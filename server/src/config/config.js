@@ -29,6 +29,8 @@ nconf.defaults({
 	Company_Logo_Link: "https://www.designevo.com/res/templates/thumb_small/store-and-black-shopping-trolley.png",
 	App_Base_Url: "http://localhost:3000",
 	Items_Image_Max_Size_MBytes: 16,
+	Categories_Images_Max_Count: 8,
+	Subcategories_Images_Max_Count: 8,
 	Items_Images_Max_Count: 8,
 	User_Admin_Username: "rafaelurbinan@hotmail.com"
 
@@ -81,7 +83,9 @@ module.exports = {
 		base_url: nconf.get('App_Base_Url'),
 		items: {
 			ITEMS_IMAGE_MAX_SIZE_MBYTES: nconf.get('Items_Image_Max_Size_MBytes'),
-			ITEMS_IMAGES_MAX_COUNT: nconf.get('Items_Images_Max_Count')
+			ITEMS_IMAGES_MAX_COUNT: nconf.get('Items_Images_Max_Count'),
+			CATEGORIES_IMAGES_MAX_COUNT: nconf.get('Categories_Images_Max_Count'),
+			SUBCATEGORIES_IMAGES_MAX_COUNT: nconf.get('Subcategories_Images_Max_Count')
 		}
 	},
 	
