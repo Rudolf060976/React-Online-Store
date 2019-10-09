@@ -95,7 +95,7 @@ const deleteSubcategory = subcategoryId => {
 				
 				throw createError(400, 'INVALID ID');
 					
-			}						
+			}
 
 			Subcategory.findByIdAndDelete(subcategoryId).then(res => {
 
@@ -103,6 +103,18 @@ const deleteSubcategory = subcategoryId => {
 					
 					throw createError(404, 'ID NOT FOUND');
 					
+				}
+				
+				const images = res.images;
+
+				if(images.length > 0) {
+
+					images.forEach(id => {
+
+						deleteImageFromStore(id.toString());
+
+					});
+
 				}
 
 				return resolve(res);
@@ -130,6 +142,67 @@ const deleteSubcategory = subcategoryId => {
 
 
 }
+
+
+const deleteAllSubCategories = () => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+			
+			Subcategory.find({}).then(all => {
+							
+				const docs = all;
+
+				if(docs.length > 0) {
+
+					docs.forEach(doc => {
+
+						const images = doc.images;
+
+						if(images.length > 0) {
+
+							images.forEach(id => {
+		
+								deleteImageFromStore(id.toString());
+		
+							});
+		
+						}
+
+					});
+				}
+				
+				return Subcategory.deleteMany({});
+
+			}).then(() => {
+
+			
+				resolve();
+
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
 
 const updateSubcategory = (subcategoryId, filter) => {
 
@@ -393,6 +466,8 @@ const deleteSubcategoryImage = (subcategoryId, imageId) => {
 
 				}
 
+				deleteImageFromStore(imageId.toString());
+
 				const images = res.images.filter(item => item.toString() !== imageId.toString());
 				
 				res.images = images;
@@ -437,7 +512,17 @@ const deleteAllSubcategoryImages = (subcategoryId) => {
 					
 					throw createError(404, 'ITEM ID NOT FOUND');
 					
-				}				
+				}
+				
+				if(res.images.length > 0 ) {
+
+					res.images.forEach(id => {
+
+						deleteImageFromStore(id.toString());
+
+					});
+
+				}
 				
 				res.images = [];
 
@@ -652,6 +737,7 @@ const getSubcategoryById = subcategoryId => {
 module.exports = {
 	addSubcategory,
 	deleteSubcategory,
+	deleteAllSubCategories,
 	updateSubcategory,
 	getSubcategories,
 	getSubcategoryById,

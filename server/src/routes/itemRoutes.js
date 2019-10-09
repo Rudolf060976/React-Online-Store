@@ -36,7 +36,6 @@ router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fet
 	res.status(200).send();
 });
 
-
 	
 router.get('/:itemId', (req, res) => {
 	// REQUEST an item Document by Id
@@ -482,16 +481,9 @@ router.delete('/:itemId/images/one/:imageId', secureAdmin(), (req, res) => {
 
 		crudItems.getItemById(itemId).then(item => {
 
+			itemObj = item;
 			
 			return crudItems.deleteItemImage(itemId, imageId);
-
-		
-		}).then( item => {
-
-			itemObj = item;
-
-			return crudItems.deleteImageFromStore(imageId);
-
 			
 		}).then(() =>{
 
@@ -540,52 +532,21 @@ router.delete('/:itemId/images/all', secureAdmin(), (req, res) => {
 	
 		const { itemId } = req.params;
 
-		let itemImages = null;
 	
 		crudItems.getItemById(itemId).then(item => {
-	
-			itemImages = item.images.slice(0);
+				
 
 			return crudItems.deleteAllItemImages(itemId);
 		
-		}).then(item => {
+		}).then(() => {
 			
-			(async () => {
-
-				try {
-					
-					for(let i = 0; i < itemImages.length; i ++) {
-				
-						await crudItems.deleteImageFromStore(itemImages[i].toString());
-					}	
-					
-					res.status(200).json({
-						error: null,
-						ok: true,
-						status: 200,
-						message: 'ALL IMAGES DELETED SUCCESSFULLY',
-						data: null
-					});	
-
-				} catch (err) {
-					
-					const error = {
-						...err,
-						status: 500,
-						message: err.message
-					};
-
-					res.status(error.status).json({
-						error,
-						ok: false,
-						status: error.status,
-						message: error.message,
-						data: null
-					});
-
-				}			
-
-			})();
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'ALL IMAGES DELETED SUCCESSFULLY',
+				data: null
+			});	
 			
 	
 		}).catch( err => {

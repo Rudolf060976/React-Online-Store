@@ -602,17 +602,10 @@ router.delete('/:categoryId/images/one/:imageId', secureAdmin(), (req, res) => {
 	
 		crudCategories.getCategoryById(categoryId).then(item => {
 		
-					
-			return crudCategories.deleteCategoryImage(categoryId, imageId);
-		
-				
-		}).then( item => {
-		
 			itemObj = item;
-		
-			return crudCategories.deleteImageFromStore(imageId);
-		
 					
+			return crudCategories.deleteCategoryImage(categoryId, imageId);				
+
 		}).then(() =>{
 		
 			res.status(200).json({
@@ -659,55 +652,22 @@ router.delete('/:categoryId/images/all', secureAdmin(), (req, res) => {
 	if(req.params.categoryId) {
 	
 		const { categoryId } = req.params;
-
-		let itemImages = null;
-	
+		
 		crudCategories.getCategoryById(categoryId).then(item => {
 	
-			itemImages = item.images.slice(0);
-
 			return crudCategories.deleteAllCategoryImages(categoryId);
 		
-		}).then(item => {
+		}).then(() => {
 			
-			(async () => {
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'ALL IMAGES DELETED SUCCESSFULLY',
+				data: null
+			});	
 
-				try {
-					
-					for(let i = 0; i < itemImages.length; i ++) {
-				
-						await crudCategories.deleteImageFromStore(itemImages[i].toString());
-					}	
-					
-					res.status(200).json({
-						error: null,
-						ok: true,
-						status: 200,
-						message: 'ALL IMAGES DELETED SUCCESSFULLY',
-						data: null
-					});	
-
-				} catch (err) {
-					
-					const error = {
-						...err,
-						status: 500,
-						message: err.message
-					};
-
-					res.status(error.status).json({
-						error,
-						ok: false,
-						status: error.status,
-						message: error.message,
-						data: null
-					});
-
-				}			
-
-			})();
-			
-	
+		
 		}).catch( err => {
 	
 			res.status(err.status).json({
@@ -900,16 +860,9 @@ router.delete('/sub/:subcategoryId/images/one/:imageId', secureAdmin(), (req, re
 	
 		crudSubcategories.getSubcategoryById(subcategoryId).then(item => {
 		
-					
-			return crudSubcategories.deleteSubcategoryImage(subcategoryId, imageId);
-		
-				
-		}).then( item => {
-		
 			itemObj = item;
-		
-			return crudSubcategories.deleteImageFromStore(imageId);
-		
+					
+			return crudSubcategories.deleteSubcategoryImage(subcategoryId, imageId);			
 					
 		}).then(() =>{
 		
@@ -957,53 +910,21 @@ router.delete('/sub/:subcategoryId/images/all', secureAdmin(), (req, res) => {
 	if(req.params.subcategoryId) {
 	
 		const { subcategoryId } = req.params;
-
-		let itemImages = null;
+		
 	
 		crudSubcategories.getSubcategoryById(subcategoryId).then(item => {
 	
-			itemImages = item.images.slice(0);
-
 			return crudSubcategories.deleteAllSubcategoryImages(subcategoryId);
 		
-		}).then(item => {
+		}).then(() => {
 			
-			(async () => {
-
-				try {
-					
-					for(let i = 0; i < itemImages.length; i ++) {
-				
-						await crudSubcategories.deleteImageFromStore(itemImages[i].toString());
-					}	
-					
-					res.status(200).json({
-						error: null,
-						ok: true,
-						status: 200,
-						message: 'ALL IMAGES DELETED SUCCESSFULLY',
-						data: null
-					});	
-
-				} catch (err) {
-					
-					const error = {
-						...err,
-						status: 500,
-						message: err.message
-					};
-
-					res.status(error.status).json({
-						error,
-						ok: false,
-						status: error.status,
-						message: error.message,
-						data: null
-					});
-
-				}			
-
-			})();
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'ALL IMAGES DELETED SUCCESSFULLY',
+				data: null
+			});	
 			
 	
 		}).catch( err => {

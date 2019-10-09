@@ -10,6 +10,8 @@ const Category = require('../models/Category');
 
 const Subcategory = require('../models/Subcategory');
 
+const crudSubcategories = require('./crudSubcategories');
+
 const db = mongoose.connection;
 
 const addCategory = (code, name, description) => {
@@ -90,11 +92,88 @@ const deleteCategory = categoryId => {
 
 				deletedDoc = res;
 
-				return Subcategory.deleteMany({ category: ObjectID.createFromHexString(categoryId)});
+				return Subcategory.find({ category: ObjectID.createFromHexString(categoryId)});
+
+
+			}).then(docs =>{
+			
+
+				if(docs.length > 0) {
+
+					docs.forEach(doc => {
+
+						const subcat = doc;
+
+						crudSubcategories.deleteSubcategory(subcat._id);
+
+					})
+				}			
+		
+				return resolve(deletedDoc);
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const deleteAllCategories = () => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+						
+			Category.find({}).then(all => {
+
+				const docs = all;
+
+				if(docs.length > 0) {
+
+					docs.forEach(doc => {
+
+						const images = doc.images;
+
+						if(images.length > 0) {
+
+							images.forEach(id => {
+								deleteImageFromStore(id.toString());
+							})
+
+						}
+					})
+				}
+
+
+				return Category.deleteMany({});
 
 			}).then(() => {
 
-				return resolve(deletedDoc);
+							
+				return crudSubcategories.deleteAllSubCategories;
+
+
+			}).then(() =>{
+					
+				return resolve();
 
 			}).catch(err => {
 				
@@ -320,7 +399,6 @@ const updateCategory = (categoryId, filter) => {
 	});
 
 
-
 };
 
 
@@ -448,6 +526,8 @@ const deleteCategoryImage = (categoryId, imageId) => {
 
 				}
 
+				deleteImageFromStore(imageId.toString());
+
 				const images = res.images.filter(item => item.toString() !== imageId.toString());
 				
 				res.images = images;
@@ -493,6 +573,16 @@ const deleteAllCategoryImages = (categoryId) => {
 					
 				}				
 				
+				if(res.images.length > 0 ) {
+
+					res.images.forEach(id => {
+
+						deleteImageFromStore(id.toString());
+
+					});
+
+				}
+
 				res.images = [];
 
 				return res.save();
@@ -656,6 +746,7 @@ const deleteImageFromStore = imageId => {
 module.exports = {
 	addCategory,
 	deleteCategory,
+	deleteAllCategories,
 	getCategoryById,
 	getCategoryByName,
 	getAllCategories,
