@@ -9,7 +9,7 @@
     "test": "export NODE_ENV = test || SET \"NODE_ENV = test\" && jest --detectOpenHandles",
     "test-watch": "nodemon --exec \"npm test\"",
 	"test-email": "node src/modules/Nodemailer/playground.js",
-	"load-data": "node src/db/test_data/loadTestData.js"
+	"data-loading": "node src/db/test_data/loadTestData.js"
   },
   "keywords": [],
   "author": "",
