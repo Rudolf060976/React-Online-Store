@@ -35,7 +35,18 @@ npm install
 
 It's important to adjust the API setting options according to your business, so you have to edit the config.json file located in the /server folder.
 
-Important: The setting "App_Base_Url" must be set to "http://localhost:4000" if you are running the client in development mode, but in production mode it must be set to the app URL ("http://localhost:3000" if you build the client and open in the local browser). That setting is used by the server to build the links atached on emails sent and other functionalities.
+Important: The setting "App_Base_Url" must be set to "http://localhost:4000" if you are running the client in development mode, but in production mode it must be set back to the app URL (wich can be "http://localhost:3000" if you build the client and open in the local browser, or the deploy URL where the App is located). That setting is used by the server to build the links atached on emails sent and other functionalities.
+
+### Example Data Loading:
+
+You need some fictional data loaded in the Mongo Database so that you can run the App. This data includes some Items, Departments, Sub-Departments and Images Files. The project includes a script to automatically load this data.
+
+Inside the server folder:
+
+```
+cd server
+npm run data-loading
+```
 
 ## Running
 
@@ -59,7 +70,7 @@ npm run client
 
 ## Build (Client)
 
-Remember to set "App_Base_Url" in the config.json file on the server to the value "http://localhost:3000" or the app URL, before you run the client.
+Remember to set "App_Base_Url" in the config.json file on the server to the value "http://localhost:3000" or the App URL, before you run the client.
 
 ```
 cd client
