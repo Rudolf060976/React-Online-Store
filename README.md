@@ -67,6 +67,7 @@ Remember to set "App_Base_Url" in the config.json file on the server to the valu
 cd client
 npm run client
 ```
+The App will open automatically in a new web browser window.
 
 ## Build (Client)
 
@@ -76,7 +77,7 @@ Remember to set "App_Base_Url" in the config.json file on the server to the valu
 cd client
 npm start
 ```
-Now you can open your browser and type the App URL.
+Now you have to open a new browser window and type the App URL.
 
 
 
