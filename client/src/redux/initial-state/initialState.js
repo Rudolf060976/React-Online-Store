@@ -4,13 +4,15 @@ import usersData from './usersData';
 import banners from './banners';
 import videos from './videos';
 import errorMessages from './errorMessages';
+import iuState from './iuState';
 
 
 const initialState = {
 	loggedUser,
 	usersData,
 	itemsData,
-	errorMessages
+	errorMessages,
+	iuState
 };
 
 export default initialState;

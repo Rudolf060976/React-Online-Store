@@ -22,6 +22,14 @@ const actionsUser = createActions({
 
 });
 
+const actionsIUstate = createActions({
+
+	DEPARTMENTS: {
+		OPEN: val => val,
+		CLOSE: val => val
+	}
+});
+
 const actionsItemsData = createActions({
 
 	CATEGORIES: {
@@ -134,4 +142,9 @@ const actionsUserData = createActions({
 })
 
 
-export { actionsUser, actionsItemsData, actionsUserData };
+export {
+	actionsUser,
+	actionsItemsData,
+	actionsUserData,
+	actionsIUstate
+};

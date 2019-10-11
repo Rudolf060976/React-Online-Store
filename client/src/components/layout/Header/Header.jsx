@@ -12,9 +12,9 @@ import UserNav from '../../UserNav/UserNav';
 import Search from '../../Search/Search';
 import Cart from '../../Cart/Cart';
 import Avatar from '../../Avatar/Avatar';
-import { getIsLoggedUser, getUserProfile, getErrorMessages } from '../../../redux/selectors';
+import { getIsLoggedUser, getUserProfile, getErrorMessages, getIsDepartmentOpen } from '../../../redux/selectors';
 import { fetchGetLoginUser, fetchGetLogoutUser } from '../../../modules/fetchFunctions/users';
-import { actionsUser } from '../../../redux/actions/actions';
+import { actionsUser, actionsIUstate } from '../../../redux/actions/actions';
 import home from '../../../assets/images/home.svg';
 
 class Header extends Component {
@@ -28,6 +28,7 @@ class Header extends Component {
 		};
 
 		this.handleLogout = this.handleLogout.bind(this);
+		this.handleDepartments = this.handleDepartments.bind(this);
 	}
 
 	componentDidMount() {
@@ -77,6 +78,18 @@ class Header extends Component {
 		});
 
 	}
+
+	handleDepartments() {
+		const { isDepartmentsOpen, openDepartments, closeDepartments } = this.props;
+
+		if (isDepartmentsOpen) {
+
+			closeDepartments();
+		
+		} else {
+			openDepartments();
+		}
+	}
 	
 	render() {
 		const { isLoggedUser, userProfile } = this.props;
@@ -96,7 +109,7 @@ class Header extends Component {
 				<div id="header-logo-container">							
 					<img id="header-logo" src={Logo} alt="Logo" />
 				</div>
-				<button type="button" id="btnDepartments">
+				<button type="button" id="btnDepartments" onClick={() => this.handleDepartments()}>
 					<FontAwesomeIcon id="icon-departments" icon="caret-down" />
 					Departments
 				</button>
@@ -165,7 +178,8 @@ const mapStateToProps = state => {
 		
 		isLoggedUser: getIsLoggedUser(state),
 		userProfile: getUserProfile(state),
-		getErrorMessage: code => getErrorMessages(state)[code]
+		getErrorMessage: code => getErrorMessages(state)[code],
+		isDepartmentsOpen: getIsDepartmentOpen(state)
 	};
 
 };
@@ -174,7 +188,9 @@ const mapDispatchToProps = dispatch => {
 
 	return {
 		loginUser: user => dispatch(actionsUser.userLogin(user)),
-		logoutUser: () => dispatch(actionsUser.userLogout())
+		logoutUser: () => dispatch(actionsUser.userLogout()),
+		openDepartments: () => dispatch(actionsIUstate.departments.open()),
+		closeDepartments: () => dispatch(actionsIUstate.departments.close())
 	};
 
 };

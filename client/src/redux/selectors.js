@@ -17,3 +17,7 @@ export const getUserProfile = state => {
 export const getErrorMessages = state => {
 	return state.errorMessages;
 };
+
+export const getIsDepartmentOpen = state => {
+	return state.iuState.departmentsOpen;
+};
