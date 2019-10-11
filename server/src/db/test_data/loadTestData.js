@@ -104,20 +104,25 @@ async function loadData() {
 
 						const stream4 = fs.createReadStream(__dirname + '/data/images/categories/beauty & health/3.jpg');
 
+						const stream5 = fs.createReadStream(__dirname + '/data/images/categories/beauty & health/4.jpg');
+
 						const id1 = new ObjectID();
 						const id2 = new ObjectID();
 						const id3 = new ObjectID();
 						const id4 = new ObjectID();
+						const id5 = new ObjectID();
 				
 						await gfs.write(stream1, { id: id1, filename: 'file1' });
 						await gfs.write(stream2, { id: id2, filename: 'file2' });
 						await gfs.write(stream3, { id: id3, filename: 'file3' });
 						await gfs.write(stream4, { id: id4, filename: 'file4' });
+						await gfs.write(stream5, { id: id5, filename: 'file5' });
 	
 						await crudCategories.addCategoryImage(categObj._id,id1);
 						await crudCategories.addCategoryImage(categObj._id,id2);
 						await crudCategories.addCategoryImage(categObj._id,id3);
 						await crudCategories.addCategoryImage(categObj._id,id4);
+						await crudCategories.addCategoryImage(categObj._id,id5);
 
 						console.log('INSERTING SUBCATEGORIES FOR BEAUTY & HEALTH...');
 
@@ -298,20 +303,25 @@ async function loadData() {
 
 						const stream4 = fs.createReadStream(__dirname + '/data/images/categories/electronics/6.jpg');
 
+						const stream5 = fs.createReadStream(__dirname + '/data/images/categories/electronics/4.jpg');
+
 						const id1 = new ObjectID();
 						const id2 = new ObjectID();	
 						const id3 = new ObjectID();
 						const id4 = new ObjectID();
+						const id5 = new ObjectID();
 			
 						await gfs.write(stream1, { id: id1, filename: 'file1' });
 						await gfs.write(stream2, { id: id2, filename: 'file2' });
 						await gfs.write(stream3, { id: id3, filename: 'file3' });
 						await gfs.write(stream4, { id: id4, filename: 'file4' });
+						await gfs.write(stream5, { id: id5, filename: 'file5' });
 
 						await crudCategories.addCategoryImage(categObj._id,id1);
 						await crudCategories.addCategoryImage(categObj._id,id2);
 						await crudCategories.addCategoryImage(categObj._id,id3);
 						await crudCategories.addCategoryImage(categObj._id,id4);
+						await crudCategories.addCategoryImage(categObj._id,id5);
 
 						console.log('INSERTING SUBCATEGORIES FOR ELECTRONICS...');
 
@@ -500,20 +510,26 @@ async function loadData() {
 
 						const stream4 = fs.createReadStream(__dirname + '/data/images/categories/food/1.jpg');
 
+						const stream5 = fs.createReadStream(__dirname + '/data/images/categories/food/3.jpg');
+
 						const id1 = new ObjectID();
 						const id2 = new ObjectID();	
 						const id3 = new ObjectID();
 						const id4 = new ObjectID();
+						const id5 = new ObjectID();
 		
 						await gfs.write(stream1, { id: id1, filename: 'file1' });
 						await gfs.write(stream2, { id: id2, filename: 'file2' });
 						await gfs.write(stream3, { id: id3, filename: 'file3' });
 						await gfs.write(stream4, { id: id4, filename: 'file4' });
+						await gfs.write(stream5, { id: id5, filename: 'file5' });
+
 
 						await crudCategories.addCategoryImage(categObj._id,id1);
 						await crudCategories.addCategoryImage(categObj._id,id2);
 						await crudCategories.addCategoryImage(categObj._id,id3);
 						await crudCategories.addCategoryImage(categObj._id,id4);
+						await crudCategories.addCategoryImage(categObj._id,id5);
 
 						console.log('INSERTING SUBCATEGORIES FOR FOOD & GROCERY...');
 
@@ -611,20 +627,25 @@ async function loadData() {
 
 						const stream4 = fs.createReadStream(__dirname + '/data/images/categories/home/2.jpg');
 
+						const stream5 = fs.createReadStream(__dirname + '/data/images/categories/home/6.jpg');
+
 						const id1 = new ObjectID();
 						const id2 = new ObjectID();	
 						const id3 = new ObjectID();
 						const id4 = new ObjectID();
+						const id5 = new ObjectID();
 		
 						await gfs.write(stream1, { id: id1, filename: 'file1' });
 						await gfs.write(stream2, { id: id2, filename: 'file2' });
 						await gfs.write(stream3, { id: id3, filename: 'file3' });
 						await gfs.write(stream4, { id: id4, filename: 'file4' });
+						await gfs.write(stream5, { id: id5, filename: 'file5' });
 
 						await crudCategories.addCategoryImage(categObj._id,id1);
 						await crudCategories.addCategoryImage(categObj._id,id2);
 						await crudCategories.addCategoryImage(categObj._id,id3);
 						await crudCategories.addCategoryImage(categObj._id,id4);
+						await crudCategories.addCategoryImage(categObj._id,id5);
 
 						console.log('INSERTING SUBCATEGORIES FOR HOME...');
 
@@ -793,20 +814,25 @@ async function loadData() {
 
 						const stream4 = fs.createReadStream(__dirname + '/data/images/categories/pet supplies/4.png');
 
+						const stream5 = fs.createReadStream(__dirname + '/data/images/categories/pet supplies/2.jpg');
+
 						const id1 = new ObjectID();
 						const id2 = new ObjectID();	
 						const id3 = new ObjectID();
 						const id4 = new ObjectID();
+						const id5 = new ObjectID();
 	
 						await gfs.write(stream1, { id: id1, filename: 'file1' });
 						await gfs.write(stream2, { id: id2, filename: 'file2' });
 						await gfs.write(stream3, { id: id3, filename: 'file3' });
 						await gfs.write(stream4, { id: id4, filename: 'file4' });
+						await gfs.write(stream5, { id: id5, filename: 'file5' });
 
 						await crudCategories.addCategoryImage(categObj._id,id1);
 						await crudCategories.addCategoryImage(categObj._id,id2);
 						await crudCategories.addCategoryImage(categObj._id,id3);
 						await crudCategories.addCategoryImage(categObj._id,id4);
+						await crudCategories.addCategoryImage(categObj._id,id5);
 
 						console.log('INSERTING SUBCATEGORIES FOR PET SUPPLIES...');
 
@@ -1018,20 +1044,25 @@ async function loadData() {
 
 						const stream4 = fs.createReadStream(__dirname + '/data/images/categories/sports & outdoors/3.jpg');
 
+						const stream5 = fs.createReadStream(__dirname + '/data/images/categories/sports & outdoors/5.jpg');
+
 						const id1 = new ObjectID();
 						const id2 = new ObjectID();	
 						const id3 = new ObjectID();
 						const id4 = new ObjectID();
+						const id5 = new ObjectID();
 
 						await gfs.write(stream1, { id: id1, filename: 'file1' });
 						await gfs.write(stream2, { id: id2, filename: 'file2' });
 						await gfs.write(stream3, { id: id3, filename: 'file3' });
 						await gfs.write(stream4, { id: id4, filename: 'file4' });
+						await gfs.write(stream5, { id: id5, filename: 'file5' });
 
 						await crudCategories.addCategoryImage(categObj._id,id1);
 						await crudCategories.addCategoryImage(categObj._id,id2);
 						await crudCategories.addCategoryImage(categObj._id,id3);
 						await crudCategories.addCategoryImage(categObj._id,id4);
+						await crudCategories.addCategoryImage(categObj._id,id5);
 
 						console.log('INSERTING SUBCATEGORIES FOR SPORTS & OUTDOORS...');
 
@@ -1221,20 +1252,25 @@ async function loadData() {
 
 						const stream4 = fs.createReadStream(__dirname + '/data/images/categories/toys/3.jpg');
 
+						const stream5 = fs.createReadStream(__dirname + '/data/images/categories/toys/4.jpg');
+
 						const id1 = new ObjectID();
 						const id2 = new ObjectID();	
 						const id3 = new ObjectID();
 						const id4 = new ObjectID();
+						const id5 = new ObjectID();
 
 						await gfs.write(stream1, { id: id1, filename: 'file1' });
 						await gfs.write(stream2, { id: id2, filename: 'file2' });
 						await gfs.write(stream3, { id: id3, filename: 'file3' });
 						await gfs.write(stream4, { id: id4, filename: 'file4' });
+						await gfs.write(stream5, { id: id5, filename: 'file5' });
 
 						await crudCategories.addCategoryImage(categObj._id,id1);
 						await crudCategories.addCategoryImage(categObj._id,id2);
 						await crudCategories.addCategoryImage(categObj._id,id3);
 						await crudCategories.addCategoryImage(categObj._id,id4);
+						await crudCategories.addCategoryImage(categObj._id,id5);
 
 						console.log('INSERTING SUBCATEGORIES FOR TOYS...');
 
