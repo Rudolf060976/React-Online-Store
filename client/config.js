@@ -31,8 +31,13 @@ const Config = {
 			GET_AllCategories: '/api/categories',
 			GET_Subcategories: (categoryId) => {
 				return `/api/categories/${categoryId}/sub`;
-			}	
-
+			},
+			GET_AllSubcategories: () => {
+				return '/api/categories/sub';
+			},
+			GET_Image: (imageId) => {
+				return `/api/categories/images/${imageId}`;
+			}
 		},
 		ITEMS: {
 			GET_ItemsByFilter: (filter, page, limit) =>{
@@ -45,14 +50,14 @@ const Config = {
 			GET_ItemById: (itemId) => {
 				return `/api/items/${itemId}`;
 			},
-			GET_ItemImageById: (itemId, imageId) => {
-				return `/api/items/${itemId}/images/${imageId}`;
-			},
 			GET_ItemsByCategory: (categoryId) => {
 				return `/api/items/category/${categoryId}`;
 			},
 			GET_ItemsBySubCategory: (subcategoryId) => {
 				return `/api/items/subcategory/${subcategoryId}`;
+			},
+			GET_Image: (imageId) => {
+				return `/api/items/images/${imageId}`;
 			},
 			POST_Item_BASIC_FIELDS: '/api/items/',
 			POST_ItemImageOne: (itemId) => {

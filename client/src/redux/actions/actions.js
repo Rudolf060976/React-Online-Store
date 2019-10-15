@@ -34,8 +34,9 @@ const actionsItemsData = createActions({
 
 	CATEGORIES: {
 		FETCH: val => val,
-		FETCH_SUCCESS: docs => ({
-			docs
+		FETCH_SUCCESS: (docs, images) => ({
+			docs,
+			images
 		}),
 		FETCH_FAILURE: errorMessage => ({
 			errorMessage
@@ -43,8 +44,9 @@ const actionsItemsData = createActions({
 	},
 	SUBCATEGORIES: {
 		FETCH: val => val,
-		FETCH_SUCCESS: docs => ({
-			docs
+		FETCH_SUCCESS: (docs, images) => ({
+			docs,
+			images
 		}),
 		FETCH_FAILURE: errorMessage => ({
 			errorMessage

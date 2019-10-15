@@ -5,15 +5,22 @@ const itemsData = {
 		error: false,
 		errorMessage: '',
 		allIDs: [],
-		byId: {}
-
+		byId: {},
+		images: {
+			allIDs: [],
+			byId: {}
+		}
 	},
 	subcategories: {
 		isFetching: false,
 		error: false,
 		errorMessage: '',
 		allIDs: [],
-		byId: {}
+		byId: {},
+		images: {
+			allIDs: [],
+			byId: {}
+		}
 	},
 	dealsItems: {
 		isFetching: false,

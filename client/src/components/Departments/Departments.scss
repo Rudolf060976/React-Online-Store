@@ -1,8 +1,188 @@
+@import '../../mainStyles/globalVariables.scss';
+
 #departments-container {
 	position: absolute;
 	width: 100%;
 	background: white;
 	display: flex;
 	flex-flow: row nowrap;
+	justify-content: flex-start;	
+	padding: 10px 0 10px 25px;
+	box-shadow: $lightShadow;
+	height: 350px;
+	border: $Blue-Base 1px solid;
+	
 }
+
+
+// ****** DEPARTMENTS LIST *********
+
+
+#departments-list-container {
+
+	flex: 0 1 250px;
+	min-width: 250px;
+
+}
+
+#departments-list {
+	
+	width: 100%;
+
+}
+
+.departments-list-line {
+
+	list-style-type: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	
+}
+
+.departments-list-line-link {
+	display: inline-block;
+	text-decoration: none;
+	color: $Blue-Base;
+	font-family: Rubik, Verdana, Geneva, Tahoma, sans-serif;
+	font-weight: 500;
+	
+
+	&:hover {
+		text-decoration: none;
+		color: $Yellow-Dark;
+		font-weight: 700;
+	}
+}
+
+.departments-list-line-icon {
+	color: $Blue-Base;
+
+	&:hover {
+		color: $Yellow-Dark;		
+	}
+}
+
+
+
+
+// ****** SUB-DEPARTMENTS LIST **********
+
+#subdepartments-list-container {
+
+	flex: 0 1 350px;
+	min-width: 300px;
+	padding-left: 30px;
+}
+
+#subdepartments-list {
+	width: 100%;
+}
+
+.subdepartments-list-line {
+	list-style-type: none;
+}
+
+.subdepartments-list-line-link {
+	display: block;
+	text-decoration: none;
+	padding-left: 10px;
+	color: $LightCoral;
+	font-family: Rubik, Verdana, Geneva, Tahoma, sans-serif;
+	font-weight: 500;
+
+	&:hover {
+		text-decoration: none;
+		
+	}
+}
+
+#subdepartments-list-title {
+	padding: 0;
+	margin: 0;
+	padding-left: 10px;
+	color: darken($Yellow-Dark,30%);
+	font-style: italic;
+	font-weight: 700;
+}
+
+
+
+// ******* IMAGES LIST ***********
+
+#departments-images-list-container {
+
+	flex: 0 1 700px;
+	padding: 10px;
+
+}
+
+#departments-images-list {
+
+	width: 100%;
+	display: grid;
+	grid-template-areas: 
+	"main main one   two"
+	"main main three four";
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: repeat(2, auto);
+	grid-auto-flow: row dense;
+	
+
+}
+
+#department-menu-list-item-0 {
+	grid-area: main;
+	list-style-type: none;
+}
+
+#department-menu-list-item-1 {
+	grid-area: one;
+	list-style-type: none;
+}
+
+#department-menu-list-item-2 {
+	grid-area: two;
+	list-style-type: none;
+}
+
+#department-menu-list-item-3 {
+	grid-area: three;
+	list-style-type: none;
+}
+
+#department-menu-list-item-4 {
+	grid-area: four;
+	list-style-type: none;
+}
+
+#department-menu-image-0 {	
+	max-width: 300px;
+}
+
+#department-menu-image-1 {
+	
+	max-width: 150px;
+}
+
+#department-menu-image-2 {
+	
+	max-width: 150px;
+}
+
+#department-menu-image-3 {
+	
+	max-width: 150px;
+}
+
+#department-menu-image-4 {
+	
+	max-width: 150px;
+}
+
+
+
+
+
+
 

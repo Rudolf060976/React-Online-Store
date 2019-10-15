@@ -11,7 +11,8 @@ const errorMessages = {
 	'009': 'Internal Server Error : ',
 	'010': '. Please check your Internet Connection and try again.',
 	'011': 'Error status 400 - Bad Request: ',
-	'012': 'The passwords you entered do not match. Please re-enter your password'
+	'012': 'The passwords you entered do not match. Please re-enter your password',
+	'013': 'Connection Error: '
 
 };
 

@@ -83,11 +83,11 @@ router.get('/:itemId', (req, res) => {
 	
 });
 	
-router.get('/:itemId/images/:imageId', (req, res) => {
+router.get('/images/:imageId', (req, res) => {
 	// REQUEST an image FROM GRIDfs *** SENDS 1 IMAGE FILE ****
-	if(req.params.itemId && req.params.imageId) {
+	if(req.params.imageId) {
 
-		const { itemId, imageId } = req.params; 
+		const { imageId } = req.params; 
 
 		if (ObjectID.isValid(imageId)) {
 				
@@ -96,8 +96,7 @@ router.get('/:itemId/images/:imageId', (req, res) => {
 				res.status(200)
 					.set({
 						'content-type':'image/jpeg',
-						'item-url': '/api/items/',
-						'item-id': `${itemId}`
+						'api-url': '/api/items/images/'					
 					})
 					.send(fileBuffer);
 			}).catch(err => {

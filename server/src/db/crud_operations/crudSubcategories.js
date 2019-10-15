@@ -340,6 +340,41 @@ const getSubcategories = categoryId => {
 };
 
 
+const getAllSubcategories = () => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+					
+			Subcategory.find({}).populate({ path: 'category', select: 'name' }).sort('name').exec().then(subcategories => {
+				
+				return resolve(subcategories);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+
+};
+
+
 const addSubcategoryImage = (subcategoryId, imageId ) => {
 
 	return new Promise((resolve, reject) => {
@@ -747,6 +782,7 @@ module.exports = {
 	deleteAllSubcategoryImages,
 	updateSubcategoryImages,
 	getImageFromStore,
-	deleteImageFromStore
+	deleteImageFromStore,
+	getAllSubcategories
 };
 

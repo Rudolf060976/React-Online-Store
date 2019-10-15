@@ -8,8 +8,8 @@
     "server": "nodemon src/index.js",
     "test": "export NODE_ENV = test || SET \"NODE_ENV = test\" && jest --detectOpenHandles",
     "test-watch": "nodemon --exec \"npm test\"",
-	"test-email": "node src/modules/Nodemailer/playground.js",
-	"data-loading": "node src/db/test_data/loadTestData.js"
+    "test-email": "node src/modules/Nodemailer/playground.js",
+    "data-loading": "node src/db/test_data/loadTestData.js"
   },
   "keywords": [],
   "author": "",

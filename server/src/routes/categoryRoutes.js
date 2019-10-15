@@ -39,6 +39,35 @@ router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fet
 });
 
 
+router.get('/sub', (req, res) => {
+	
+	crudSubcategories.getAllSubcategories().then(subcategories => {
+
+		res.status(200).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				subcategories
+			}
+		});
+
+	}).catch(err => {
+
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
+
+	});
+	
+});
+
+
 router.get('/:categoryId', (req, res) => {
 
 	if(req.params.categoryId) {
@@ -301,6 +330,7 @@ router.post('/:categoryId/sub', secureAdmin(), (req, res) => {
 
 });
 
+
 router.delete('/sub/:subcategoryId', secureAdmin(), (req, res) => {
 
 	if(req.params.subcategoryId) {
@@ -391,7 +421,7 @@ router.put('/sub/:subcategoryId', secureAdmin(), (req, res) => {
 
 });
 
-router.get('/:categoryId/sub', secureAdmin(), (req, res) => {
+router.get('/:categoryId/sub', (req, res) => {
 
 	if(req.params.categoryId) {
 
@@ -436,11 +466,11 @@ router.get('/:categoryId/sub', secureAdmin(), (req, res) => {
 });
 
 	
-router.get('/:categoryId/images/:imageId', (req, res) => {
+router.get('/images/:imageId', (req, res) => {
 	// REQUEST an image FROM GRIDfs *** SENDS 1 IMAGE FILE ****
-	if(req.params.categoryId && req.params.imageId) {
+	if(req.params.imageId) {
 
-		const { categoryId, imageId } = req.params; 
+		const { imageId } = req.params; 
 
 		if (ObjectID.isValid(imageId)) {
 				
@@ -449,8 +479,7 @@ router.get('/:categoryId/images/:imageId', (req, res) => {
 				res.status(200)
 					.set({
 						'content-type':'image/jpeg',
-						'category-url': '/api/categories/',
-						'category-id': `${categoryId}`
+						'api-url': '/api/categories/images/'						
 					})
 					.send(fileBuffer);
 			}).catch(err => {
@@ -693,63 +722,6 @@ router.delete('/:categoryId/images/all', secureAdmin(), (req, res) => {
 	}	
 	
 });
-
-router.get('/sub/:subcategoryId/images/:imageId', (req, res) => {
-	// REQUEST an image FROM GRIDfs *** SENDS 1 IMAGE FILE ****
-	if(req.params.subcategoryId && req.params.imageId) {
-
-		const { subcategoryId, imageId } = req.params; 
-
-		if (ObjectID.isValid(imageId)) {
-				
-			crudSubcategories.getImageFromStore(imageId).then(fileBuffer => {
-
-				res.status(200)
-					.set({
-						'content-type':'image/jpeg',
-						'subcategory-url': '/api/categories/sub/',
-						'subcategory-id': `${subcategoryId}`
-					})
-					.send(fileBuffer);
-			}).catch(err => {
-
-				res.status(err.status).json({
-					error: err,
-					ok: false,
-					status: err.status,
-					message: err.message,
-					data: null
-				});
-
-			});
-					
-
-		} else {
-
-			return res.status(400).json({
-				error: createError(400, 'BAD REQUEST'),
-				ok: false,
-				status: 400,
-				message: 'INVALID IMAGE ID',
-				data: null
-			});
-
-		}
-
-	} else {
-
-		return res.status(400).json({
-			error: createError(400, 'BAD REQUEST'),
-			ok: false,
-			status: 400,
-			message: 'MISSING DATA',
-			data: null
-		});
-
-	}
-	
-});
-
 
 router.post('/sub/:subcategoryId/images/all', secureAdmin, uploadSubcategoryImages.array('images', config.app.items.SUBCATEGORIES_IMAGES_MAX_COUNT),
 	(req, res) => {

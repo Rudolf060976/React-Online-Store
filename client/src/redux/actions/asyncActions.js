@@ -1,36 +1,82 @@
 import { actionsItemsData, actionsUserData } from './actions';
 import * as fetchItemsData from '../../modules/fetchFunctions/itemsData';
 
+
+const actionsAsyncFetchCategoriesData = () => {
+	
+	return fetchItemsData.fetchGetAllCategories().then(json => {
+
+		if (json.ok) {
+
+			const { data: { categories: docs } } = json;
+								
+			return Promise.resolve(docs);
+		} 
+
+		return Promise.reject(json.error);	
+
+	}, err => {
+			
+		return Promise.reject(err);
+
+	});		
+
+};
+
 const actionsAsyncFetchCategories = () => {
 
 	return (dispatch, getState) => {
 
 		dispatch(actionsItemsData.categories.fetch());
 
-		fetchItemsData.fetchGetAllCategories().then(json => {
+		let imagesAllIDs = null;
 
-			if (json.ok) {
+		return actionsAsyncFetchCategoriesData().then(docs => {
 
-				const { data: { categories: docs } } = json;
+			imagesAllIDs = docs.reduce((acc, item) => {
 
-				dispatch(actionsItemsData.categories.fetchSuccess(docs));
+				return [...acc, ...item.images];
 
-				return Promise.resolve();
-
-			} 
-
-			dispatch(actionsItemsData.categories.fetchFailure(json.message));
-
-			return Promise.reject(json.error);			
+			}, []);
 			
+			const fetchArray = [];
 
-		}).catch(err => {
+			for (let j = 0; j < imagesAllIDs.length; j++) {
+
+				fetchArray.push(fetchItemsData.fetchGetImage(imagesAllIDs[j]));
+				
+			}		
+			
+			return Promise.all(fetchArray).then((images) => {
+				
+				const output = [];
+
+				for (let i = 0; i < imagesAllIDs.length; i++) {
+
+					output.push({
+						_id: imagesAllIDs[i],
+						imageURL: URL.createObjectURL(images[i])
+					});
+				}
+				
+				dispatch(actionsItemsData.categories.fetchSuccess(docs, output));
+
+			}, err => {
+
+				dispatch(actionsItemsData.categories.fetchFailure(err.message));
+				
+				return Promise.reject(err);
+			});	
+
+
+		}, err => {
 
 			dispatch(actionsItemsData.categories.fetchFailure(err.message));
 
-			return Promise.reject(err);
+			return Promise.reject(err);			
 
 		});
+		
 
 	};
 
@@ -70,7 +116,90 @@ const actionsAsyncFetchSubcategoriesByCategoryId = (categoryId) => {
 
 	};
 
-}
+};
+
+const actionsAsyncFetchSubcategoriesData = () => {
+	
+	return fetchItemsData.fetchGetAllSubCategories().then(json => {
+
+		if (json.ok) {
+
+			const { data: { subcategories: docs } } = json;
+								
+			return Promise.resolve(docs);
+		} 
+
+		return Promise.reject(json.error);	
+
+	}, err => {
+			
+		return Promise.reject(err);
+
+	});		
+
+};
+
+const actionsAsyncFetchAllSubcategories = () => {
 
 
-export default { actionsAsyncFetchCategories, actionsAsyncFetchSubcategoriesByCategoryId };
+	return (dispatch, getState) => {
+
+		dispatch(actionsItemsData.subcategories.fetch());
+
+		let imagesAllIDs = null;
+
+		return actionsAsyncFetchSubcategoriesData().then(docs => {
+			
+			imagesAllIDs = docs.reduce((acc, item) => {
+
+				return [...acc, ...item.images];
+
+			}, []);
+			
+			const fetchArray = [];
+
+			for (let j = 0; j < imagesAllIDs.length; j++) {
+
+				fetchArray.push(fetchItemsData.fetchGetImage(imagesAllIDs[j]));
+				
+			}
+			
+			return Promise.all(fetchArray).then(images => {
+								
+				const output = [];
+
+				for (let i = 0; i < imagesAllIDs.length; i++) {
+
+					output.push({
+						_id: imagesAllIDs[i],
+						imageURL: URL.createObjectURL(images[i])
+					});
+				}
+				
+				dispatch(actionsItemsData.subcategories.fetchSuccess(docs, output));
+
+			}, err => {
+
+				dispatch(actionsItemsData.subcategories.fetchFailure(err.message));
+
+				return Promise.reject(err);
+			});	
+
+		}, err => {
+
+			dispatch(actionsItemsData.subcategories.fetchFailure(err.message));
+
+			return Promise.reject(err);
+
+		});
+
+	};
+
+};
+
+
+export {
+	actionsAsyncFetchCategories,
+	actionsAsyncFetchSubcategoriesByCategoryId,
+	actionsAsyncFetchAllSubcategories
+};
