@@ -9,9 +9,13 @@
 	justify-content: flex-start;	
 	padding: 10px 0 10px 25px;
 	box-shadow: $lightShadow;
-	height: 350px;
+	height: auto;
 	border: $Blue-Base 1px solid;
 	
+	@include forSmallScreens(570) {
+		display: none;
+	}
+
 }
 
 
@@ -21,7 +25,7 @@
 #departments-list-container {
 
 	flex: 0 1 250px;
-	min-width: 250px;
+	min-width: 120px;
 
 }
 
@@ -71,7 +75,7 @@
 #subdepartments-list-container {
 
 	flex: 0 1 350px;
-	min-width: 300px;
+	min-width: 130px;
 	padding-left: 30px;
 }
 
@@ -119,15 +123,33 @@
 
 #departments-images-list {
 
-	width: 100%;
+	width: 70%;
+	max-width: 550px;
 	display: grid;
 	grid-template-areas: 
 	"main main one   two"
 	"main main three four";
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-rows: repeat(2, auto);
-	grid-auto-flow: row dense;
+	grid-template-rows: repeat(2, 1fr);
 	
+	@include forSmallScreens(1000) {
+
+		width: 80%;
+
+	}
+
+	@include forSmallScreens(870) {
+
+		width: 90%;
+
+	}
+
+	@include forSmallScreens(800) {
+
+		width: 100%;
+
+	}
+
 
 }
 
@@ -156,28 +178,30 @@
 	list-style-type: none;
 }
 
-#department-menu-image-0 {	
-	max-width: 300px;
+#department-menu-image-0 {
+	width: 100%;
+	
 }
 
 #department-menu-image-1 {
+	width: 100%;
 	
-	max-width: 150px;
 }
 
 #department-menu-image-2 {
+	width: 100%;
 	
-	max-width: 150px;
 }
 
 #department-menu-image-3 {
+	width: 100%;
 	
-	max-width: 150px;
 }
 
 #department-menu-image-4 {
 	
-	max-width: 150px;
+	width: 100%;
+	
 }
 
 
