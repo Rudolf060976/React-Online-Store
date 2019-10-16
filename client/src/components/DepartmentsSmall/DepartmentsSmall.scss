@@ -1,0 +1,110 @@
+@import '../../mainStyles/globalVariables.scss';
+
+#departments-small-container {
+
+	display: none;
+
+	@include forSmallScreens(570) {
+
+		display: block;
+		position: absolute;
+		top: -235px;
+		width: 90%;	
+		background: $Blue-Base;
+		height: 400px;
+		z-index: 10;
+		box-shadow: $Light-Header-Box-Shadow;
+		padding: 20px;
+		padding-top: 70px;
+	}
+
+}
+
+#departments-small-list {
+	width: 95%;
+}
+
+.departments-small-list-line {
+	width: 100%;
+	list-style-type: none;
+	color: white;
+	display: flex;
+	justify-content: space-between;
+	padding: 15px;
+
+	&:hover {
+		border: .2px solid white;
+	}
+
+	& > a {
+		width: 100%;
+		display: inline-block;
+		color: white;
+		text-decoration: none;
+		font-weight: 500;
+		letter-spacing: 1px;
+		font-size: 1.8rem;
+
+		&:hover {
+
+			text-decoration: none;
+			color: $Yellow-Dark;
+			font-weight: 700;
+			
+		}
+	}
+}
+
+.my-mobile-menu-effect-enter {
+
+	left: -450px;
+	
+}
+
+.my-mobile-menu-effect-enter-active {
+	transition: left .3s linear;
+	left: 0;
+	
+}
+
+.my-mobile-menu-effect-exit {
+
+	left: 0;
+
+}
+
+.my-mobile-menu-effect-exit-active {
+
+	transition: left .3s linear;
+	left: -450px;
+}
+
+.my-mobile-menu-effect-exit-done {
+
+	transition: left .3s linear;
+	left: -450px;
+}
+
+#departments-small-close-button {
+	position: absolute;
+	top: 2%;
+	right: 2%;
+	background: transparent;
+	border: 1px solid transparent;
+	color: white;
+	padding: 8px 15px;
+	font-weight: 700;
+	
+
+	&:hover {
+		background: $Blue-Clear;			
+		box-shadow: $Light-Header-Box-Shadow;
+		color: white;
+		border: 1px solid white;
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+}

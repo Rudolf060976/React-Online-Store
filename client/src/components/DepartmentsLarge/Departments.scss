@@ -11,7 +11,7 @@
 	box-shadow: $lightShadow;
 	height: auto;
 	border: $Blue-Base 1px solid;
-	
+		
 	@include forSmallScreens(570) {
 		display: none;
 	}
@@ -76,6 +76,7 @@
 
 	flex: 0 1 350px;
 	min-width: 130px;
+	padding: 0;
 	padding-left: 30px;
 }
 

@@ -35,7 +35,7 @@
 
 	@include forSmallScreens(570) {
 		grid-template-areas:
-	 "logo    home    dep     dep"
+	 "dep    home     ...     logo"
 	 "main    main    user    user"
 	 "search  search  search  search"
 	 "usernav usernav usernav usernav"
@@ -48,7 +48,14 @@
 }
 
 #header-logo-container {
-	grid-area: logo;	
+	grid-area: logo;
+	
+	@include forSmallScreens(570) {
+		justify-self: end;
+		margin-right: 10px;
+		align-self: start;
+	}
+
 }
 
 #header-logo {
@@ -281,15 +288,17 @@
 		display: block;	
 		grid-area: dep;	
 		align-self: start;
-		justify-self: end;	
+		justify-self: start;	
 		margin: 0;
 		height: 25px;
 		padding: 0 8px;	
 		background: transparent;
-		border: 1px solid white;
+		border: 1px solid transparent;
 		color: $LightBlue;
-		box-shadow: none;		
-		@include fontSize(1.6);
+		box-shadow: none;
+		border-radius: 1px;
+				
+		@include fontSize(1.8);
 
 		&:focus {
 			outline: 0;
@@ -300,6 +309,7 @@
 			background: $Blue-Clear;			
 			box-shadow: $Light-Header-Box-Shadow;
 			color: white;
+			border: 1px solid white;
 		
 		}
 
@@ -374,7 +384,7 @@
 
 #mobile-icon-departments {
 
-	margin-left: 5px;	
+	margin: 0;	
 
 }
 
