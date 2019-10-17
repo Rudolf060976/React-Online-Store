@@ -113,7 +113,7 @@ class Header extends Component {
 					<FontAwesomeIcon id="icon-departments" icon="caret-down" />
 					Departments
 				</button>
-				<button type="button" id="mobile-btnDepartments" onClick={() => this.handleDepartments()}><FontAwesomeIcon id="mobile-icon-departments" icon="align-justify" />
+				<button type="button" id="mobile-btnDepartments" onClick={() => this.handleDepartments()}><FontAwesomeIcon id="mobile-icon-departments" icon="align-justify" size="lg" />
 				</button>		
 				<div id="header-main-nav">
 					{error ? <ErrorAlert msg={errorMessage} /> : null}

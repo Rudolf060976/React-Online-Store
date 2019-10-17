@@ -8,10 +8,10 @@
 
 		display: block;
 		position: absolute;
-		top: -235px;
+		top: -285px;
 		width: 90%;	
 		background: $Blue-Base;
-		height: 400px;
+		height: 450px;
 		z-index: 10;
 		box-shadow: $Light-Header-Box-Shadow;
 		padding: 20px;
@@ -19,6 +19,8 @@
 	}
 
 }
+
+// ****** INITIAL MENU LIST *********
 
 #departments-small-list {
 	width: 95%;
@@ -29,27 +31,29 @@
 	list-style-type: none;
 	color: white;
 	display: flex;
-	justify-content: space-between;
-	padding: 15px;
+	justify-content: space-between;	
+	align-items: center;
+	padding-right: 10px;
 
 	&:hover {
-		border: .2px solid white;
+		border: 0.2px solid lightgray;
 	}
 
 	& > a {
 		width: 100%;
+		height: 100%;
 		display: inline-block;
 		color: white;
 		text-decoration: none;
-		font-weight: 500;
+		padding: 20px 15px;
 		letter-spacing: 1px;
-		font-size: 1.8rem;
+		font-size: 2.2rem;
 
 		&:hover {
 
 			text-decoration: none;
 			color: $Yellow-Dark;
-			font-weight: 700;
+			font-weight: 500;
 			
 		}
 	}
@@ -67,6 +71,12 @@
 	
 }
 
+.my-mobile-menu-effect-enter-done {
+	
+	left: 0;
+	
+}
+
 .my-mobile-menu-effect-exit {
 
 	left: 0;
@@ -79,11 +89,11 @@
 	left: -450px;
 }
 
-.my-mobile-menu-effect-exit-done {
 
-	transition: left .3s linear;
+.my-mobile-menu-effect-exit-done {
+	
 	left: -450px;
-}
+} 
 
 #departments-small-close-button {
 	position: absolute;
@@ -108,3 +118,376 @@
 	}
 
 }
+
+
+// ****** DEPARTMENTS LIST *********
+
+
+#departments-small-deplist-container {
+
+	background: white;
+	width: 88%;
+	position: absolute;
+	top: 0;
+	height: 450px;
+	z-index: 20;
+	box-shadow: $lightShadow;
+	padding: 20px;
+	padding-top: 60px;
+	font-family: Rubik, Verdana, Geneva, Tahoma, sans-serif;
+	
+	h4 {
+		padding-left: 20px;
+		color: $Blue-Clear;
+	}
+
+}
+
+#departments-small-deplist {
+
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	padding-left: 20px;
+
+}
+
+.departments-small-deplist-line {
+
+	list-style-type: none;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	
+}
+
+.departments-small-deplist-line-link {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+	font-family: Rubik, Verdana, Geneva, Tahoma, sans-serif;
+	font-weight: 500;
+	color: $Blue-Base;
+	font-size: 2rem;
+	padding: 10px 0;
+
+
+	&:hover {
+		text-decoration: none;
+		color: $Yellow-Dark;
+		font-size: 2.2rem;
+		font-weight: 700;
+		
+	}
+
+}
+
+
+.my-mobile-menu-deplist-effect-enter {
+
+	left: -450px;
+
+}
+
+.my-mobile-menu-deplist-effect-enter-active {
+
+	transition: left .3s linear;
+	left: 0;	
+	
+}
+
+.my-mobile-menu-deplist-effect-enter-done {
+
+	left: 0;	
+}
+
+.my-mobile-menu-deplist-effect-exit {
+
+	left: 0;
+	
+}
+
+
+.my-mobile-menu-deplist-effect-exit-active {
+
+	transition: left .3s linear;
+	left: -450px;
+	
+}
+
+.my-mobile-menu-deplist-effect-exit-done {
+
+	
+	left: -450px;
+	
+}
+
+
+#departments-small-deplist-back-button {
+	position: absolute;
+	top: 3%;
+	left: 3%;
+	background: $Blue-Base;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	color: white;
+	padding: 8px 15px;
+	font-weight: 500;
+	
+
+	&:hover {
+		background: $Blue-Clear;			
+		box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+		color: white;
+		
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+}
+
+.departments-small-deplist-back-button-icon {
+	margin-right: 8px;
+}
+
+
+// ****** SUB-DEPARTMENTS LIST *********
+
+
+#departments-small-subdeplist-container {
+
+	background: white;
+	width: 88%;
+	position: absolute;
+	top: 0;
+	height: 800px;
+	z-index: 30;
+	box-shadow: $lightShadow;
+	padding: 20px;
+	padding-top: 60px;
+	font-family: Rubik, Verdana, Geneva, Tahoma, sans-serif;
+	
+	h4 {
+		padding-left: 20px;
+		color: darken($Yellow-Dark, 30%);
+	}
+
+}
+
+#departments-small-subdeplist {
+
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	padding-left: 20px;
+
+}
+
+.departments-small-subdeplist-line {
+
+	list-style-type: none;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	
+}
+
+.departments-small-subdeplist-line-link {
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+	text-decoration: none;
+	font-family: Rubik, Verdana, Geneva, Tahoma, sans-serif;
+	font-weight: 500;
+	color: darken($LightCoral,5%);
+	font-size: 2rem;
+	padding: 10px 0;
+
+
+	&:hover {
+		text-decoration: none;
+		// color: $Yellow-Dark;
+		font-size: 2.2rem;
+		font-weight: 700;
+		
+	}
+
+}
+
+
+.my-mobile-menu-subdeplist-effect-enter {
+
+	left: -450px;
+
+}
+
+.my-mobile-menu-subdeplist-effect-enter-active {
+
+	transition: left .3s linear;
+	left: 0;	
+	
+}
+
+.my-mobile-menu-subdeplist-effect-enter-done {
+
+	left: 0;	
+}
+
+.my-mobile-menu-subdeplist-effect-exit {
+
+	left: 0;
+	
+}
+
+
+.my-mobile-menu-subdeplist-effect-exit-active {
+
+	transition: left .3s linear;
+	left: -450px;
+	
+}
+
+.my-mobile-menu-subdeplist-effect-exit-done {
+
+	
+	left: -450px;
+	
+}
+
+
+#departments-small-subdeplist-back-button {
+	position: absolute;
+	top: 1.5%;
+	left: 3%;
+	background: $Blue-Base;
+	border: 1px solid transparent;
+	border-radius: 3px;
+	color: white;
+	padding: 8px 15px;
+	font-weight: 500;
+	
+
+	&:hover {
+		background: $Blue-Clear;			
+		box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.3);
+		color: white;
+		
+	}
+
+	&:focus {
+		outline: none;
+	}
+
+}
+
+.departments-small-subdeplist-back-button-icon {
+	margin-right: 8px;
+}
+
+
+// ******** DEPIMAGES COMPONENT *************
+
+// ******* IMAGES LIST ***********
+
+#departments-small-images-list-container {
+	
+	padding: 10px;
+	margin-top: 10px;
+
+}
+
+#departments-small-images-list {
+
+	width: 100%;
+	max-width: 550px;
+	display: grid;
+	grid-template-areas: 
+	"main main main  main"
+	"main main main  main"
+	"main main main  main"
+	"one  two  three four";
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	grid-template-rows: repeat(4, 1fr);
+	
+	@include forSmallScreens(1000) {
+
+		width: 80%;
+
+	}
+
+	@include forSmallScreens(870) {
+
+		width: 90%;
+
+	}
+
+	@include forSmallScreens(800) {
+
+		width: 100%;
+
+	}
+
+
+}
+
+#department-small-menu-list-item-0 {
+	grid-area: main;
+	list-style-type: none;
+}
+
+#department-small-menu-list-item-1 {
+	grid-area: one;
+	list-style-type: none;
+}
+
+#department-small-menu-list-item-2 {
+	grid-area: two;
+	list-style-type: none;
+}
+
+#department-small-menu-list-item-3 {
+	grid-area: three;
+	list-style-type: none;
+}
+
+#department-small-menu-list-item-4 {
+	grid-area: four;
+	list-style-type: none;
+}
+
+#department-small-menu-image-0 {
+	width: 100%;
+	
+}
+
+#department-small-menu-image-1 {
+	width: 100%;
+	
+}
+
+#department-small-menu-image-2 {
+	width: 100%;
+	
+}
+
+#department-small-menu-image-3 {
+	width: 100%;
+	
+}
+
+#department-small-menu-image-4 {
+	
+	width: 100%;
+	
+}
+
+
+
+

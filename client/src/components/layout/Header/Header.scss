@@ -290,13 +290,14 @@
 		align-self: start;
 		justify-self: start;	
 		margin: 0;
-		height: 25px;
-		padding: 0 8px;	
+		height: 45px;
+		padding: 10px 15px;	
 		background: transparent;
 		border: 1px solid transparent;
 		color: $LightBlue;
 		box-shadow: none;
 		border-radius: 1px;
+		font-size: 2rem;
 				
 		@include fontSize(1.8);
 
