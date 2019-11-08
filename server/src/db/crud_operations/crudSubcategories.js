@@ -375,6 +375,100 @@ const getAllSubcategories = () => {
 };
 
 
+const getManySubcategories = (filter) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			const { ids } = filter;
+					
+			Subcategory.find({ _id: { $in: ids }}).sort('name').exec().then(subcategories => {
+				
+				return resolve(subcategories);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+
+};
+
+
+const getAllSubcategoriesAdmin = (filter, page, limit, sort) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			const options = {
+				page,
+				limit,
+				sort
+			};
+			
+					
+			Subcategory.paginate(filter, options).then(result => {
+				
+				/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/				
+
+				return resolve(result);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+
+};
+
+
 const addSubcategoryImage = (subcategoryId, imageId ) => {
 
 	return new Promise((resolve, reject) => {
@@ -773,6 +867,7 @@ module.exports = {
 	addSubcategory,
 	deleteSubcategory,
 	deleteAllSubCategories,
+	getManySubcategories,
 	updateSubcategory,
 	getSubcategories,
 	getSubcategoryById,
@@ -783,6 +878,7 @@ module.exports = {
 	updateSubcategoryImages,
 	getImageFromStore,
 	deleteImageFromStore,
-	getAllSubcategories
+	getAllSubcategories,
+	getAllSubcategoriesAdmin
 };
 

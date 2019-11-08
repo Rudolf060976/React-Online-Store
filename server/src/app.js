@@ -49,6 +49,28 @@ app.use(flash());
 /* flash messages are stored on req.session.flash object */
 /* passport uses an "error" array inside flash object */
 
+app.use((req, res, next) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+	// **** PERMITTED ORIGINS SHOULD ONLY BE: 1. THE APP URL, 2. THE ADMIN APP URL
+	// But for testing purposes I'm returning the same Origin
+	
+	const origin = req.get('Origin');
+	res.set('Access-Control-Allow-Origin', origin);
+	res.set('Access-Control-Allow-Credentials', 'true');
+	res.set('Access-Control-Expose-Headers', 'Content-Range');
+
+	next();
+});
+
+app.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
+	console.log('ESTOY AQUÍ!!!!!!');
+	res.set('Access-Control-Allow-Methods','POST,GET,PUT,PATCH,DELETE,OPTIONS');
+	res.set('Access-Control-Allow-Credentials', 'true');
+	res.set('Access-Control-Allow-Headers','Content-Type,Content-Range');
+	res.set('Access-Control-Max-Age', 86400);
+		
+	res.status(200).send();
+});
+
 app.use('/api', passportRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/items', itemRoutes);

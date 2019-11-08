@@ -4,7 +4,7 @@ const createError = require('http-errors');
 
 const secure = require('../../middleware/secure');
 
-const { passport, passport_Setup_Strategy } = require('./config');
+const { passport, passport_Setup_Strategy, passport_Setup_Strategy_Admin } = require('./config');
 
 const router = express.Router();
 
@@ -29,6 +29,68 @@ router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fet
 		
 	res.status(200).send();
 });
+
+router.post('/login/admin', passport_Setup_Strategy_Admin(), 
+	passport.authenticate('local',
+		{
+			failureRedirect: '/api/unauthorized',
+			failureFlash: true
+		}),
+	(req, res) => { // IF USER AUTHENTICATION IS ACCEPTED, THIS MIDDLEWARE WILL GET CALLED
+
+		/* console.log('Inside POST / Login callback function');
+	console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`);
+	console.log(`req.user: ${JSON.stringify(req.user)}`); */
+
+		(async () => {
+
+			const user = await crudUsers.getUserById(req.user._id);
+
+
+			// CHECK IF USER HAS BEEN VALIDATED....
+
+			if (!user.isValidated) {
+
+				req.logout();
+
+				return res.status(423).json({
+					error: createError(423, 'LOCKED'),
+					ok: false,
+					status: 423,
+					message: 'USER IS NOT VALIDATED',
+					data: {
+						_id: user._id,
+						username: user.username
+					}
+				});
+
+			}
+
+			// IF USER PASSES ALL CONDITIONS ABOVE, THEN LOGIN
+			
+			const { _id, username, firstname, lastname } = user;
+			
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'AUTHENTICATION ACCEPTED',
+				data: {
+
+					user: {
+						_id,
+						username,
+						firstname,
+						lastname
+					}
+					
+				}
+			});
+
+		})();
+	
+	}	
+);
 
 router.post('/login', passport_Setup_Strategy(), 
 	passport.authenticate('local',
@@ -154,6 +216,18 @@ router.get('/unauthorized', (req, res) => {
 				message: 'USER IS SUSPENDED',
 				data: null
 			});	
+
+		case 'THAT USER IS NOT AN ADMINISTRATOR':
+			return res.status(423).json({
+				error: createError(423,errorMessage),
+				ok: false,
+				status: 423,
+				message: 'UNAUTHORIZED',
+				data: null
+			});	
+	
+
+
 
 		}
 

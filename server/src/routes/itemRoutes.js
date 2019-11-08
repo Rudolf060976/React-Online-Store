@@ -16,25 +16,8 @@ const secureAdmin = require('../middleware/secureAdmin');
 
 const router = express.Router();
 
-
-router.use((req, res, next) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
-
-	const origin = req.get('Origin');
-	res.set('Access-Control-Allow-Origin', origin);
-	res.set('Access-Control-Allow-Credentials', 'true');
-
-	next();
-});
-
-router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
-		
-	res.set('Access-Control-Allow-Methods','POST, GET, PUT, PATCH, DEL');
-	res.set('Access-Control-Allow-Credentials', 'true');
-	res.set('Access-Control-Allow-Headers','Content-Type');	
-	res.set('Access-Control-Max-Age', 86400);
-		
-	res.status(200).send();
-});
+const getObjectParamsFromQS1 = require('../modules/General/getObjectParamsFromQS1');
+const getObjectParamsFromQS2 = require('../modules/General/getObjectParamsFromQS2');
 
 	
 router.get('/:itemId', (req, res) => {
@@ -141,14 +124,14 @@ router.get('/images/:imageId', (req, res) => {
 
 router.get('/category/:categoryId', paginate.middleware(10, 50), (req, res) => {
 	
-	const { page, limit } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
-		
+	const { page, limit, sort } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
+	// sort example:     sort = { field:'name', order: 'ASC' }      sort = { field: 'age', order: 'DESC'}
 
 	if(req.params.categoryId) {
 
 		const { categoryId } = req.params;
 
-		crudItems.getItemsByCategory(categoryId, page, limit).then(docs => {
+		crudItems.getItemsByCategory(categoryId, page, limit, sort).then(result => {
 
 			res.status(200).json({
 				error: null,
@@ -156,7 +139,7 @@ router.get('/category/:categoryId', paginate.middleware(10, 50), (req, res) => {
 				status: 200,
 				message: 'OK',
 				data: {
-					items: docs
+					result
 				}
 			});
 	
@@ -191,13 +174,15 @@ router.get('/category/:categoryId', paginate.middleware(10, 50), (req, res) => {
 
 router.get('/subcategory/:subcategoryId', paginate.middleware(10, 50), (req, res) => {
 	
-	const { page, limit } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
-		
+	const { page, limit, sort } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
+	
+	// sort example:     sort = { field:'name', order: 'ASC' }      sort = { field: 'age', order: 'DESC'}
+
 	if(req.params.subcategoryId) {
 
 		const { subcategoryId } = req.params;
 
-		crudItems.getItemsBySubcategory(subcategoryId, page, limit).then(docs => {
+		crudItems.getItemsBySubcategory(subcategoryId, page, limit, sort).then(result => {
 
 			res.status(200).json({
 				error: null,
@@ -205,7 +190,7 @@ router.get('/subcategory/:subcategoryId', paginate.middleware(10, 50), (req, res
 				status: 200,
 				message: 'OK',
 				data: {
-					items: docs
+					result
 				}
 			});
 	
@@ -238,35 +223,128 @@ router.get('/subcategory/:subcategoryId', paginate.middleware(10, 50), (req, res
 });
 
 
-router.get('/', paginate.middleware(10, 50), (req, res) => {
-	// RESPONSES all items OR items by filter (query string)
+router.get('/many', (req, res) => {
 	
-	const { page, limit, ...rest } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
 	
-	let filter = {};
+	const filter = getObjectParamsFromQS2(req);
 
-	if(rest) {
-
-		filter = { ...rest };
-
-	}
-
-	console.log('filter: ', JSON.stringify(filter, null, 2));
-
-	crudItems.getItems(filter, page, limit).then(docs => {
-
-		res.status(200).json({
+	
+	crudItems.getManyItems(filter).then(results => {
+		
+		res.set('Content-Range',`${results.totalDocs}`).json({
 			error: null,
 			ok: true,
 			status: 200,
 			message: 'OK',
 			data: {
-				items: docs
+				results
 			}
 		});
 
 	}).catch(err => {
+		
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
 
+	});
+	
+		
+});
+
+router.get('/admin', paginate.middleware(10, 50), (req, res) => {
+	// RESPONSES all items OR items by filter (query string)
+	
+	const { page, limit, sort, filter } = getObjectParamsFromQS1(req);
+
+	// sort example:     sort = { field:'name', order: 'ASC' }      sort = { field: 'age', order: 'DESC'}
+
+	crudItems.getItemsAdmin(filter, page, limit, sort).then(results => {
+
+		/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/				
+
+		res.set('Content-Range',`${results.totalDocs}`).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				results
+			}
+		});
+
+	}).catch(err => {
+		
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
+
+	});
+	
+		
+});
+
+router.get('/', paginate.middleware(10, 50), (req, res) => {
+	// RESPONSES all items OR items by filter (query string)
+	
+	const { page, limit, sort, filter } = getObjectParamsFromQS1(req);
+
+	// sort example:     sort = { field:'name', order: 'ASC' }      sort = { field: 'age', order: 'DESC'}
+
+	crudItems.getItems(filter, page, limit, sort).then(results => {
+
+		/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/				
+
+		res.set('Content-Range',`${results.totalDocs}`).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				results
+			}
+		});
+
+	}).catch(err => {
+		
 		res.status(err.status).json({
 			error: err,
 			ok: false,

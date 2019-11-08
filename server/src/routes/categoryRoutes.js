@@ -2,6 +2,8 @@ const express = require('express');
 
 const createError = require('http-errors');
 
+const paginate = require('express-paginate');
+
 const { uploadImageFiles: uploadCategoryImages } = require('../middleware/multerCategoryImageFiles');
 
 const { uploadImageFiles: uploadSubcategoryImages } = require('../middleware/multerSubcategoryImageFiles');
@@ -18,24 +20,185 @@ const router = express.Router();
 
 const secureAdmin = require('../middleware/secureAdmin');
 
+const getObjectParamsFromQS1 = require('../modules/General/getObjectParamsFromQS1');
+const getObjectParamsFromQS2 = require('../modules/General/getObjectParamsFromQS2');
 
-router.use((req, res, next) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
 
-	const origin = req.get('Origin');
-	res.set('Access-Control-Allow-Origin', origin);
-	res.set('Access-Control-Allow-Credentials', 'true');
+router.get('/admin', paginate.middleware(10, 50), (req, res) => {
+	// RESPONSES ALL CATEGORIES ACCORDING TO A FILTER, PAGE, LIMIT AND SORT
 
-	next();
+	const { page, limit, sort, filter } = getObjectParamsFromQS1(req);
+
+	// sort example:     sort = { field:'name', order: 'ASC' }      sort = { field: 'age', order: 'DESC'}
+	
+	crudCategories.getAllCategoriesAdmin(filter, page, limit, sort).then(results => {
+
+		/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/				
+		
+		res.set('Content-Range',`${results.totalDocs}`).status(200).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				results
+			}
+		});
+
+	}).catch(err => {
+
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
+
+
+	}); 
+
 });
 
-router.options('*', (req, res) => {  // PLEASE READ  https://javascript.info/fetch-crossorigin
-		
-	res.set('Access-Control-Allow-Methods','POST, GET, PUT, PATCH, DEL');
-	res.set('Access-Control-Allow-Credentials', 'true');
-	res.set('Access-Control-Allow-Headers','Content-Type');	
-	res.set('Access-Control-Max-Age', 86400);
-		
-	res.status(200).send();
+
+router.get('/sub/admin', paginate.middleware(10, 50), (req, res) => {
+
+	const { page, limit, sort, filter } = getObjectParamsFromQS1(req);
+	
+	// sort example:     sort = { field:'name', order: 'ASC' }      sort = { field: 'age', order: 'DESC'}
+	
+	crudSubcategories.getAllSubcategoriesAdmin(filter, page, limit, sort).then(results => {
+
+		/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/				
+
+		res.set('Content-Range',`${results.totalDocs}`).status(200).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				results
+			}
+		});
+
+	}).catch(err => {
+
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
+
+	});
+	
+});
+
+
+router.get('/sub/subcategoryId', (req, res) => {
+
+	if(req.params.subcategoryId) {
+
+		const { subcategoryId } = req.params;
+
+		crudSubcategories.getSubcategoryById(subcategoryId).then(subcategory => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: {
+					subcategory
+				}
+			});
+
+		}).catch(err => {
+
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+
+		});
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ID',
+			data: null
+		});
+	}
+
+
+});
+
+
+router.get('/sub/many', (req, res) => {
+	
+	const filter = getObjectParamsFromQS2(req);
+
+	crudSubcategories.getManySubcategories(filter).then(results => {
+
+		res.status(200).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				results
+			}
+		});
+
+	}).catch(err => {
+
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
+
+	});
+	
 });
 
 
@@ -65,6 +228,38 @@ router.get('/sub', (req, res) => {
 
 	});
 	
+});
+
+
+router.get('/many', (req, res) => {
+
+	const filter = getObjectParamsFromQS2(req);
+	console.log('FILTER  :', filter);
+	crudCategories.getManyCategories(filter).then(results => {
+
+		res.status(200).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				results
+			}
+		});
+
+	}).catch(err => {
+
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
+
+
+	});
+
 });
 
 
@@ -112,6 +307,7 @@ router.get('/:categoryId', (req, res) => {
 
 });
 
+
 router.get('/', (req, res) => {
 
 	crudCategories.getAllCategories().then(categories => {
@@ -140,6 +336,7 @@ router.get('/', (req, res) => {
 	});
 
 });
+
 
 router.post('/', secureAdmin(), (req, res) => {
 
@@ -237,7 +434,7 @@ router.put('/:categoryId', secureAdmin(), (req, res) => {
 
 		const { categoryId } = req.params;
 		const { filter } = req.body;
-
+		
 		crudCategories.updateCategory(categoryId, filter).then(category => {
 
 			res.status(200).json({
@@ -466,6 +663,57 @@ router.get('/:categoryId/sub', (req, res) => {
 });
 
 	
+router.get('/images/many', (req, res) => {
+	
+	// WE RECEIVE A FILTER PARAM FROM QUERY STRING
+
+	const filter = getObjectParamsFromQS2(req);
+
+
+	if(filter.ids.length > 0) {
+				
+		crudCategories.getManyImagesFromStore(filter).then(outputArray => {
+						
+			res.status(200)
+				.set({
+					'content-type':'image/jpeg',
+					'api-url': '/api/categories/images/'						
+				})
+				.json({
+					error: null,
+					ok: true,
+					status: 200,
+					message: 'OK',
+					data: outputArray
+				});
+		}).catch(err => {
+
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+
+		});
+				
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING DATA',
+			data: null
+		});
+
+	}
+
+});
+
+	
 router.get('/images/:imageId', (req, res) => {
 	// REQUEST an image FROM GRIDfs *** SENDS 1 IMAGE FILE ****
 	if(req.params.imageId) {
@@ -522,7 +770,7 @@ router.get('/images/:imageId', (req, res) => {
 });
 
 
-router.post('/:categoryId/images/all', secureAdmin, uploadCategoryImages.array('images', config.app.items.CATEGORIES_IMAGES_MAX_COUNT),
+router.post('/:categoryId/images/all', secureAdmin(), uploadCategoryImages.array('images', config.app.items.CATEGORIES_IMAGES_MAX_COUNT),
 	(req, res) => {
 	// RECEIVES IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
 	// uploadImageFiles SAVES THE FILES ON GFS AND SAVES THE ID ON images FIELD IN THE ITEM DOCUMENT
@@ -571,7 +819,7 @@ router.post('/:categoryId/images/all', secureAdmin, uploadCategoryImages.array('
 	});
 
 
-router.post('/:categoryId/images/one', secureAdmin, uploadCategoryImages.single('image'),
+router.post('/:categoryId/images/one', secureAdmin(), uploadCategoryImages.single('image'),
 	(req, res) => {
 	// RECEIVES ONE IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
 	// uploadImageFiles SAVES THE FILE ON GFS AND SAVES THE ID ON images FIELD IN THE ITEM DOCUMENT
@@ -723,7 +971,7 @@ router.delete('/:categoryId/images/all', secureAdmin(), (req, res) => {
 	
 });
 
-router.post('/sub/:subcategoryId/images/all', secureAdmin, uploadSubcategoryImages.array('images', config.app.items.SUBCATEGORIES_IMAGES_MAX_COUNT),
+router.post('/sub/:subcategoryId/images/all', secureAdmin(), uploadSubcategoryImages.array('images', config.app.items.SUBCATEGORIES_IMAGES_MAX_COUNT),
 	(req, res) => {
 	// RECEIVES IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
 	// uploadImageFiles SAVES THE FILES ON GFS AND SAVES THE ID ON images FIELD IN THE ITEM DOCUMENT
@@ -772,7 +1020,7 @@ router.post('/sub/:subcategoryId/images/all', secureAdmin, uploadSubcategoryImag
 	});
 
 
-router.post('/sub/:subcategoryId/images/one', secureAdmin, uploadSubcategoryImages.single('image'),
+router.post('/sub/:subcategoryId/images/one', secureAdmin(), uploadSubcategoryImages.single('image'),
 	(req, res) => {
 	// RECEIVES ONE IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
 	// uploadImageFiles SAVES THE FILE ON GFS AND SAVES THE ID ON images FIELD IN THE ITEM DOCUMENT

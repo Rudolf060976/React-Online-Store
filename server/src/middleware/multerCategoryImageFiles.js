@@ -31,8 +31,8 @@ const gfsStorageImageFiles = new GridFSStorage({
 				// IN THAT CASE WE DON'T SAVE THE FILE.
 				
 				if(item.images.length < config.app.items.CATEGORIES_IMAGES_MAX_COUNT) {
-
-					if (file.mimetype === 'image/jpeg') {	//ONLY IMAGES ARE PERMITTED
+					
+					if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/webp') {	//ONLY IMAGES ARE PERMITTED
 
 						resolve({
 							id: generateImageFileId(categoryId),

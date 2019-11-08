@@ -31,9 +31,7 @@ nconf.defaults({
 	Items_Image_Max_Size_MBytes: 16,
 	Categories_Images_Max_Count: 8,
 	Subcategories_Images_Max_Count: 8,
-	Items_Images_Max_Count: 8,
-	User_Admin_Username: "rafaelurbinan@hotmail.com"
-
+	Items_Images_Max_Count: 8
 });
 
 const env = nconf.get('NODE_ENV') || 'development';
@@ -70,8 +68,7 @@ module.exports = {
 		USER_MAX_FAILED_LOGIN_ATTEMPS: nconf.get('User_Max_Failed_Login_Attemps'),
 		USER_SESSION_DURATION_MINUTES: nconf.get('User_Session_Duration_Minutes'),
 		USER_JWT_SECRET: nconf.get('USER_JWT_SECRET'),
-		USER_VALIDATION_TOKEN_DURATION_MINUTES: nconf.get('User_Validation_Token_Duration_Minutes'),
-		User_Admin_Username: nconf.get('User_Admin_Username')
+		USER_VALIDATION_TOKEN_DURATION_MINUTES: nconf.get('User_Validation_Token_Duration_Minutes')
 	},
 	company: {
 		name: nconf.get('Company_Name'),

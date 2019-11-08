@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const userSchema = new mongoose.Schema({
 	username: {
@@ -84,6 +85,10 @@ const userSchema = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	isAdmin: {
+		type: Boolean,
+		default: false
+	},
 	suspendedAt: {
 		type: Date,
 		default: Date.now
@@ -98,6 +103,8 @@ const userSchema = new mongoose.Schema({
 	}
 
 })
+
+userSchema.plugin(mongoosePaginate);
 
 const User = mongoose.model('User', userSchema);
 

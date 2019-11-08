@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 const types = mongoose.SchemaTypes;
 
 const categorySchema = new mongoose.Schema({
@@ -26,6 +28,8 @@ const categorySchema = new mongoose.Schema({
 	},
 	images: [types.ObjectId]
 });
+
+categorySchema.plugin(mongoosePaginate);
 
 const Category = mongoose.model('Category', categorySchema);
 

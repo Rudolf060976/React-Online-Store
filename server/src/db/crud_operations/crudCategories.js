@@ -317,6 +317,99 @@ const getAllCategories = () => {
 
 };
 
+
+const getAllCategoriesAdmin = (filter, page, limit, sort) => {
+	
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+						
+			const options = {
+				page,
+				limit,
+				sort 
+			};
+			
+
+			Category.paginate(filter, options).then(result => {
+				
+				/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/				
+
+				return resolve(result);
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const getManyCategories = (filter) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+			
+			const { ids } = filter;
+			
+			Category.find({ _id: { $in: ids } }).sort('name').exec().then(res => {
+
+				return resolve(res);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
 const updateCategory = (categoryId, filter) => {
 
 	return new Promise((resolve, reject) => {
@@ -330,44 +423,7 @@ const updateCategory = (categoryId, filter) => {
 				throw createError(400, 'INVALID ID');
 					
 			}
-				
-			if (filter) {
-
-				if (typeof filter === 'object') {
-
-					let result = 0;
-
-					const filterParamsCount = Object.keys(filter).length;
-	
-					Object.keys(filter).forEach(item => {
-									
-						Category.schema.eachPath(pathname => {
-	
-							if (item === pathname) result +=1;
-	
-						});
-	
-					});
-	
-					if (result < filterParamsCount) {
-	
-						throw createError(400, 'BAD FILTER PARAMETERS');
-					
-					}
-
-
-				} else {
-
-					throw createError(400, 'FILTER MUST BE AN OBJECT');
-
-				}				
-
-			} else {
-
-				throw createError(400, 'MISSING FILTER');
-
-			}
-
+			
 			Category.findByIdAndUpdate(categoryId, filter, { new: true }).then(res => {
 
 				if (!res) {
@@ -698,6 +754,65 @@ const getImageFromStore = imageId => {  // IMPORTANT  argument: imageId is STRIN
 	});
 };
 
+
+const getManyImagesFromStore = filter => {  
+
+	// filter = { ids: [id1, id2, id3, id4.....] }
+	
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+
+			let gfs = new MongoGridFsStorage(mongoose.connection.db, { bucketName: 'images' });
+			
+
+			const { ids } = filter;			
+
+			const files = ids.map(id => {
+
+				return gfs.read({ _id: ObjectID.createFromHexString(id) });
+
+			});
+		
+
+			Promise.all(files).then(dataArray => {
+
+				const outputArray = [];
+
+				for( let i = 0; i < ids.length; i++) {
+
+					outputArray.push({
+						_id: ids[i],
+						image: dataArray[i]
+					});
+
+				}
+				
+				resolve(outputArray);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+		
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
+
 const deleteImageFromStore = imageId => {
 
 	return new Promise((resolve, reject) => {
@@ -750,6 +865,8 @@ module.exports = {
 	getCategoryById,
 	getCategoryByName,
 	getAllCategories,
+	getManyCategories,
+	getAllCategoriesAdmin,
 	updateCategory,
 	addCategoryImage,
 	getCategoryImages,
@@ -757,5 +874,6 @@ module.exports = {
 	deleteAllCategoryImages,
 	updateCategoryImages,
 	getImageFromStore,
-	deleteImageFromStore
+	deleteImageFromStore,
+	getManyImagesFromStore
 };

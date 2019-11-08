@@ -469,6 +469,41 @@ const getItemById = (itemId) => {
 };
 
 
+const getManyItems = (filter) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			const { ids } = filter;
+
+			Item.find({ _id: { $in: ids } }).exec().then(res => {
+				
+				return resolve(res);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
 const getItemImages = (itemId) => {
 
 	return new Promise((resolve, reject) => {
@@ -667,50 +702,12 @@ const updateItemImages = (itemId, imagesArray) => {
 
 };
 
-const getItems = (filter, page, limit) => {
+const getItems = (filter, page, limit, sort) => {
 
 	return new Promise((resolve, reject) => {
 
 		if (db.readyState === 1 || db.readyState === 2) {
-
-			if(!filter) {
-
-				filter = {};
-
-			} else {
-
-
-				if (typeof filter === 'object') {
-
-					let result = 0;
-
-					const filterParamsCount = Object.keys(filter).length;
-	
-					Object.keys(filter).forEach(item => {
-									
-						Item.schema.eachPath(pathname => {
-	
-							if (item === pathname) result +=1;
-	
-						});
-	
-					});
-	
-					if (result < filterParamsCount) {
-	
-						throw createError(400, 'BAD FILTER PARAMETERS');
 					
-					}
-	
-
-				} else {
-
-					throw createError(400, 'FILTER MUST BE AN OBJECT');
-
-				}
-
-			}
-
 			const options = {
 				page,
 				limit,
@@ -718,7 +715,7 @@ const getItems = (filter, page, limit) => {
 					{ path: 'category', select:'name' },
 					{ path: 'subcategory', select: 'name' }
 				],
-				sort: { name: 1 }
+				sort
 			};
 			
 			Item.paginate(filter, options).then(result => {
@@ -762,6 +759,62 @@ const getItems = (filter, page, limit) => {
 		}	
 	});
 };
+
+
+const getItemsAdmin = (filter, page, limit, sort) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+					
+			const options = {
+				page,
+				limit,
+				sort
+			};
+			
+			Item.paginate(filter, options).then(result => {
+
+				/* result is an Object with the following properties:
+
+			- docs {Array} - Array of documents
+			- totalDocs {Number} - Total number of documents in collection that match a query
+			- limit {Number} - Limit that was used
+			- hasPrevPage {Bool} - Availability of prev page.
+			- hasNextPage {Bool} - Availability of next page.
+			- page {Number} - Current page number
+			- totalPages {Number} - Total number of pages.
+			- offset {Number} - Only if specified or default page/offset values were used
+			- prevPage {Number} - Previous page number if available or NULL
+			- nextPage {Number} - Next page number if available or NULL
+			- pagingCounter {Number} - The starting sl. number of first document.
+			- meta {Object} - Object of pagination meta data (Default false). 
+			
+			*/					
+
+				resolve(result);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
 
 const updateItem = (itemId, filter) => {
 
@@ -936,7 +989,7 @@ const deleteImageFromStore = imageId => {
 	});
 };
 
-const getItemsByCategory = (categoryId, page, limit) => {
+const getItemsByCategory = (categoryId, page, limit, sort) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -950,6 +1003,21 @@ const getItemsByCategory = (categoryId, page, limit) => {
 						
 			}
 
+			let field, order;
+
+
+			if(sort) {
+
+				field = sort.field;
+				order = sort.order;
+
+			} else {
+
+				field = 'name';
+				order = 'ASC';
+			}
+
+
 			const options = {
 				page,
 				limit,
@@ -957,7 +1025,7 @@ const getItemsByCategory = (categoryId, page, limit) => {
 					{ path: 'category', select:'name' },
 					{ path: 'subcategory', select: 'name' }
 				],
-				sort: { name: 1 }
+				sort: { [field]: order  }
 			};
 
 			Item.paginate({ category: ObjectID.createFromHexString(categoryId) }, options).then(result => {
@@ -1003,7 +1071,7 @@ const getItemsByCategory = (categoryId, page, limit) => {
 };
 
 
-const getItemsBySubcategory = (subcategoryId, page, limit) => {
+const getItemsBySubcategory = (subcategoryId, page, limit, sort) => {
 
 	return new Promise((resolve, reject) => {
 
@@ -1017,6 +1085,21 @@ const getItemsBySubcategory = (subcategoryId, page, limit) => {
 						
 			}
 
+			let field, order;
+
+
+			if(sort) {
+
+				field = sort.field;
+				order = sort.order;
+
+			} else {
+
+				field = 'name';
+				order = 'ASC';
+			}
+
+
 			const options = {
 				page,
 				limit,
@@ -1024,7 +1107,7 @@ const getItemsBySubcategory = (subcategoryId, page, limit) => {
 					{ path: 'category', select:'name' },
 					{ path: 'subcategory', select: 'name' }
 				],
-				sort: { name: 1 }
+				sort: { [field]: order  }
 			};
 
 
@@ -1080,7 +1163,9 @@ module.exports =  {
 	getItemImages,
 	updateItemImages,
 	getItems,
+	getItemsAdmin,
 	getItemById,
+	getManyItems,
 	updateItem,
 	getImageFromStore,
 	deleteImageFromStore,
