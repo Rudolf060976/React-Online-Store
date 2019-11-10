@@ -66,6 +66,63 @@ const addCategory = (code, name, description) => {
 
 };
 
+
+const addCategoryWithFilter = (filter) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			const { code, name } = filter;
+
+			let { description } = filter;
+
+			Category.findOne({ code }).then(res => {
+
+				if(res) {
+
+					throw createError(409, 'CODE ALREADY EXISTS');
+					
+				}
+
+				if(!description) {
+					description = null;
+				}
+
+				return Category.create({
+					_id: new ObjectID(),
+					code,
+					name,
+					description
+				});
+		
+
+			}).then(res => {
+
+				resolve(res);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
 const deleteCategory = categoryId => {
 
 	return new Promise((resolve, reject) => {
@@ -875,5 +932,6 @@ module.exports = {
 	updateCategoryImages,
 	getImageFromStore,
 	deleteImageFromStore,
-	getManyImagesFromStore
+	getManyImagesFromStore,
+	addCategoryWithFilter
 };

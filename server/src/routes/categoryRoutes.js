@@ -340,11 +340,11 @@ router.get('/', (req, res) => {
 
 router.post('/', secureAdmin(), (req, res) => {
 
-	if(req.body && req.body.code && req.body.name) {
+	if(req.body && req.body.filter) {
 
-		const { code, name, description } = req.body;
+		const { filter } = req.body;
 
-		crudCategories.addCategory(code, name, description).then(category => {
+		crudCategories.addCategoryWithFilter(filter).then(category => {
 
 			res.status(200).json({
 				error: null,
