@@ -217,44 +217,7 @@ const updateSubcategory = (subcategoryId, filter) => {
 				throw createError(400, 'INVALID ID');
 					
 			}
-				
-			if (filter) {
-
-				if (typeof filter === 'object') {
-
-					let result = 0;
-
-					const filterParamsCount = Object.keys(filter).length;
-	
-					Object.keys(filter).forEach(item => {
-									
-						Subcategory.schema.eachPath(pathname => {
-	
-							if (item === pathname) result +=1;
-	
-						});
-	
-					});
-	
-					if (result < filterParamsCount) {
-	
-						throw createError(400, 'BAD FILTER PARAMETERS');
-					
-					}
-
-
-				} else {
-
-					throw createError(400, 'FILTER MUST BE AN OBJECT');
-
-				}				
-
-			} else {
-
-				throw createError(400, 'MISSING FILTER');
-
-			}
-
+							
 			Subcategory.findByIdAndUpdate(subcategoryId, filter, { new: true }).then(res => {
 
 				if (!res) {
@@ -605,7 +568,12 @@ const deleteSubcategoryImage = (subcategoryId, imageId) => {
 
 			}).then(res => {
 				
-				resolve(res);					
+				return Subcategory.findById(subcategoryId);
+
+			}).then(res => {
+
+				resolve(res);
+									
 
 			}).catch(err => {
 
@@ -863,6 +831,106 @@ const getSubcategoryById = subcategoryId => {
 };
 
 
+const deleteManySubcategoryImages = (subcategoryId, filter) => {
+
+	// filter = { ids: [xxxx, xxxx, xxxx]}
+
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			Subcategory.findById(subcategoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ITEM ID NOT FOUND');
+					
+				}
+						
+				deleteManyImagesFromStore(filter);
+
+				const { ids } = filter;
+
+				const images = res.images.filter(item => !ids.includes(item.toString()));
+				
+				res.images = images;
+
+				return res.save();
+
+			}).then(res => {
+				
+				resolve(res);					
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+		
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const deleteManyImagesFromStore = filter => {  
+
+	// filter = { ids: [id1, id2, id3, id4.....] }
+	
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+
+			let gfs = new MongoGridFsStorage(mongoose.connection.db, { bucketName: 'images' });
+			
+
+			const { ids } = filter;			
+
+			const files = ids.map(id => {
+
+				return gfs.delete({ _id: ObjectID.createFromHexString(id) });
+
+			});
+		
+
+			Promise.all(files).then(() => {
+
+				resolve();
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+		
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
+
 module.exports = {
 	addSubcategory,
 	deleteSubcategory,
@@ -879,6 +947,7 @@ module.exports = {
 	getImageFromStore,
 	deleteImageFromStore,
 	getAllSubcategories,
-	getAllSubcategoriesAdmin
+	getAllSubcategoriesAdmin,
+	deleteManySubcategoryImages
 };
 

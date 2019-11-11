@@ -638,7 +638,7 @@ const deleteCategoryImage = (categoryId, imageId) => {
 					throw createError(404, 'IMAGE ID NOT FOUND');
 
 				}
-
+				
 				deleteImageFromStore(imageId.toString());
 
 				const images = res.images.filter(item => item.toString() !== imageId.toString());
@@ -652,7 +652,7 @@ const deleteCategoryImage = (categoryId, imageId) => {
 				resolve(res);					
 
 			}).catch(err => {
-
+				
 				if (!err.status) {
 
 					err.status = 500;
@@ -724,6 +724,60 @@ const deleteAllCategoryImages = (categoryId) => {
 	});
 
 };
+
+
+const deleteManyCategoryImages = (categoryId, filter) => {
+
+	// filter = { ids: [xxxx, xxxx, xxxx]}
+
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			Category.findById(categoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ITEM ID NOT FOUND');
+					
+				}
+						
+				deleteManyImagesFromStore(filter);
+
+				const { ids } = filter;
+
+				const images = res.images.filter(item => !ids.includes(item.toString()));
+				
+				res.images = images;
+
+				return res.save();
+
+			}).then(res => {
+				
+				resolve(res);					
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+		
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
 
 const updateCategoryImages = (categoryId, imagesArray) => {
 
@@ -895,7 +949,7 @@ const deleteImageFromStore = imageId => {
 				resolve();
 
 			}).catch(err => {
-
+				
 				if (!err.status) {
 
 					err.status = 500;
@@ -905,6 +959,53 @@ const deleteImageFromStore = imageId => {
 				reject(err);
 
 			});
+
+		} else {
+			
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}	
+	});
+};
+
+
+const deleteManyImagesFromStore = filter => {  
+
+	// filter = { ids: [id1, id2, id3, id4.....] }
+	
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+
+			let gfs = new MongoGridFsStorage(mongoose.connection.db, { bucketName: 'images' });
+			
+
+			const { ids } = filter;			
+
+			const files = ids.map(id => {
+
+				return gfs.delete({ _id: ObjectID.createFromHexString(id) });
+
+			});
+		
+
+			Promise.all(files).then(() => {
+
+				resolve();
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+		
 
 		} else {
 
@@ -933,5 +1034,7 @@ module.exports = {
 	getImageFromStore,
 	deleteImageFromStore,
 	getManyImagesFromStore,
-	addCategoryWithFilter
+	addCategoryWithFilter,
+	deleteManyImagesFromStore,
+	deleteManyCategoryImages
 };

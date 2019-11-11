@@ -126,7 +126,7 @@ router.get('/sub/admin', paginate.middleware(10, 50), (req, res) => {
 });
 
 
-router.get('/sub/subcategoryId', (req, res) => {
+router.get('/sub/:subcategoryId', (req, res) => {
 
 	if(req.params.subcategoryId) {
 
@@ -874,16 +874,14 @@ router.delete('/:categoryId/images/one/:imageId', secureAdmin(), (req, res) => {
 	if(req.params.categoryId && req.params.imageId) {
 		
 		const { categoryId, imageId } = req.params;
-		
-		let itemObj = null; 
+			
 	
 		crudCategories.getCategoryById(categoryId).then(item => {
-		
-			itemObj = item;
+				
 					
 			return crudCategories.deleteCategoryImage(categoryId, imageId);				
 
-		}).then(() =>{
+		}).then(result =>{
 		
 			res.status(200).json({
 				error: null,
@@ -891,13 +889,13 @@ router.delete('/:categoryId/images/one/:imageId', secureAdmin(), (req, res) => {
 				status: 200,
 				message: 'OK',
 				data: {
-					category: itemObj
+					category: result
 				}
 			});	
 		
 		
 		}).catch( err => {
-		
+			
 			res.status(err.status).json({
 				error: err,
 				ok: false,
@@ -1075,16 +1073,14 @@ router.delete('/sub/:subcategoryId/images/one/:imageId', secureAdmin(), (req, re
 	if(req.params.subcategoryId && req.params.imageId) {
 		
 		const { subcategoryId, imageId } = req.params;
-		
-		let itemObj = null; 
+				
 	
 		crudSubcategories.getSubcategoryById(subcategoryId).then(item => {
 		
-			itemObj = item;
-					
+							
 			return crudSubcategories.deleteSubcategoryImage(subcategoryId, imageId);			
 					
-		}).then(() =>{
+		}).then((result) =>{
 		
 			res.status(200).json({
 				error: null,
@@ -1092,7 +1088,7 @@ router.delete('/sub/:subcategoryId/images/one/:imageId', secureAdmin(), (req, re
 				status: 200,
 				message: 'OK',
 				data: {
-					subcategory: itemObj
+					subcategory: result
 				}
 			});	
 		
@@ -1172,6 +1168,128 @@ router.delete('/sub/:subcategoryId/images/all', secureAdmin(), (req, res) => {
 	}	
 	
 });
+
 	
+router.delete('/:categoryId/images/many', (req, res) => {
+	
+	// WE RECEIVE A FILTER PARAM FROM QUERY STRING
+
+	if (req.params.categoryId) {
+
+		const { categoryId } = req.params;
+	
+		const filter = getObjectParamsFromQS2(req);
+
+		if(filter.ids.length > 0) {
+				
+			crudCategories.deleteManyCategoryImages(categoryId, filter).then(() => {
+						
+				res.json({
+					error: null,
+					ok: true,
+					status: 200,
+					message: 'OK'
+				});
+			}).catch(err => {
+			
+				res.status(err.status).json({
+					error: err,
+					ok: false,
+					status: err.status,
+					message: err.message,
+					data: null
+				});
+
+			});
+				
+
+		} else {
+
+			return res.status(400).json({
+				error: createError(400, 'BAD REQUEST'),
+				ok: false,
+				status: 400,
+				message: 'MISSING DATA',
+				data: null
+			});
+
+		}
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING DATA',
+			data: null
+		});
+
+	}
+
+});
+	
+	
+router.delete('/sub/:subcategoryId/images/many', (req, res) => {
+	
+	// WE RECEIVE A FILTER PARAM FROM QUERY STRING
+
+	if (req.params.subcategoryId) {
+
+		const { subcategoryId } = req.params;
+	
+		const filter = getObjectParamsFromQS2(req);
+
+		if(filter.ids.length > 0) {
+				
+			crudSubcategories.deleteManySubcategoryImages(subcategoryId, filter).then(() => {
+						
+				res.json({
+					error: null,
+					ok: true,
+					status: 200,
+					message: 'OK'
+				});
+			}).catch(err => {
+			
+				res.status(err.status).json({
+					error: err,
+					ok: false,
+					status: err.status,
+					message: err.message,
+					data: null
+				});
+
+			});
+				
+
+		} else {
+
+			return res.status(400).json({
+				error: createError(400, 'BAD REQUEST'),
+				ok: false,
+				status: 400,
+				message: 'MISSING DATA',
+				data: null
+			});
+
+		}
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING DATA',
+			data: null
+		});
+
+	}
+
+});	
+
 
 module.exports = router;
