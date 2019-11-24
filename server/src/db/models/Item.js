@@ -42,7 +42,7 @@ const itemsSchema = new mongoose.Schema({
 		trim: true,
 		maxlength: 2000
 	},
-	keyFeatures: [String],
+	keyFeatures: [{ title: String, description: String }],
 	target: {
 		type: String,
 		enum: ['All','Men','Women','Girls','Boys','Children','Babies'],
@@ -97,22 +97,6 @@ const itemsSchema = new mongoose.Schema({
 		type: Boolean,
 		default: true
 	},
-	isDealofTheDay: {
-		type: Boolean,
-		default: false
-	},
-	isBestSeller: {
-		type: Boolean,
-		default: false
-	},
-	isSeasonDeal: {
-		type: Boolean,
-		default: false
-	},
-	isMustHave: {
-		type: Boolean,
-		default: false
-	},	
 	images: [types.ObjectId]
 });
 

@@ -83,6 +83,64 @@ const addSubcategory = (code, categoryId, name, description) => {
 };
 
 
+const addSubcategoryWithFilter = (categoryId, filter) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			const { code, name } = filter;
+
+			let { description } = filter;
+
+			Subcategory.findOne({ code }).then(res => {
+
+				if(res) {
+
+					throw createError(409, 'CODE ALREADY EXISTS');
+					
+				}
+
+				if(!description) {
+					description = null;
+				}
+
+				return Subcategory.create({
+					_id: new ObjectID(),
+					code,
+					name,
+					description,
+					category: ObjectID.createFromHexString(categoryId)
+				});
+		
+
+			}).then(res => {
+
+				resolve(res);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+
+			});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
 const deleteSubcategory = subcategoryId => {
 
 	return new Promise((resolve, reject) => {
@@ -109,11 +167,7 @@ const deleteSubcategory = subcategoryId => {
 
 				if(images.length > 0) {
 
-					images.forEach(id => {
-
-						deleteImageFromStore(id.toString());
-
-					});
+					deleteManyImagesFromStore({ ids: images });
 
 				}
 
@@ -140,7 +194,6 @@ const deleteSubcategory = subcategoryId => {
 	});
 
 
-
 }
 
 
@@ -156,6 +209,8 @@ const deleteAllSubCategories = () => {
 
 				if(docs.length > 0) {
 
+					const allImagesIdArray = [];
+
 					docs.forEach(doc => {
 
 						const images = doc.images;
@@ -164,13 +219,16 @@ const deleteAllSubCategories = () => {
 
 							images.forEach(id => {
 		
-								deleteImageFromStore(id.toString());
+								allImagesIdArray.push(id);
 		
 							});
 		
 						}
 
 					});
+
+					deleteManyImagesFromStore({ ids: allImagesIdArray });
+
 				}
 				
 				return Subcategory.deleteMany({});
@@ -180,6 +238,71 @@ const deleteAllSubCategories = () => {
 			
 				resolve();
 
+
+			}).catch(err => {
+				
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
+
+const deleteManySubCategories = (filter) => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			const { ids } = filter;
+			
+			Subcategory.find({ _id: { $in: ids } }).then(all => {
+							
+				const docs = all;
+
+				if(docs.length > 0) {
+
+					const allImagesIdArray = [];
+
+					docs.forEach(doc => {
+
+						const images = doc.images;
+
+						if(images.length > 0) {
+
+							images.forEach(id => {
+		
+								allImagesIdArray.push(id);
+		
+							});
+		
+						}
+
+					});
+
+					deleteManyImagesFromStore({ ids: allImagesIdArray });
+
+				}
+				
+				return Subcategory.deleteMany({ _id: { $in: ids } });
+
+			}).then(() => {
+			
+				resolve();
 
 			}).catch(err => {
 				
@@ -249,6 +372,55 @@ const updateSubcategory = (subcategoryId, filter) => {
 	});
 
 }
+
+
+const getSubcategoryById = subcategoryId => {
+
+	return new Promise((resolve, reject) => {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			// Case No. 2 : Invalid ID
+
+			if (!ObjectID.isValid(subcategoryId)) {
+				
+				throw createError(400, 'INVALID ID');
+					
+			}
+						
+
+			Subcategory.findById(subcategoryId).then(res => {
+
+				if (!res) {
+					
+					throw createError(404, 'ID NOT FOUND');
+					
+				}
+
+				return resolve(res);
+
+			}).catch(err => {
+
+				if (!err.status) {
+
+					err.status = 500;
+
+				}
+
+				reject(err);
+			})
+
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+	});
+
+};
+
 
 const getSubcategories = categoryId => {
 
@@ -345,8 +517,10 @@ const getManySubcategories = (filter) => {
 		if (db.readyState === 1 || db.readyState === 2) {
 
 			const { ids } = filter;
+
+			const ids2 = ids.map(item => ObjectID.createFromHexString(item));
 					
-			Subcategory.find({ _id: { $in: ids }}).sort('name').exec().then(subcategories => {
+			Subcategory.find({ _id: { $in: ids2 }}).sort('name').exec().then(subcategories => {
 				
 				return resolve(subcategories);
 
@@ -566,9 +740,6 @@ const deleteSubcategoryImage = (subcategoryId, imageId) => {
 
 				return res.save();
 
-			}).then(res => {
-				
-				return Subcategory.findById(subcategoryId);
 
 			}).then(res => {
 
@@ -611,15 +782,7 @@ const deleteAllSubcategoryImages = (subcategoryId) => {
 					
 				}
 				
-				if(res.images.length > 0 ) {
-
-					res.images.forEach(id => {
-
-						deleteImageFromStore(id.toString());
-
-					});
-
-				}
+				deleteManyImagesFromStore({ ids: res.images });
 				
 				res.images = [];
 
@@ -783,54 +946,6 @@ const deleteImageFromStore = imageId => {
 };
 
 
-const getSubcategoryById = subcategoryId => {
-
-	return new Promise((resolve, reject) => {
-
-		if (db.readyState === 1 || db.readyState === 2) {
-
-			// Case No. 2 : Invalid ID
-
-			if (!ObjectID.isValid(subcategoryId)) {
-				
-				throw createError(400, 'INVALID ID');
-					
-			}
-						
-
-			Subcategory.findById(subcategoryId).then(res => {
-
-				if (!res) {
-					
-					throw createError(404, 'ID NOT FOUND');
-					
-				}
-
-				return resolve(res);
-
-			}).catch(err => {
-
-				if (!err.status) {
-
-					err.status = 500;
-
-				}
-
-				reject(err);
-			})
-
-
-		} else {
-
-			throw createError(500, 'DB CONNECTION ERROR!!');
-
-		}
-
-	});
-
-};
-
-
 const deleteManySubcategoryImages = (subcategoryId, filter) => {
 
 	// filter = { ids: [xxxx, xxxx, xxxx]}
@@ -948,6 +1063,8 @@ module.exports = {
 	deleteImageFromStore,
 	getAllSubcategories,
 	getAllSubcategoriesAdmin,
-	deleteManySubcategoryImages
+	deleteManySubcategoryImages,
+	addSubcategoryWithFilter,
+	deleteManySubCategories
 };
 

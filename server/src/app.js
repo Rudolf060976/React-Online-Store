@@ -20,6 +20,8 @@ const itemRoutes = require('./routes/itemRoutes');
 
 const categoryRoutes = require('./routes/categoryRoutes');
 
+const itemSpecialsRoutes = require('./routes/itemSpecialsRoutes');
+
 const app = express();
 
 app.use(logger('dev'));
@@ -75,6 +77,7 @@ app.use('/api', passportRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/specials', itemSpecialsRoutes);
 
 app.all('*', (req, res) => {
 	

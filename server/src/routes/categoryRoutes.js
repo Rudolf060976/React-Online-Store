@@ -126,6 +126,37 @@ router.get('/sub/admin', paginate.middleware(10, 50), (req, res) => {
 });
 
 
+router.get('/sub/many', (req, res) => {
+	
+	const filter = getObjectParamsFromQS2(req);
+	
+	crudSubcategories.getManySubcategories(filter).then(results => {
+
+		res.status(200).json({
+			error: null,
+			ok: true,
+			status: 200,
+			message: 'OK',
+			data: {
+				results
+			}
+		});
+
+	}).catch(err => {
+
+		res.status(err.status).json({
+			error: err,
+			ok: false,
+			status: err.status,
+			message: err.message,
+			data: null
+		});
+
+	});
+	
+});
+
+
 router.get('/sub/:subcategoryId', (req, res) => {
 
 	if(req.params.subcategoryId) {
@@ -171,37 +202,6 @@ router.get('/sub/:subcategoryId', (req, res) => {
 });
 
 
-router.get('/sub/many', (req, res) => {
-	
-	const filter = getObjectParamsFromQS2(req);
-
-	crudSubcategories.getManySubcategories(filter).then(results => {
-
-		res.status(200).json({
-			error: null,
-			ok: true,
-			status: 200,
-			message: 'OK',
-			data: {
-				results
-			}
-		});
-
-	}).catch(err => {
-
-		res.status(err.status).json({
-			error: err,
-			ok: false,
-			status: err.status,
-			message: err.message,
-			data: null
-		});
-
-	});
-	
-});
-
-
 router.get('/sub', (req, res) => {
 	
 	crudSubcategories.getAllSubcategories().then(subcategories => {
@@ -234,7 +234,7 @@ router.get('/sub', (req, res) => {
 router.get('/many', (req, res) => {
 
 	const filter = getObjectParamsFromQS2(req);
-	console.log('FILTER  :', filter);
+	
 	crudCategories.getManyCategories(filter).then(results => {
 
 		res.status(200).json({
@@ -384,49 +384,6 @@ router.post('/', secureAdmin(), (req, res) => {
 
 });
 
-router.delete('/:categoryId', secureAdmin(), (req, res) => {
-
-	if(req.params.categoryId) {
-
-		const { categoryId } = req.params;
-
-		crudCategories.deleteCategory(categoryId).then(category => {
-
-			res.status(200).json({
-				error: null,
-				ok: true,
-				status: 200,
-				message: 'OK',
-				data: {
-					category
-				}
-			});
-
-		}).catch(err => {
-
-			res.status(err.status).json({
-				error: err,
-				ok: false,
-				status: err.status,
-				message: err.message,
-				data: null
-			});
-
-		});
-
-	} else {
-
-		return res.status(400).json({
-			error: createError(400, 'BAD REQUEST'),
-			ok: false,
-			status: 400,
-			message: 'MISSING ID',
-			data: null
-		});
-	}
-
-});
-
 
 router.put('/:categoryId', secureAdmin(), (req, res) => {
 
@@ -480,13 +437,13 @@ router.put('/:categoryId', secureAdmin(), (req, res) => {
 
 
 router.post('/:categoryId/sub', secureAdmin(), (req, res) => {
-
-	if(req.params.categoryId && req.body && req.body.code && req.body.name) {
+	
+	if(req.params.categoryId && req.body && req.body.filter) {
 
 		const { categoryId } = req.params;
-		const { code, name, description } = req.body;
+		const { filter } = req.body;
 
-		crudSubcategories.addSubcategory(code, categoryId, name, description).then(subcategory => { 
+		crudSubcategories.addSubcategoryWithFilter(categoryId, filter).then(subcategory => { 
 
 			res.status(200).json({
 				error: null,
@@ -527,51 +484,6 @@ router.post('/:categoryId/sub', secureAdmin(), (req, res) => {
 
 });
 
-
-router.delete('/sub/:subcategoryId', secureAdmin(), (req, res) => {
-
-	if(req.params.subcategoryId) {
-
-		const { subcategoryId } = req.params;
-
-		crudSubcategories.deleteSubcategory(subcategoryId).then(subcategory => {
-
-			res.status(200).json({
-				error: null,
-				ok: true,
-				status: 200,
-				message: 'OK',
-				data: {
-					subcategory
-				}
-			});
-
-		}).catch(err => {
-
-			res.status(err.status).json({
-				error: err,
-				ok: false,
-				status: err.status,
-				message: err.message,
-				data: null
-			});
-
-		});
-
-
-	} else {
-
-		return res.status(400).json({
-			error: createError(400, 'BAD REQUEST'),
-			ok: false,
-			status: 400,
-			message: 'MISSING PARAMETERS',
-			data: null
-		});
-
-	}
-
-});
 
 router.put('/sub/:subcategoryId', secureAdmin(), (req, res) => {
 
@@ -669,47 +581,33 @@ router.get('/images/many', (req, res) => {
 
 	const filter = getObjectParamsFromQS2(req);
 
-
-	if(filter.ids.length > 0) {
 				
-		crudCategories.getManyImagesFromStore(filter).then(outputArray => {
-						
-			res.status(200)
-				.set({
-					'content-type':'image/jpeg',
-					'api-url': '/api/categories/images/'						
-				})
-				.json({
-					error: null,
-					ok: true,
-					status: 200,
-					message: 'OK',
-					data: outputArray
-				});
-		}).catch(err => {
-
-			res.status(err.status).json({
-				error: err,
-				ok: false,
-				status: err.status,
-				message: err.message,
-				data: null
+	crudCategories.getManyImagesFromStore(filter).then(outputArray => {
+					
+		res.status(200)
+			.set({
+				'content-type':'image/jpeg',
+				'api-url': '/api/categories/images/'						
+			})
+			.json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: outputArray
 			});
+	}).catch(err => {
 
-		});
-				
-
-	} else {
-
-		return res.status(400).json({
-			error: createError(400, 'BAD REQUEST'),
+		res.status(err.status).json({
+			error: err,
 			ok: false,
-			status: 400,
-			message: 'MISSING DATA',
+			status: err.status,
+			message: err.message,
 			data: null
 		});
 
-	}
+	});
+
 
 });
 
@@ -867,108 +765,6 @@ router.post('/:categoryId/images/one', secureAdmin(), uploadCategoryImages.singl
 
 	});
 
-
-router.delete('/:categoryId/images/one/:imageId', secureAdmin(), (req, res) => {
-	// DELETES AN IMAGE FROM item OBJECT AND GRIDFS
-		
-	if(req.params.categoryId && req.params.imageId) {
-		
-		const { categoryId, imageId } = req.params;
-			
-	
-		crudCategories.getCategoryById(categoryId).then(item => {
-				
-					
-			return crudCategories.deleteCategoryImage(categoryId, imageId);				
-
-		}).then(result =>{
-		
-			res.status(200).json({
-				error: null,
-				ok: true,
-				status: 200,
-				message: 'OK',
-				data: {
-					category: result
-				}
-			});	
-		
-		
-		}).catch( err => {
-			
-			res.status(err.status).json({
-				error: err,
-				ok: false,
-				status: err.status,
-				message: err.message,
-				data: null
-			});
-		
-		});
-		
-	} else {
-		
-		return res.status(400).json({
-			error: createError(400, 'BAD REQUEST'),
-			ok: false,
-			status: 400,
-			message: 'MISSING ITEM ID',
-			data: null
-		});
-		
-	}	
-		
-});
-
-
-router.delete('/:categoryId/images/all', secureAdmin(), (req, res) => {
-	// DELETES AN IMAGE FROM item OBJECT AND GRIDFS
-	
-	if(req.params.categoryId) {
-	
-		const { categoryId } = req.params;
-		
-		crudCategories.getCategoryById(categoryId).then(item => {
-	
-			return crudCategories.deleteAllCategoryImages(categoryId);
-		
-		}).then(() => {
-			
-			res.status(200).json({
-				error: null,
-				ok: true,
-				status: 200,
-				message: 'ALL IMAGES DELETED SUCCESSFULLY',
-				data: null
-			});	
-
-		
-		}).catch( err => {
-	
-			res.status(err.status).json({
-				error: err,
-				ok: false,
-				status: err.status,
-				message: err.message,
-				data: null
-			});
-	
-		});
-	
-	} else {
-	
-		return res.status(400).json({
-			error: createError(400, 'BAD REQUEST'),
-			ok: false,
-			status: 400,
-			message: 'MISSING ITEM ID',
-			data: null
-		});
-	
-	}	
-	
-});
-
 router.post('/sub/:subcategoryId/images/all', secureAdmin(), uploadSubcategoryImages.array('images', config.app.items.SUBCATEGORIES_IMAGES_MAX_COUNT),
 	(req, res) => {
 	// RECEIVES IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
@@ -1066,6 +862,50 @@ router.post('/sub/:subcategoryId/images/one', secureAdmin(), uploadSubcategoryIm
 
 	});
 
+router.delete('/sub/many', secureAdmin(), (req, res) => {
+
+	const filter = getObjectParamsFromQS2(req);
+
+	// filter = { ids: [xxxxx, xxxxx, .... ] }
+
+	if(filter.ids.length > 0) {
+
+		crudSubcategories.deleteManySubCategories(filter).then(() => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: null
+			});
+
+
+		}).catch(err => {
+
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+
+		});
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ID',
+			data: null
+		});
+	}
+
+});	
 
 router.delete('/sub/:subcategoryId/images/one/:imageId', secureAdmin(), (req, res) => {
 	// DELETES AN IMAGE FROM item OBJECT AND GRIDFS
@@ -1170,67 +1010,6 @@ router.delete('/sub/:subcategoryId/images/all', secureAdmin(), (req, res) => {
 });
 
 	
-router.delete('/:categoryId/images/many', (req, res) => {
-	
-	// WE RECEIVE A FILTER PARAM FROM QUERY STRING
-
-	if (req.params.categoryId) {
-
-		const { categoryId } = req.params;
-	
-		const filter = getObjectParamsFromQS2(req);
-
-		if(filter.ids.length > 0) {
-				
-			crudCategories.deleteManyCategoryImages(categoryId, filter).then(() => {
-						
-				res.json({
-					error: null,
-					ok: true,
-					status: 200,
-					message: 'OK'
-				});
-			}).catch(err => {
-			
-				res.status(err.status).json({
-					error: err,
-					ok: false,
-					status: err.status,
-					message: err.message,
-					data: null
-				});
-
-			});
-				
-
-		} else {
-
-			return res.status(400).json({
-				error: createError(400, 'BAD REQUEST'),
-				ok: false,
-				status: 400,
-				message: 'MISSING DATA',
-				data: null
-			});
-
-		}
-
-
-	} else {
-
-		return res.status(400).json({
-			error: createError(400, 'BAD REQUEST'),
-			ok: false,
-			status: 400,
-			message: 'MISSING DATA',
-			data: null
-		});
-
-	}
-
-});
-	
-	
 router.delete('/sub/:subcategoryId/images/many', (req, res) => {
 	
 	// WE RECEIVE A FILTER PARAM FROM QUERY STRING
@@ -1290,6 +1069,305 @@ router.delete('/sub/:subcategoryId/images/many', (req, res) => {
 	}
 
 });	
+
+
+router.delete('/many', secureAdmin(), (req, res) => {
+
+	const filter = getObjectParamsFromQS2(req);
+
+	// filter = { ids: [xxxxx, xxxxx, .... ] }
+
+	if(filter.ids.length > 0) {
+
+		crudCategories.deleteManyCategories(filter).then(() => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: null
+			});
+
+
+		}).catch(err => {
+
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+
+		});
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ID',
+			data: null
+		});
+	}
+
+});
+
+
+router.delete('/sub/:subcategoryId', secureAdmin(), (req, res) => {
+
+	if(req.params.subcategoryId) {
+
+		const { subcategoryId } = req.params;
+
+		crudSubcategories.deleteSubcategory(subcategoryId).then(subcategory => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: {
+					subcategory
+				}
+			});
+
+		}).catch(err => {
+
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+
+		});
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING PARAMETERS',
+			data: null
+		});
+
+	}
+
+});
+
+
+router.delete('/:categoryId/images/one/:imageId', secureAdmin(), (req, res) => {
+	// DELETES AN IMAGE FROM item OBJECT AND GRIDFS
+		
+	if(req.params.categoryId && req.params.imageId) {
+		
+		const { categoryId, imageId } = req.params;
+			
+	
+		crudCategories.getCategoryById(categoryId).then(item => {
+				
+					
+			return crudCategories.deleteCategoryImage(categoryId, imageId);				
+
+		}).then(result =>{
+		
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: {
+					category: result
+				}
+			});	
+		
+		
+		}).catch( err => {
+			
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+		
+		});
+		
+	} else {
+		
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ITEM ID',
+			data: null
+		});
+		
+	}	
+		
+});
+
+
+router.delete('/:categoryId/images/all', secureAdmin(), (req, res) => {
+	// DELETES AN IMAGE FROM item OBJECT AND GRIDFS
+	
+	if(req.params.categoryId) {
+	
+		const { categoryId } = req.params;
+		
+		crudCategories.getCategoryById(categoryId).then(item => {
+	
+			return crudCategories.deleteAllCategoryImages(categoryId);
+		
+		}).then(() => {
+			
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'ALL IMAGES DELETED SUCCESSFULLY',
+				data: null
+			});	
+
+		
+		}).catch( err => {
+	
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+	
+		});
+	
+	} else {
+	
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ITEM ID',
+			data: null
+		});
+	
+	}	
+	
+});
+
+	
+router.delete('/:categoryId/images/many', (req, res) => {
+	
+	// WE RECEIVE A FILTER PARAM FROM QUERY STRING
+
+	if (req.params.categoryId) {
+
+		const { categoryId } = req.params;
+	
+		const filter = getObjectParamsFromQS2(req);
+
+		if(filter.ids.length > 0) {
+				
+			crudCategories.deleteManyCategoryImages(categoryId, filter).then(() => {
+						
+				res.json({
+					error: null,
+					ok: true,
+					status: 200,
+					message: 'OK'
+				});
+			}).catch(err => {
+			
+				res.status(err.status).json({
+					error: err,
+					ok: false,
+					status: err.status,
+					message: err.message,
+					data: null
+				});
+
+			});
+				
+
+		} else {
+
+			return res.status(400).json({
+				error: createError(400, 'BAD REQUEST'),
+				ok: false,
+				status: 400,
+				message: 'MISSING DATA',
+				data: null
+			});
+
+		}
+
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING DATA',
+			data: null
+		});
+
+	}
+
+});	
+
+
+router.delete('/:categoryId', secureAdmin(), (req, res) => {
+
+	if(req.params.categoryId) {
+
+		const { categoryId } = req.params;
+
+		crudCategories.deleteCategory(categoryId).then(category => {
+
+			res.status(200).json({
+				error: null,
+				ok: true,
+				status: 200,
+				message: 'OK',
+				data: {
+					category
+				}
+			});
+
+		}).catch(err => {
+
+			res.status(err.status).json({
+				error: err,
+				ok: false,
+				status: err.status,
+				message: err.message,
+				data: null
+			});
+
+		});
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING ID',
+			data: null
+		});
+	}
+
+});
 
 
 module.exports = router;
