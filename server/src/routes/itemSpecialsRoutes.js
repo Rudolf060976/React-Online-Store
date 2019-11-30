@@ -189,9 +189,9 @@ router.post('/', secureAdmin(), (req, res) => {
 });
 
 router.put('/:id', secureAdmin(), (req, res) => {
-// 
+	
 	if(req.params.id && req.body && req.body.filter) {
-
+		
 		const { id } = req.params;
 		const { filter } = req.body;
 
@@ -239,7 +239,6 @@ router.put('/:id', secureAdmin(), (req, res) => {
 	}
 
 });
-
 
 	
 module.exports = router;

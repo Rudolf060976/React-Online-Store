@@ -493,11 +493,12 @@ router.post('/:itemId/images/one', secureAdmin(), uploadImageFiles.single('image
 
 	
 router.post('/', secureAdmin(), (req, res) => {
+	
 	// RECEIVES A NEW item OBJECT AS JSON AND SAVES IT IN THE DB
 	if( req.body && req.body.filter) {
-
+		
 		const { filter } = req.body;
-
+		
 		crudItems.addNewItemWithFilter(filter).then(item => {
 
 			res.status(200).json({

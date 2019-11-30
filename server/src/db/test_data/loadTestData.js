@@ -10,6 +10,8 @@ const items = require('./data/items');
 const crudCategories = require('../crud_operations/crudCategories');
 const crudSubcategories = require('../crud_operations/crudSubcategories');
 const crudItems = require('../crud_operations/crudItems');
+const crudCodes = require('../crud_operations/crudCodes');
+const crudItemSpecials = require('../crud_operations/crudItemSpecials');
 
 let countSUBDEPARTMENTS = 0;
 
@@ -21,6 +23,34 @@ function checkDone() {
 		console.log('DONE......EXIT PROCESS..')
 		process.exit(0); // THERE ARE NOW 36 SUBCATEGORIES
 	}
+
+}
+
+async function CreateCodes() {
+
+	console.log('CREATING CODES...');
+
+	await crudCodes.createCodes();
+
+	console.log('DONE...');
+
+}
+
+async function CreateItemSpecials() {
+
+	console.log('CREATING ITEM SPECIALS...');
+
+	const filter = {
+		dealOfTheDayItems: [],
+		bestSellerItems: [],
+		seasonDealItems: [],
+		mustHaveItems: [],
+		freeShippingItems: []
+	}
+
+	await crudItemSpecials.addNewSpecialWithFilter(filter);
+
+	console.log('DONE...');
 
 }
 
@@ -72,6 +102,10 @@ async function loadData() {
 		console.log('**** STARTING SCRIPT FOR INSERTING TESTING DATA ON THE DATABASE ******');
 
 		// *** WE HAVE TO DELETE ALL THE DATA ***
+
+		await CreateCodes();
+
+		await CreateItemSpecials();
 
 		await DeleteAll();
 		

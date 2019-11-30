@@ -114,9 +114,20 @@ const updateItemSpecials = (id, filter) => {
 				throw createError(400, 'INVALID ID');
 					
 			}
-			
-			ItemSpecials.findByIdAndUpdate(id, filter, { new: true }).then(res => {
 
+			const { bestSellerItems, dealOfTheDayItems, freeShippingItems, mustHaveItems, seasonDealItems} = filter;
+
+			const data = {
+				bestSellerItems,
+				dealOfTheDayItems,
+				freeShippingItems,
+				mustHaveItems,
+				seasonDealItems
+			};
+
+			
+			ItemSpecials.findByIdAndUpdate(id, data, { new: true }).then(res => {
+				
 				if (!res) {
 					
 					throw createError(404, 'ITEM ID NOT FOUND');

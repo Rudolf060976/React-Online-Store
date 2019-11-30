@@ -14,6 +14,8 @@ const crudSubcategories = require('./crudSubcategories');
 
 const db = mongoose.connection;
 
+const crudCodes = require('./crudCodes');
+
 const addCategory = (code, name, description) => {
 
 	return new Promise((resolve, reject) => {
@@ -73,29 +75,26 @@ const addCategoryWithFilter = (filter) => {
 
 		if (db.readyState === 1 || db.readyState === 2) {
 
-			const { code, name } = filter;
+			const { name } = filter;
 
 			let { description } = filter;
 
-			Category.findOne({ code }).then(res => {
+			let catCode = null;
 
-				if(res) {
+			crudCodes.getNewCategoryCode().then(newCode => {
 
-					throw createError(409, 'CODE ALREADY EXISTS');
-					
-				}
-
+				catCode = newCode;
+				
 				if(!description) {
 					description = null;
 				}
 
 				return Category.create({
 					_id: new ObjectID(),
-					code,
 					name,
-					description
-				});
-		
+					description,
+					code: catCode
+				});		
 
 			}).then(res => {
 

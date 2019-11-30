@@ -30,7 +30,7 @@ const itemsSchema = new mongoose.Schema({
 		required: true,
 		trim: true,			//REQUIRED
 		minlength: 1,
-		maxlength: 200
+		maxlength: 300
 	},
 	shortDescription: {
 		type: String,

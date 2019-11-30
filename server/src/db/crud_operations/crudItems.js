@@ -14,6 +14,7 @@ const Item = require('../models/Item');
 
 const db = mongoose.connection;
 
+const crudCodes = require('./crudCodes');
 
 const addNewItem = (categoryId, subcategoryId, code, name, price) => {
 
@@ -113,15 +114,13 @@ const addNewItemWithFilter = filter => {
 
 		if (db.readyState === 1 || db.readyState === 2) {
 
-			const { code, subcategory } = filter;
-						
-			Item.findOne({ code }).then(res => {
+			const { subcategory } = filter;
 
-				if(res) {
-
-					throw createError(409, 'CODE ALREADY EXISTS');
-					
-				}
+			let itemCode = null;
+			
+			crudCodes.getNewItemCode().then(newCode => {
+				
+				itemCode = newCode;
 
 				return Subcategory.findById(subcategory);
 
@@ -130,7 +129,8 @@ const addNewItemWithFilter = filter => {
 				return Item.create({
 					...filter,
 					_id: new ObjectID(),
-					category: subcat.category
+					category: subcat.category,
+					code: itemCode
 				});
 		
 
