@@ -1,0 +1,62 @@
+@import '../../mainStyles//globalVariables.scss';
+
+
+.deals-item {
+	margin: 30px 0;
+}
+
+.deals-items-image-container {
+	width: 100%;	
+	display: flex;
+	justify-content: center;	
+	
+}
+
+.deals-items-image-center {
+	width: 30%;
+	position: relative;	
+	max-height: 200px;
+	
+	&:hover img {		
+		opacity: 0.5;
+	}	
+
+	&:hover button {
+		opacity: 1;
+	}
+	display: flex;
+	justify-content: center;
+
+	& > a {
+		outline: none;
+	}
+
+}
+
+.deals-items-image {
+
+	max-width: 200px;	
+	transition: all .1s linear;
+		
+}
+
+.deals-item-caption {
+	@include fontSize(1.6);
+	color: black;
+	font-family: 'Squada One', Verdana, Geneva, Tahoma, sans-serif;
+	width: 100%;
+	text-align: center;
+	margin: 0;
+	padding: 5px 0;
+	
+}
+
+.deals-items-button {
+	position: absolute;
+	top: 40%;
+	left: 40%;
+	opacity: 0;
+	transition: all .1s linear;
+	@extend %quick-look-button;
+	
+}

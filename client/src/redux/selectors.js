@@ -118,3 +118,105 @@ export const getCategoryImages = (state, categoryId) => {
 	return outputArray;
 
 };
+
+export const getIsDealsFetching = state => {
+
+	return state.itemsData.dealsItems.isFetching;
+
+};
+
+export const getDealsItems = state => {
+
+	const Items = state.itemsData.dealsItems;
+	
+	const { allIDs } = Items;
+
+	const { byId } = Items;
+
+	const outputArray = [];
+
+	for (let i = 0; i < allIDs.length; i++) {
+
+		const item = byId[allIDs[i]];
+
+		outputArray.push(item);
+	}
+	
+	return outputArray;
+
+};
+
+export const getDealsItemImages = (state, itemId) => {
+
+	const Items = state.itemsData.dealsItems;
+
+	const itemObject = Items.byId[itemId];
+
+	const imagesArray = itemObject.images;
+
+	const allImagesObject = Items.images.byId;
+
+	const outputArray = [];
+
+	for (let i = 0; i < imagesArray.length; i++) {
+
+		const item = allImagesObject[imagesArray[i]];
+
+		outputArray.push(item);
+
+	}
+
+	return outputArray;
+
+};
+
+export const getIsSeasonFetching = state => {
+
+	return state.itemsData.seasonItems.isFetching;
+
+};
+
+export const getSeasonItems = state => {
+
+	const Items = state.itemsData.seasonItems;
+
+	const { allIDs } = Items;
+
+	const { byId } = Items;
+
+	const outputArray = [];
+
+	for (let i = 0; i < allIDs.length; i++) {
+
+		const item = byId[allIDs[i]];
+
+		outputArray.push(item);
+
+	}
+
+	return outputArray;
+
+};
+
+export const getSeasonItemImages = (state, itemId) => {
+
+	const Items = state.itemsData.seasonItems;
+
+	const itemObject = Items.byId[itemId];
+
+	const imagesArray = itemObject.images;
+
+	const allImagesObject = Items.images.byId;
+
+	const outputArray = [];
+
+	for (let i = 0; i < imagesArray.length; i++) {
+		
+		const image = allImagesObject[imagesArray[i]];
+
+		outputArray.push(image);
+	}
+
+	return outputArray;
+
+};

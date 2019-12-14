@@ -38,27 +38,28 @@ const actionsAsyncFetchCategories = () => {
 				return [...acc, ...item.images];
 
 			}, []);
-			
-			const fetchArray = [];
 
-			for (let j = 0; j < imagesAllIDs.length; j++) {
-
-				fetchArray.push(fetchItemsData.fetchGetImage(imagesAllIDs[j]));
+						
+			return fetchItemsData.fetchGetManyImages(imagesAllIDs).then(json => {
 				
-			}		
-			
-			return Promise.all(fetchArray).then((images) => {
-				
-				const output = [];
+				const { data } = json;
 
-				for (let i = 0; i < imagesAllIDs.length; i++) {
+				const output = data.map(item => {
+					/* NOTA: EN LA API VIENE data, QUE ES UN ARRAY CONVERTIDO A JSON  */
+				/* ESE ARRAY ES DE DOCUMENTOS DE LA FORMA { _id: xxx, image: xxxx }  */
+				/* image es un Buffer de Node.js, pero que fué convertido en JSON  */
+				/* Por lo tanto hay que convertirlo DE NUEVO a Buffer, con Buffer.from */
+				/* Luego, debemos crear un Blob para poder usar URL.createObjectURL */
+				/* ya que ese método solo usa Blobs o Files */
+				/* Por último, URL.createObjectURL nos da el url de la imágen */
+					return {
+						_id: item._id,
+						id: item._id,
+						imageURL: URL.createObjectURL(new Blob([Buffer.from(item.image)]))
+					};
+				});			
 
-					output.push({
-						_id: imagesAllIDs[i],
-						imageURL: URL.createObjectURL(images[i])
-					});
-				}
-				
+
 				dispatch(actionsItemsData.categories.fetchSuccess(docs, output));
 
 			}, err => {
@@ -156,25 +157,25 @@ const actionsAsyncFetchAllSubcategories = () => {
 
 			}, []);
 			
-			const fetchArray = [];
-
-			for (let j = 0; j < imagesAllIDs.length; j++) {
-
-				fetchArray.push(fetchItemsData.fetchGetImage(imagesAllIDs[j]));
-				
-			}
-			
-			return Promise.all(fetchArray).then(images => {
+					
+			return fetchItemsData.fetchGetManyImages(imagesAllIDs).then(json => {
 								
-				const output = [];
+				const { data } = json;
 
-				for (let i = 0; i < imagesAllIDs.length; i++) {
-
-					output.push({
-						_id: imagesAllIDs[i],
-						imageURL: URL.createObjectURL(images[i])
-					});
-				}
+				const output = data.map(item => {
+					/* NOTA: EN LA API VIENE data, QUE ES UN ARRAY CONVERTIDO A JSON  */
+				/* ESE ARRAY ES DE DOCUMENTOS DE LA FORMA { _id: xxx, image: xxxx }  */
+				/* image es un Buffer de Node.js, pero que fué convertido en JSON  */
+				/* Por lo tanto hay que convertirlo DE NUEVO a Buffer, con Buffer.from */
+				/* Luego, debemos crear un Blob para poder usar URL.createObjectURL */
+				/* ya que ese método solo usa Blobs o Files */
+				/* Por último, URL.createObjectURL nos da el url de la imágen */
+					return {
+						_id: item._id,
+						id: item._id,
+						imageURL: URL.createObjectURL(new Blob([Buffer.from(item.image)]))
+					};
+				});
 				
 				dispatch(actionsItemsData.subcategories.fetchSuccess(docs, output));
 
@@ -197,9 +198,160 @@ const actionsAsyncFetchAllSubcategories = () => {
 
 };
 
+const actionsAsyncFetchItemSpecialsData = async () => {
+
+	try {
+
+		const json = await fetchItemsData.fetchGetItemSpecials();
+		
+		if (json.ok) {
+
+			const { data: { results: docs } } = json;
+
+			return docs;
+
+		}
+
+		throw new Error(json.error);
+		
+	} catch (error) {
+	
+		throw new Error(error);
+			
+	}	
+
+};
+
+const actionsAsyncFetchDealsItems = () => {
+
+	return (dispatch, getState) => {
+		
+		dispatch(actionsItemsData.dealsItems.fetch());
+
+		let imagesAllIDs = null;
+
+
+		return actionsAsyncFetchItemSpecialsData().then(docs => {
+			
+			imagesAllIDs = docs.reduce((acc, item) => {
+
+				return [...acc, ...item.images];
+
+			}, []);
+			
+
+			return fetchItemsData.fetchGetManyImages(imagesAllIDs).then(json => {
+				
+				const { data } = json;
+
+				const output = data.map(item => {
+					/* NOTA: EN LA API VIENE data, QUE ES UN ARRAY CONVERTIDO A JSON  */
+				/* ESE ARRAY ES DE DOCUMENTOS DE LA FORMA { _id: xxx, image: xxxx }  */
+				/* image es un Buffer de Node.js, pero que fué convertido en JSON  */
+				/* Por lo tanto hay que convertirlo DE NUEVO a Buffer, con Buffer.from */
+				/* Luego, debemos crear un Blob para poder usar URL.createObjectURL */
+				/* ya que ese método solo usa Blobs o Files */
+				/* Por último, URL.createObjectURL nos da el url de la imágen */
+					return {
+						_id: item._id,
+						id: item._id,
+						imageURL: URL.createObjectURL(new Blob([Buffer.from(item.image)]))
+					};
+				});			
+
+
+				dispatch(actionsItemsData.dealsItems.fetchSuccess(docs, output));
+
+			}, err => {
+
+				dispatch(actionsItemsData.dealsItems.fetchFailure(err.message));
+
+				return Promise.reject(err);
+
+			});
+
+
+		}, err => {
+
+			dispatch(actionsItemsData.dealsItems.fetchFailure(err.message));
+
+			return Promise.reject(err);
+
+		});
+
+
+	};
+
+};
+
+
+const actionsAsyncFetchSeasonItems = () => {
+
+	return (dispatch, getState) => {
+		
+		dispatch(actionsItemsData.seasonItems.fetch());
+
+		let imagesAllIDs = null;
+
+
+		return actionsAsyncFetchItemSpecialsData().then(docs => {
+			
+			imagesAllIDs = docs.reduce((acc, item) => {
+
+				return [...acc, ...item.images];
+
+			}, []);
+			
+
+			return fetchItemsData.fetchGetManyImages(imagesAllIDs).then(json => {
+				
+				const { data } = json;
+
+				const output = data.map(item => {
+					/* NOTA: EN LA API VIENE data, QUE ES UN ARRAY CONVERTIDO A JSON  */
+				/* ESE ARRAY ES DE DOCUMENTOS DE LA FORMA { _id: xxx, image: xxxx }  */
+				/* image es un Buffer de Node.js, pero que fué convertido en JSON  */
+				/* Por lo tanto hay que convertirlo DE NUEVO a Buffer, con Buffer.from */
+				/* Luego, debemos crear un Blob para poder usar URL.createObjectURL */
+				/* ya que ese método solo usa Blobs o Files */
+				/* Por último, URL.createObjectURL nos da el url de la imágen */
+					return {
+						_id: item._id,
+						id: item._id,
+						imageURL: URL.createObjectURL(new Blob([Buffer.from(item.image)]))
+					};
+				});			
+
+
+				dispatch(actionsItemsData.seasonItems.fetchSuccess(docs, output));
+
+			}, err => {
+
+				dispatch(actionsItemsData.seasonItems.fetchFailure(err.message));
+
+				return Promise.reject(err);
+
+			});
+
+
+		}, err => {
+
+			dispatch(actionsItemsData.seasonItems.fetchFailure(err.message));
+
+			return Promise.reject(err);
+
+		});
+
+
+	};
+
+};
+
 
 export {
 	actionsAsyncFetchCategories,
 	actionsAsyncFetchSubcategoriesByCategoryId,
-	actionsAsyncFetchAllSubcategories
+	actionsAsyncFetchAllSubcategories,
+	actionsAsyncFetchDealsItems,
+	actionsAsyncFetchSeasonItems
 };

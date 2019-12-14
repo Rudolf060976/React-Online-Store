@@ -1,0 +1,38 @@
+@import '../../mainStyles//globalVariables.scss';
+
+#season-items-container {
+	background: white;
+	grid-area: season;
+	min-width: 300px;
+
+	h6 {
+		margin: 0;
+		padding: 20px 0 0 20px;
+		a {
+
+			text-decoration: none;
+			font-family: 'Lilita One';
+			@include fontSize(2);
+			color: $Blue-Clear;
+			text-shadow: 0 0 2px $Yellow-Dark;
+			transition: all .2s linear;
+			letter-spacing: 1px;
+						
+		}
+
+		a:hover {
+			color: darken($Purple-Clear,10%);
+			
+		}
+
+	}
+}
+
+
+.season-item {
+	display: flex;
+	width: 100%;
+	flex-flow: row nowrap;
+	justify-content: space-evenly;
+}
+

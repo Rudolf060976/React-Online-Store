@@ -10,7 +10,7 @@ import Footer from './components/layout/Footer/Footer';
 import Home from './pages/Home';
 import Departments from './components/Departments/Departments';
 import { getIsDepartmentOpen, getErrorMessages } from './redux/selectors';
-import { actionsAsyncFetchCategories, actionsAsyncFetchAllSubcategories } from './redux/actions/asyncActions';
+import { actionsAsyncFetchCategories, actionsAsyncFetchAllSubcategories, actionsAsyncFetchDealsItems, actionsAsyncFetchSeasonItems } from './redux/actions/asyncActions';
 
 function App({ isDepartmentsOpen, dispatch, getErrorMessage }) {
 
@@ -22,13 +22,23 @@ function App({ isDepartmentsOpen, dispatch, getErrorMessage }) {
 		
 		dispatch(actionsAsyncFetchCategories()).then(() => {
 			
-			dispatch(actionsAsyncFetchAllSubcategories());
-		
-		}).catch(err => {
-			setErrorMessage(getErrorMessage('013') + err.message + getErrorMessage('010'));
-			setError(true);
+			return dispatch(actionsAsyncFetchAllSubcategories());
+
+		}).then(() => {
 			
-		});		
+			return dispatch(actionsAsyncFetchDealsItems());
+			
+		}).then(() => {
+			
+			dispatch(actionsAsyncFetchSeasonItems());
+		
+		})
+			.catch(err => {
+				
+				setErrorMessage(getErrorMessage('013') + err.message + getErrorMessage('010'));
+				setError(true);
+			
+			});		
 
 		setLoad(true);
 

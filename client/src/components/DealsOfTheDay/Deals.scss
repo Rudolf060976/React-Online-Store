@@ -1,0 +1,36 @@
+@import '../../mainStyles//globalVariables.scss';
+
+#deals-items-container {
+	background-color: white;
+	grid-area: deals;
+	h6 {
+		margin: 0;
+		padding: 20px 0 0 20px;
+		a {
+
+			text-decoration: none;
+			font-family: 'Lilita One';
+			@include fontSize(2);
+			color: $Blue-Clear;
+			text-shadow: 0 0 2px $Yellow-Dark;
+			transition: all .2s linear;
+			letter-spacing: 1px;
+						
+		}
+
+		a:hover {
+			color: darken($Purple-Clear,10%);
+			
+		}
+
+	}
+}
+
+.carousel {
+	background: white;
+
+}
+
+
+
+

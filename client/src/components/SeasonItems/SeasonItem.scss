@@ -1,0 +1,36 @@
+.season-item-image-container {
+	
+	position: relative;
+
+	&:hover img {		
+					
+		opacity: 0.5;
+				
+	}
+
+	&:hover div {		
+					
+		opacity: 1;
+				
+	}
+
+}
+
+.season-item-info-container {
+	
+	position: absolute;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background-color: transparent;
+	opacity: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+}
+
+.season-item-image {
+	max-width: 200px;
+	
+}

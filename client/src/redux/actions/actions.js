@@ -54,8 +54,9 @@ const actionsItemsData = createActions({
 	},
 	DEALS_ITEMS: {
 		FETCH: val => val,
-		FETCH_SUCCESS: docs => ({
-			docs
+		FETCH_SUCCESS: (docs, images) => ({
+			docs,
+			images
 		}),
 		FETCH_FAILURE: errorMessage => ({
 			errorMessage
@@ -81,8 +82,9 @@ const actionsItemsData = createActions({
 	},
 	SEASON_ITEMS: {
 		FETCH: val => val,
-		FETCH_SUCCESS: docs => ({
-			docs
+		FETCH_SUCCESS: (docs, images) => ({
+			docs,
+			images
 		}),
 		FETCH_FAILURE: errorMessage => ({
 			errorMessage

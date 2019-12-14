@@ -177,6 +177,180 @@ const reducer = handleActions({
 			}
 		};
 
+	},
+	[actionsItemsData.dealsItems.fetch]: (state, action) => {
+
+		return {
+			...state,
+			dealsItems: {
+				isFetching: true,
+				error: false,
+				errorMessage: null,
+				allIDs: [],
+				byId: {},
+				images: {
+					allIDs: [],
+					byId: {}
+				}		
+			}
+		};
+	},
+	[actionsItemsData.dealsItems.fetchSuccess]: (state, action) => {
+
+		const { payload: { docs, images } } = action;
+
+		const allIDs = docs.map(item => (
+			item._id			
+		));
+		
+		const byId = docs.reduce((acc, item) => {
+
+			return {
+				...acc,
+				[item._id]: {
+					...item
+				}
+			};
+
+		}, {});
+
+		const imagesAllIDs = images.map(item => (
+			item._id
+		));
+
+		const imagesById = images.reduce((acc, item) => {
+
+			return {
+				...acc,
+				[item._id]: {
+					...item
+				}
+			};
+		}, {});
+
+
+		return {
+			...state,
+			dealsItems: {
+				isFetching: false,
+				error: false,
+				errorMessage: null,
+				allIDs,
+				byId,
+				images: {
+					allIDs: imagesAllIDs,
+					byId: imagesById
+				}		
+			}
+		};
+
+	},
+	[actionsItemsData.dealsItems.fetchFailure]: (state, action) => {
+
+		const { payload: { errorMessage } } = action;
+
+		return {
+			...state,
+			dealsItems: {
+				isFetching: false,
+				error: true,
+				errorMessage,
+				allIDs: [],
+				byId: {},
+				images: {
+					allIDs: [],
+					byId: {}
+				}		
+			}
+		};
+
+	},
+	[actionsItemsData.seasonItems.fetch]: (state, action) => {
+
+		return {
+			...state,
+			seasonItems: {
+				isFetching: true,
+				error: false,
+				errorMessage: null,
+				allIDs: [],
+				byId: {},
+				images: {
+					allIDs: [],
+					byId: {}
+				}		
+			}
+		};
+	},
+	[actionsItemsData.seasonItems.fetchSuccess]: (state, action) => {
+
+		const { payload: { docs, images } } = action;
+
+		const allIDs = docs.map(item => (
+			item._id			
+		));
+		
+		const byId = docs.reduce((acc, item) => {
+
+			return {
+				...acc,
+				[item._id]: {
+					...item
+				}
+			};
+
+		}, {});
+
+		const imagesAllIDs = images.map(item => (
+			item._id
+		));
+
+		const imagesById = images.reduce((acc, item) => {
+
+			return {
+				...acc,
+				[item._id]: {
+					...item
+				}
+			};
+		}, {});
+
+
+		return {
+			...state,
+			seasonItems: {
+				isFetching: false,
+				error: false,
+				errorMessage: null,
+				allIDs,
+				byId,
+				images: {
+					allIDs: imagesAllIDs,
+					byId: imagesById
+				}		
+			}
+		};
+
+	},
+	[actionsItemsData.seasonItems.fetchFailure]: (state, action) => {
+
+		const { payload: { errorMessage } } = action;
+
+		return {
+			...state,
+			seasonItems: {
+				isFetching: false,
+				error: true,
+				errorMessage,
+				allIDs: [],
+				byId: {},
+				images: {
+					allIDs: [],
+					byId: {}
+				}		
+			}
+		};
+
 	}
 
 },

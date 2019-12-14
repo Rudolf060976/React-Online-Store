@@ -26,10 +26,12 @@ const itemsData = {
 		isFetching: false,
 		error: false,
 		errorMessage: '',
-		items: {
+		allIDs: [],
+		byId: {},
+		images: {
 			allIDs: [],
 			byId: {}
-		}
+		}		
 	},
 	bestSellerItems: {
 		isFetching: false,
@@ -53,10 +55,12 @@ const itemsData = {
 		isFetching: false,
 		error: false,
 		errorMessage: '',
-		items: {
+		allIDs: [],
+		byId: {},
+		images: {
 			allIDs: [],
 			byId: {}
-		}
+		}		
 	},
 	filteredItems: {
 		isFetching: false,

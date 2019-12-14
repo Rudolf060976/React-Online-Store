@@ -1,0 +1,24 @@
+@import '../../mainStyles//globalVariables.scss';
+
+.item-info1-container {
+	background: rgba(0,0,0,.5);
+	width: 80%;
+	border-radius: 10px;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	padding: 10px;
+	
+}
+
+.item-info1-caption {
+	font-family: 'Squada One', Verdana, Geneva, Tahoma, sans-serif;
+	color: $Yellow-Dark;
+	text-align: center;
+	line-height: 18px;
+}
+
+.item-info1-button {
+	@extend %quick-look-button;
+}

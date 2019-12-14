@@ -58,6 +58,7 @@ module.exports = {
 		"no-return-await": "off",
 		"object-curly-newline": "warn",
 		"class-methods-use-this":"off",
-		"react/state-in-constructor": "off"
+		"react/state-in-constructor": "off",
+		"jsx-a11y/media-has-caption": "off"
     }
 };

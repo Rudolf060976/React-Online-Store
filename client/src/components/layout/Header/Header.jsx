@@ -109,11 +109,11 @@ class Header extends Component {
 				<div id="header-logo-container">							
 					<img id="header-logo" src={Logo} alt="Logo" />
 				</div>
-				<button type="button" id="btnDepartments" onClick={() => this.handleDepartments()}>
+				<button type="button" id="btnDepartments" onClick={this.handleDepartments}>
 					<FontAwesomeIcon id="icon-departments" icon="caret-down" />
 					Departments
 				</button>
-				<button type="button" id="mobile-btnDepartments" onClick={() => this.handleDepartments()}><FontAwesomeIcon id="mobile-icon-departments" icon="align-justify" size="lg" />
+				<button type="button" id="mobile-btnDepartments" onClick={this.handleDepartments}><FontAwesomeIcon id="mobile-icon-departments" icon="align-justify" size="lg" />
 				</button>		
 				<div id="header-main-nav">
 					{error ? <ErrorAlert msg={errorMessage} /> : null}

@@ -4,7 +4,7 @@
 #app-container {
 	max-width: $PageMaxWidth;
 	margin: 0 auto;
-	background: beige;
+	background-color: lighten(lightgrey,15%);
 	height: 700px;
 	padding-bottom: 0;
 }
@@ -15,6 +15,8 @@
 	margin: 0;
 	padding: 0;
 	position: relative;	
+	background-color: lighten(lightgrey,15%);
+	
 }
 
 #app-error-container {

@@ -37,6 +37,9 @@ const Config = {
 			},
 			GET_Image: (imageId) => {
 				return `/api/categories/images/${imageId}`;
+			},
+			GET_Many_Images: qs => {
+				return `/api/categories/images/many?${qs}`;
 			}
 		},
 		ITEMS: {
@@ -75,6 +78,12 @@ const Config = {
 			},
 			PUT_ItemUpdate: (itemId) => {
 				return `/api/items/${itemId}`;
+			},
+			GET_ItemSpecials: () => {
+				return '/api/specials/';
+			},
+			GET_Many_Items: qs => {
+				return `/api/items/many?${qs}`;
 			}			
 		},
 		USER: {

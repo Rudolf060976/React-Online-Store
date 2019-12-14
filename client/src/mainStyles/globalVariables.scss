@@ -108,5 +108,20 @@ $PageMaxWidth: 1280px;
 	}
   }
 
+
+  %quick-look-button {
+	background: $Blue-Base;
+	color: white;
+	border: 1px solid $Blue-Base;
+	border-radius: 3px;
+	@include fontSize(1);
+	padding: 0 10px;
+
+	&:hover {
+		background: white;
+		color: $Blue-Base;
+	}
+}
+
   
 
