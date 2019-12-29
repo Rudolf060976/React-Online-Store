@@ -101,6 +101,16 @@ const actionsItemsData = createActions({
 		APPLY_FILTER: filter => ({
 			filter
 		})
+	},
+	SELECTED_ITEM: {
+		FETCH: val => val,
+		FETCH_SUCCESS: (item, images) => ({
+			item,
+			images
+		}),
+		FETCH_FAILURE: errorMessage => ({
+			errorMessage
+		})
 	}
 });
 

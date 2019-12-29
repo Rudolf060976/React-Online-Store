@@ -52,9 +52,9 @@ const itemsSchema = new mongoose.Schema({
 	keyFeatures: [{ title: String, description: String }],
 	target: {
 		type: String,
-		enum: ['All','Men','Women','Girls','Boys','Children','Babies'],
+		enum: ['Everyone','Men','Women','Girls','Boys','Children','Babies'],
 		required: true,
-		default: 'All'
+		default: 'Everyone'
 	},
 	price: {
 		type: types.Decimal128,
@@ -76,8 +76,7 @@ const itemsSchema = new mongoose.Schema({
 		ref: 'Manufacturer'
 	},
 	brand: {
-		type: types.ObjectId,
-		ref: 'Brand'
+		type: String	
 	},
 	isFreeShipping: {
 		type: Boolean,

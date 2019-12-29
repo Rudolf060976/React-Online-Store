@@ -351,8 +351,77 @@ const reducer = handleActions({
 			}
 		};
 
-	}
+	},
+	[actionsItemsData.selectedItem.fetch]: (state, action) => {
 
+		return {
+			...state,
+			selectedItem: {
+				isFetching: true,
+				error: false,
+				errorMessage: null,
+				item: {},
+				images: {
+					allIDs: [],
+					byId: {}
+				}
+			}
+		};
+
+	},
+	[actionsItemsData.selectedItem.fetchSuccess]: (state, action) => {
+
+		const { payload: { item, images } } = action;
+
+		const imagesAllIDs = images.map(imgObject => (imgObject._id));
+
+		const imagesById = images.reduce((acc, img) => {
+
+			return {
+				...acc,
+				[img._id]: {
+					...img
+				}
+			};
+
+		}, {});
+
+		return {
+			...state,
+			selectedItem: {
+				isFetching: false,
+				error: false,
+				errorMessage: null,
+				item,
+				images: {
+					allIDs: imagesAllIDs,
+					byId: imagesById
+				}
+			}
+		};
+
+
+	},
+	[actionsItemsData.selectedItem.fetchFailure]: (state, action) => {
+
+		const { payload: { errorMessage } } = action;
+
+		return {
+			...state,
+			selectedItem: {
+				isFetching: false,
+				error: true,
+				errorMessage,
+				item: {},
+				images: {
+					allIDs: [],
+					byId: {}
+				}
+			}
+
+		};
+
+	}
 },
 initialState
 );

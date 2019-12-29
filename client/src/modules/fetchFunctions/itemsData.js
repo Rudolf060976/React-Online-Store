@@ -108,7 +108,7 @@ const fetchGetAllSubCategoriesByCategoryId = async (categoryId) => {
 
 };
 
-const fetchGetItemSpecials = async () => {
+const fetchGetDealsItems = async () => {
 
 	let path = Config.ROUTES.ITEMS.GET_ItemSpecials();
 
@@ -146,11 +146,71 @@ const fetchGetItemSpecials = async () => {
 };
 
 
+const fetchGetSeasonItems = async () => {
+
+	let path = Config.ROUTES.ITEMS.GET_ItemSpecials();
+
+	const options = {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		mode: 'cors'
+	};
+
+	const response = await fetch(apiUrl + path, options);
+
+	const response2 = await response.json();
+
+	const specialsObj = response2.data.specials[0];
+
+	const { seasonDealItems: seasonItems } = specialsObj;
+
+	const query = {
+		filter: JSON.stringify({
+			ids: seasonItems
+		})
+	};
+
+	const qs = new URLSearchParams(query).toString();
+
+	path = Config.ROUTES.ITEMS.GET_Many_Items(qs);
+
+	const response3 = await fetch(apiUrl + path, options);
+
+	return await response3.json();
+
+};
+
+
+const fetchGetSelectedItem = async (itemId) => {
+
+	const path = Config.ROUTES.ITEMS.GET_ItemById(itemId);
+
+	const options = {
+		method: 'GET',
+		credentials: 'include',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		mode: 'cors'
+	};
+
+	const response = await fetch(apiUrl + path, options);
+
+	return await response.json();
+
+};
+
+
 export {
 	fetchGetAllCategories,
 	fetchGetAllSubCategoriesByCategoryId,
 	fetchGetAllSubCategories,
 	fetchGetImage,
 	fetchGetManyImages,
-	fetchGetItemSpecials
+	fetchGetDealsItems,
+	fetchGetSeasonItems,
+	fetchGetSelectedItem
 };

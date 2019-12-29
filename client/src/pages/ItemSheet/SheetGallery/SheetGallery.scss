@@ -1,0 +1,49 @@
+
+@import '../../../mainStyles/globalVariables.scss';
+
+#item-sheet-gallery-container {
+	grid-area: gallery;
+
+	padding: 0;
+	padding-left: 30px;
+	padding-top: 20px;
+}
+
+#item-sheet-gallery-list {
+	width: 100%;
+
+	display: grid;
+	grid-auto-flow: row;
+	grid-template-columns: repeat(8,70px);
+	grid-template-rows: repeat(1,70px);
+	grid-auto-rows: 70px;
+	grid-auto-columns: 70px;
+	list-style-type: none;
+	gap: 10px;
+	align-items: center;
+
+}
+
+.item-sheet-gallery-list-line {
+
+	grid-row: auto;
+	grid-column: auto;
+	width: 60px;
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.item-sheet-gallery-image {
+
+
+	max-width: 60px;
+
+
+}
+
+.selected-in-item-gallery {
+	box-shadow: 2px 2px 3px rgba(0,0,0,.6);
+	opacity: .8;
+}

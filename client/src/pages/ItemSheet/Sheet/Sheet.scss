@@ -1,0 +1,15 @@
+#item-sheet-container {
+	display: grid;
+	grid-template-areas:
+	"header   header   header"
+	"images   images   price"
+	"images   images   stock"
+	"images   images   buy"
+	"images   images   buy"
+	"features features features"
+	"descrip  descrip  descrip";
+	grid-template-columns: 1fr 1fr 0.5fr;
+	grid-template-rows: repeat(7, auto);
+	gap: 5px;
+	
+}

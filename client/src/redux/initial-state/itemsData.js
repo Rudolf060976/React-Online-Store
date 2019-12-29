@@ -71,6 +71,16 @@ const itemsData = {
 			byId: {}
 		},
 		filter: {}
+	},
+	selectedItem: {
+		isFetching: false,
+		error: false,
+		errorMessage: '',
+		item: {},
+		images: {
+			allIDs: [],
+			byId: {}
+		}		
 	}
 
 };

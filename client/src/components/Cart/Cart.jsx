@@ -121,7 +121,7 @@ const Cart = function (props) {
 	} = props;
 	
 	return (
-		<StyledCart size={size}>
+		<StyledCart>
 			<Link to="/">
 				<Button size={size} fgColor={fgColor} bgColor={bgColor} counterColor={counterColor} pxChange={pxChangeLargeToSmall}>
 					<FontAwesomeIcon icon="shopping-cart" className="icon-main-nav icon-cart" />Cart

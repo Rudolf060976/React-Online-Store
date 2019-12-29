@@ -1,0 +1,44 @@
+@import '../../../mainStyles/globalVariables.scss';
+
+#item-sheet-header-container {
+	grid-area: header;
+	background-color: darken($Blue-Base, 10%);
+	color: white;
+
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+
+	padding: 25px 0 20px 20px;
+
+	h6 {
+		padding: 0;
+		margin: 0;
+		line-height: 2.4rem;
+		font-family: 'Rubik', Verdana, Geneva, Tahoma, sans-serif;
+		letter-spacing: 1px;
+	}
+		
+}
+
+#item-sheet-header-brand {
+
+	padding: 0;
+	margin: 0;
+	@include fontSize(1.2);
+
+	span {
+		color: $LightBlue;
+	}
+}
+
+#item-sheet-header-for {
+
+	padding: 0;
+	margin: 0;
+	@include fontSize(1.2);
+
+	span {
+		color: $Yellow-Dark;
+	}
+
+}

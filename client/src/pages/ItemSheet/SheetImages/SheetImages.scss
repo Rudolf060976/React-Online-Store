@@ -1,0 +1,24 @@
+#item-sheet-images-container {
+	grid-area: images;
+	background-color: white;
+
+	display: grid;
+	grid-template-areas:
+	"image    image"
+	"image    image"
+	"gallery  gallery";
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: repeat(2, auto);
+	gap: 10px;
+}
+
+#item-sheet-big-image-container {
+	grid-area: image;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#item-sheet-big-image {
+	max-width: 500px;
+}

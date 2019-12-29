@@ -198,11 +198,35 @@ const actionsAsyncFetchAllSubcategories = () => {
 
 };
 
-const actionsAsyncFetchItemSpecialsData = async () => {
+const actionsAsyncFetchDealsItemsData = async () => {
 
 	try {
 
-		const json = await fetchItemsData.fetchGetItemSpecials();
+		const json = await fetchItemsData.fetchGetDealsItems();
+		
+		if (json.ok) {
+
+			const { data: { results: docs } } = json;
+
+			return docs;
+
+		}
+
+		throw new Error(json.error);
+		
+	} catch (error) {
+	
+		throw new Error(error);
+			
+	}	
+
+};
+
+const actionsAsyncFetchSeasonItemsData = async () => {
+
+	try {
+
+		const json = await fetchItemsData.fetchGetSeasonItems();
 		
 		if (json.ok) {
 
@@ -231,7 +255,7 @@ const actionsAsyncFetchDealsItems = () => {
 		let imagesAllIDs = null;
 
 
-		return actionsAsyncFetchItemSpecialsData().then(docs => {
+		return actionsAsyncFetchDealsItemsData().then(docs => {
 			
 			imagesAllIDs = docs.reduce((acc, item) => {
 
@@ -294,7 +318,7 @@ const actionsAsyncFetchSeasonItems = () => {
 		let imagesAllIDs = null;
 
 
-		return actionsAsyncFetchItemSpecialsData().then(docs => {
+		return actionsAsyncFetchSeasonItemsData().then(docs => {
 			
 			imagesAllIDs = docs.reduce((acc, item) => {
 
@@ -347,11 +371,90 @@ const actionsAsyncFetchSeasonItems = () => {
 
 };
 
+const fetchSelectedItem = async (itemId) => {
+
+	try {
+
+		const json = await fetchItemsData.fetchGetSelectedItem(itemId);
+
+		if (json.ok) {
+
+			const { data: { item } } = json;
+
+			return item;
+		}
+
+		throw new Error(json.error);
+		
+	} catch (error) {
+		
+		throw new Error(error);
+
+	}
+
+};
+
+const actionsAsyncFetchSelectedItem = (itemId) => {
+
+	return (dispatch, getState) => {
+
+		dispatch(actionsItemsData.selectedItem.fetch());
+
+		return fetchSelectedItem(itemId).then(item => {
+
+			const imagesAllIDs = item.images;
+
+
+			return fetchItemsData.fetchGetManyImages(imagesAllIDs).then(json => {
+
+				const { data } = json;
+
+				const output = data.map(imgObject => {
+					/* NOTA: EN LA API VIENE data, QUE ES UN ARRAY CONVERTIDO A JSON  */
+				/* ESE ARRAY ES DE DOCUMENTOS DE LA FORMA { _id: xxx, image: xxxx }  */
+				/* image es un Buffer de Node.js, pero que fué convertido en JSON  */
+				/* Por lo tanto hay que convertirlo DE NUEVO a Buffer, con Buffer.from */
+				/* Luego, debemos crear un Blob para poder usar URL.createObjectURL */
+				/* ya que ese método solo usa Blobs o Files */
+				/* Por último, URL.createObjectURL nos da el url de la imágen */
+					return {
+						_id: imgObject._id,
+						id: imgObject._id,
+						imageURL: URL.createObjectURL(new Blob([Buffer.from(imgObject.image)]))
+					};
+				});		
+				
+				
+				dispatch(actionsItemsData.selectedItem.fetchSuccess(item, output));
+
+			}, err => {
+
+				dispatch(actionsItemsData.selectedItem.fetchFailure(err.message));
+
+				return Promise.reject(err);
+
+			});
+
+
+		}, err => {
+
+			dispatch(actionsItemsData.selectedItem.fetchFailure(err.message));
+
+			return Promise.reject(err);
+
+		});
+
+
+	};
+
+};
+
 
 export {
 	actionsAsyncFetchCategories,
 	actionsAsyncFetchSubcategoriesByCategoryId,
 	actionsAsyncFetchAllSubcategories,
 	actionsAsyncFetchDealsItems,
-	actionsAsyncFetchSeasonItems
+	actionsAsyncFetchSeasonItems,
+	actionsAsyncFetchSelectedItem
 };

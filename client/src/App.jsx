@@ -8,6 +8,7 @@ import './App.scss';
 import Header from './components/layout/Header/Header';
 import Footer from './components/layout/Footer/Footer';
 import Home from './pages/Home';
+import ItemSheet from './pages/ItemSheet/ItemSheet';
 import Departments from './components/Departments/Departments';
 import { getIsDepartmentOpen, getErrorMessages } from './redux/selectors';
 import { actionsAsyncFetchCategories, actionsAsyncFetchAllSubcategories, actionsAsyncFetchDealsItems, actionsAsyncFetchSeasonItems } from './redux/actions/asyncActions';
@@ -60,8 +61,12 @@ function App({ isDepartmentsOpen, dispatch, getErrorMessage }) {
 			<div id="max-width-container">
 				{isDepartmentsOpen ? <Departments /> : null }
 				<div id="app-container">
-					<Switch>
+					<Switch>						
+						<Route path="/itemsheet/:itemId">
+							<ItemSheet />
+						</Route>
 						<Route path="/" component={Home} />
+						
 					</Switch>
 				</div>		
 			</div>				

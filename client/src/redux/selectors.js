@@ -119,6 +119,8 @@ export const getCategoryImages = (state, categoryId) => {
 
 };
 
+//  ********* DEALS ITEMS SELECTORS **********************
+
 export const getIsDealsFetching = state => {
 
 	return state.itemsData.dealsItems.isFetching;
@@ -170,6 +172,8 @@ export const getDealsItemImages = (state, itemId) => {
 
 };
 
+// ************* SEASON ITEMS SELECTORS *******************
+
 export const getIsSeasonFetching = state => {
 
 	return state.itemsData.seasonItems.isFetching;
@@ -215,6 +219,53 @@ export const getSeasonItemImages = (state, itemId) => {
 		const image = allImagesObject[imagesArray[i]];
 
 		outputArray.push(image);
+	}
+
+	return outputArray;
+
+};
+
+
+// ************* selectedItem SELECTORS *******************
+
+export const getIsSelectedItemFetching = state => {
+
+	return state.itemsData.selectedItem.isFetching;
+
+};
+
+export const getIsSelectedItemError = state => {
+
+	return state.itemsData.selectedItem.error;
+
+};
+
+export const getSelectedItemErrorMessage = state => {
+
+	return state.itemsData.selectedItem.errorMessage;
+
+};
+
+export const getSelectedItem = state => {
+
+	return state.itemsData.selectedItem.item;
+
+};
+
+export const getSelectedItemImages = state => {
+
+	const imagesArrayIDs = state.itemsData.selectedItem.images.allIDs;
+
+	const imagesById = state.itemsData.selectedItem.images.byId;
+
+	const outputArray = [];
+
+	for (let i = 0; i < imagesArrayIDs.length; i++) {
+
+		const image = imagesById[imagesArrayIDs[i]];
+
+		outputArray.push(image);
+
 	}
 
 	return outputArray;
