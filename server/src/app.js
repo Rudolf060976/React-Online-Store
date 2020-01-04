@@ -22,6 +22,8 @@ const categoryRoutes = require('./routes/categoryRoutes');
 
 const itemSpecialsRoutes = require('./routes/itemSpecialsRoutes');
 
+const cartRoutes = require('./routes/cartRoutes');
+
 const app = express();
 
 app.use(logger('dev'));
@@ -78,6 +80,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/items', itemRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/specials', itemSpecialsRoutes);
+app.use('/api/cart', cartRoutes);
 
 app.all('*', (req, res) => {
 	

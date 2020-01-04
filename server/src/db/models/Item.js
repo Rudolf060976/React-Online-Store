@@ -103,7 +103,15 @@ const itemsSchema = new mongoose.Schema({
 		type: Boolean,
 		default: true
 	},
-	images: [types.ObjectId]
+	images: [types.ObjectId],
+	cost: {
+		type: types.Decimal128,
+		default: 0
+	},
+	tax: {
+		type: types.Decimal128,
+		default: 10
+	}
 });
 
 itemsSchema.plugin(mongoosePaginate);

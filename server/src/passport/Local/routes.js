@@ -225,9 +225,6 @@ router.get('/unauthorized', (req, res) => {
 				message: 'UNAUTHORIZED',
 				data: null
 			});	
-	
-
-
 
 		}
 
