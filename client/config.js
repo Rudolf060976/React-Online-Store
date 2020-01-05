@@ -95,6 +95,21 @@ const Config = {
 			POST_ForgotPassword: '/api/users/forgotpassword',
 			POST_ResetPassword: '/api/users/resetpassword',
 			POST_PasswordChange: '/api/users/passwordchange'
+		},
+		CART: {
+			GET_CartItems: (userId) => {
+				return `/api/cart/${userId}`;
+			},
+			GET_CartTotals: (userId) => {
+				return `/api/cart/totals/${userId}`;
+			},
+			POST_CartItem: '/api/cart/',
+			PUT_CartItem: lineId => {
+				return `/api/cart/${lineId}`;
+			},
+			DELETE_CartItem: lineId => {
+				return `/api/cart/${lineId}`;
+			}
 		}		
 
 	}

@@ -5,6 +5,7 @@ import banners from './banners';
 import videos from './videos';
 import errorMessages from './errorMessages';
 import iuState from './iuState';
+import cart from './cart';
 
 
 const initialState = {
@@ -12,7 +13,8 @@ const initialState = {
 	usersData,
 	itemsData,
 	errorMessages,
-	iuState
+	iuState,
+	cart
 };
 
 export default initialState;

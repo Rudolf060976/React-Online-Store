@@ -90,7 +90,7 @@ const getCart = async (userId) => {
 				as: "item"
 			}},						
 			{ $project: {
-				item: { _id: 1, shortName: 1 },
+				item: { _id: 1, shortName: 1, images: 1 },
 				createdAt: 1,
 				updateAt: 1,
 				quantity: 1,
@@ -122,7 +122,8 @@ const getCartTotals = async (userId) => {
 			{ $match: { user: ObjectID.createFromHexString(userId) } },
 			{ $group: {
 				_id: null,
-				subTotal: { $sum: { $multiply: ["$price", "$quantity"] } },
+				count: { $sum: 1 },
+				subtotal: { $sum: { $multiply: ["$price", "$quantity"] } },
 				tax: { $sum: { $divide: [ { $multiply: ["$price", "$quantity", "$tax"] }, 100 ] } },
 				total: { $sum: { $multiply: [ "$price", "$quantity", { $add: [ 1, { $divide: [ "$tax", 100 ] } ] } ] } }
 			}}

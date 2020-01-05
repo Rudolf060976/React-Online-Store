@@ -244,11 +244,11 @@ router.delete('/:lineId', secure(), (req, res) => {
 
 router.put('/:lineId', secure(), (req, res) => {
 
-	if(req.params.lineId && req.query.qty) {
+	if(req.params.lineId && req.body && req.body.qty) {
 
 		const { lineId } = req.params;
 
-		const { qty } = req.query;
+		const { qty } = req.body;
 
 		let intQty = Number.parseInt(qty);
 

@@ -4,12 +4,14 @@ import loggedUser from './reducers/loggedUser';
 import errorMessages from './reducers/errorMessages';
 import iuState from './reducers/iuState';
 import itemsData from './reducers/itemsData';
+import cart from './reducers/cart';
 
 const rootReducer = combineReducers({
 	loggedUser,
 	errorMessages,
 	iuState,
-	itemsData
+	itemsData,
+	cart
 });
 
 

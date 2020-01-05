@@ -155,10 +155,23 @@ const actionsUserData = createActions({
 
 })
 
+const actionsCart = createActions({
+	FETCH: val => val,
+	FETCH_SUCCESS: (docs, images, totals) => ({
+		docs,
+		images,
+		totals
+	}),
+	FETCH_FAILURE: errorMessage => ({
+		errorMessage
+	})
+});
+
 
 export {
 	actionsUser,
 	actionsItemsData,
 	actionsUserData,
-	actionsIUstate
+	actionsIUstate,
+	actionsCart
 };

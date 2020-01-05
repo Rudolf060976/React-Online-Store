@@ -1,6 +1,6 @@
-import { actionsItemsData, actionsUserData } from './actions';
+import { actionsItemsData, actionsUserData, actionsCart } from './actions';
 import * as fetchItemsData from '../../modules/fetchFunctions/itemsData';
-
+import * as fetchCart from '../../modules/fetchFunctions/cart';
 
 const actionsAsyncFetchCategoriesData = () => {
 	
@@ -449,6 +449,85 @@ const actionsAsyncFetchSelectedItem = (itemId) => {
 
 };
 
+const actionsAsyncFetchGetCartItems = (userId) => {
+
+
+	return (dispatch, getState) => {
+
+		dispatch(actionsCart.fetch());
+
+		let imagesAllIDs = null;
+
+		return fetchCart.fetchGetCartItems(userId).then(json => {
+
+			const { data: { result: cartLines } } = json;
+
+			imagesAllIDs = cartLines.reduce((acc, line) => {
+
+				return [...acc, ...line.item.images];
+
+			}, []);
+
+			return fetchItemsData.fetchGetManyImages(imagesAllIDs).then(json2 => {
+
+				const { data } = json2;
+
+				const output = data.map(item => {
+					/* NOTA: EN LA API VIENE data, QUE ES UN ARRAY CONVERTIDO A JSON  */
+				/* ESE ARRAY ES DE DOCUMENTOS DE LA FORMA { _id: xxx, image: xxxx }  */
+				/* image es un Buffer de Node.js, pero que fué convertido en JSON  */
+				/* Por lo tanto hay que convertirlo DE NUEVO a Buffer, con Buffer.from */
+				/* Luego, debemos crear un Blob para poder usar URL.createObjectURL */
+				/* ya que ese método solo usa Blobs o Files */
+				/* Por último, URL.createObjectURL nos da el url de la imágen */
+					return {
+						_id: item._id,
+						id: item._id,
+						imageURL: URL.createObjectURL(new Blob([Buffer.from(item.image)]))
+					};
+				});			
+
+				
+				return fetchCart.fetchGetCartTotals(userId).then(json3 => {
+
+					const { data: { result: pretotals } } = json3;
+
+					const totals = pretotals[0];
+
+					dispatch(actionsCart.fetchSuccess(cartLines, output, totals));
+
+
+				}, err => {
+
+					dispatch(actionsCart.fetchFailure(err.message));
+
+					return Promise.reject(err);
+
+				});
+
+
+			}, err => {
+
+				dispatch(actionsCart.fetchFailure(err.message));
+
+				return Promise.reject(err);
+
+			});
+
+
+		}, err => {
+
+			dispatch(actionsCart.fetchFailure(err.message));
+
+			return Promise.reject(err);
+
+		});
+
+	};
+
+
+};
+
 
 export {
 	actionsAsyncFetchCategories,
@@ -456,5 +535,6 @@ export {
 	actionsAsyncFetchAllSubcategories,
 	actionsAsyncFetchDealsItems,
 	actionsAsyncFetchSeasonItems,
-	actionsAsyncFetchSelectedItem
+	actionsAsyncFetchSelectedItem,
+	actionsAsyncFetchGetCartItems
 };
