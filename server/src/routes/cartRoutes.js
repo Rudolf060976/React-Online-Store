@@ -10,6 +10,66 @@ const crudCart = require('../db/crud_operations/crudCart');
 
 const router = express.Router();
 
+router.get('/totals/:userId', secure(), (req, res) => {
+
+	if(req.params.userId) {
+
+		const { userId } = req.params;
+
+
+		if(ObjectID.isValid(userId)) {
+
+
+			crudCart.getCartTotals(userId).then(result => {
+
+				res.status(200).json({
+					error: null,
+					ok: true,
+					status: 200,
+					message: 'OK',
+					data: {
+						result
+					}
+				});
+
+			}).catch(err => {
+
+				res.status(err.status).json({
+					error: err,
+					ok: false,
+					status: err.status,
+					message: err.message,
+					data: null
+				});
+
+			});
+
+
+		} else {
+
+			return res.status(400).json({
+				error: createError(400, 'BAD REQUEST'),
+				ok: false,
+				status: 400,
+				message: 'INVALID USER ID',
+				data: null
+			});
+
+		}
+
+	} else {
+
+		return res.status(400).json({
+			error: createError(400, 'BAD REQUEST'),
+			ok: false,
+			status: 400,
+			message: 'MISSING DATA',
+			data: null
+		});
+
+	}
+
+});
 
 router.get('/:userId', secure(), (req, res) => {
 

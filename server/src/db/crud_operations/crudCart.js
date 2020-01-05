@@ -81,7 +81,25 @@ const getCart = async (userId) => {
 			throw createError(400, 'INVALID ID');
 		}
 
-		return Cart.find({ user: userId }).populate({ path: 'item', select: 'shortName' }).sort({ createdAt: 1 }).exec();
+		return Cart.aggregate([
+			{ $match: { user: ObjectID.createFromHexString(userId) } },	
+			{ $lookup: {
+				from: "items",  // ES EL NOMBRE DE LA COLECCIÓN EL QUE SE COLOCA AQUÍ, QUE ES "items"
+				localField: "item",
+				foreignField: "_id",				
+				as: "item"
+			}},						
+			{ $project: {
+				item: { _id: 1, shortName: 1 },
+				createdAt: 1,
+				updateAt: 1,
+				quantity: 1,
+				price: 1,
+				tax: 1,
+				itemTotal: { $multiply: ["$price","$quantity"] }
+			}},			
+			{ $sort: { createdAt: 1 } }	 
+		]).exec();	
 
 	} else {
 
@@ -91,12 +109,39 @@ const getCart = async (userId) => {
 
 }
 
+const getCartTotals = async (userId) => {
 
+	if (db.readyState === 1 || db.readyState === 2) {
+
+
+		if(!ObjectID.isValid(userId)) {
+			throw createError(400, 'INVALID ID');
+		}
+
+		return Cart.aggregate([
+			{ $match: { user: ObjectID.createFromHexString(userId) } },
+			{ $group: {
+				_id: null,
+				subTotal: { $sum: { $multiply: ["$price", "$quantity"] } },
+				tax: { $sum: { $divide: [ { $multiply: ["$price", "$quantity", "$tax"] }, 100 ] } },
+				total: { $sum: { $multiply: [ "$price", "$quantity", { $add: [ 1, { $divide: [ "$tax", 100 ] } ] } ] } }
+			}}
+		]);
+	
+
+	} else {
+
+		throw createError(500, 'DB CONNECTION ERROR!!');
+
+	}
+
+};
 
 
 module.exports = {
 	addCartLine,
 	deleteCartLine,
 	updateCartLine,
-	getCart
+	getCart,
+	getCartTotals
 };
