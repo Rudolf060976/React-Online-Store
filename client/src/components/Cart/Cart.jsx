@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -117,13 +117,14 @@ const Cart = function (props) {
 		size,		
 		value,
 		counterColor,
-		pxChangeLargeToSmall
+		pxChangeLargeToSmall,
+		handleClick
 	} = props;
 	
 	return (
 		<StyledCart>
 			<Link to="/">
-				<Button size={size} fgColor={fgColor} bgColor={bgColor} counterColor={counterColor} pxChange={pxChangeLargeToSmall}>
+				<Button size={size} fgColor={fgColor} bgColor={bgColor} counterColor={counterColor} pxChange={pxChangeLargeToSmall} onClick={handleClick}>
 					<FontAwesomeIcon icon="shopping-cart" className="icon-main-nav icon-cart" />Cart
 					{ value !== null ? <Badge variant="outline-warning" id="cart-counter">{`( ${value} )`}</Badge> : ''}
 				</Button>

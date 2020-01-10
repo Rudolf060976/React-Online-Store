@@ -18,7 +18,13 @@ const fetchGetLoginUser = async () => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 };
 
 
@@ -37,7 +43,13 @@ const fetchGetLogoutUser = async () => {
 
 	const response = await fetch(apiUrl + path, options);
 
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 };
 
 
@@ -62,7 +74,13 @@ const fetchPostLoginUser = async (username, password) => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 
 };
 
@@ -90,7 +108,13 @@ const fetchPostRegisterUser = async (username, password, firstname, lastname, em
 	
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 	
 };
 
@@ -115,7 +139,13 @@ const fetchPostValidateUser = async (userId, token) => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 
 };
 
@@ -139,7 +169,13 @@ const fetchPostForgotPasswordUser = async (username) => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 
 };
 
@@ -165,7 +201,13 @@ const fetchPostResetPasswordUser = async (userId, token, newPassword) => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 
 };
 
@@ -191,7 +233,13 @@ const fetchPostPasswordChange = async (username, password, newPassword) => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 
 };
 

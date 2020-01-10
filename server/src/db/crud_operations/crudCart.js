@@ -122,7 +122,7 @@ const getCartTotals = async (userId) => {
 			{ $match: { user: ObjectID.createFromHexString(userId) } },
 			{ $group: {
 				_id: null,
-				count: { $sum: 1 },
+				count: { $sum: "$quantity" },
 				subtotal: { $sum: { $multiply: ["$price", "$quantity"] } },
 				tax: { $sum: { $divide: [ { $multiply: ["$price", "$quantity", "$tax"] }, 100 ] } },
 				total: { $sum: { $multiply: [ "$price", "$quantity", { $add: [ 1, { $divide: [ "$tax", 100 ] } ] } ] } }

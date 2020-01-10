@@ -51,6 +51,7 @@ const reducer = handleActions({
 			};
 
 		}, {});
+		
 
 		const { count, subtotal, tax, total } = totals;
 

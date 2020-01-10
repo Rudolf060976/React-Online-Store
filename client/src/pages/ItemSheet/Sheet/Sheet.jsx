@@ -7,15 +7,15 @@ import SheetStock from '../SheetStock/SheetStock';
 import SheetFeatures from '../SheetFeatures/SheetFeatures';
 import SheetBuy from '../SheetBuy/SheetBuy';
 
-function Sheet({ itemObject, itemImages }) {
+function Sheet({ itemObject, itemImages, handleAddToCart, lowOpacity }) {
 	return (
-		<div id="item-sheet-container">
+		<div id="item-sheet-container" className={lowOpacity ? 'item-sheet-low-opacity' : '' }>
 			<SheetHeader itemObject={itemObject} />
 			{ itemImages.length > 0 ? (<SheetImages itemImages={itemImages} />) : null }
 			<SheetPrice itemObject={itemObject} />
 			<SheetStock itemObject={itemObject} />			
 			{ itemObject.keyFeatures ? <SheetFeatures keyFeatures={itemObject.keyFeatures} /> : null }
-			<SheetBuy itemObject={itemObject} />
+			<SheetBuy itemObject={itemObject} handleAddToCart={handleAddToCart} />
 		</div>
 	);
 }

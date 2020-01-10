@@ -2,6 +2,20 @@ import Config from '../../../config';
 
 const apiUrl = Config.URL.apiURL;
 
+/*
+
+- The Promise returned from fetch() won’t reject on HTTP error status even if the response is an HTTP 404 or 500.
+Instead, it will resolve normally (with ok status set to false), and it will only reject on network failure or if
+anything prevented the request from completing.
+
+- fetch() won't receive cross-site cookies; you can’t establish a cross site session using fetch. Set-Cookie headers
+from other sites are silently ignored.
+
+- fetch won’t send cookies, unless you set the credentials init option. (Since Aug 25, 2017. The spec changed the
+default credentials policy to same-origin. Firefox changed since 61.0b13.)
+
+*/
+
 const fetchGetAllCategories = async () => {
 	
 
@@ -17,8 +31,15 @@ const fetchGetAllCategories = async () => {
 	};
 
 	const response = await fetch(apiUrl + path, options);		
-		
-	return await response.json();
+	
+	if (response.ok) {
+	
+		return await response.json();
+
+	}
+	
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+	
 
 };
 
@@ -37,8 +58,14 @@ const fetchGetImage = async (imageId) => {
 	};
 
 	const response = await fetch(apiUrl + path, options);		
-		
-	return await response.blob();
+	
+	if (response.ok) {
+
+		return await response.blob();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 
 };
 
@@ -66,7 +93,13 @@ const fetchGetManyImages = async (ids) => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
 
 };
 
@@ -85,7 +118,14 @@ const fetchGetAllSubCategories = async () => {
 	};
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -104,7 +144,14 @@ const fetchGetAllSubCategoriesByCategoryId = async (categoryId) => {
 
 	const response = await fetch(apiUrl + path, options);		
 		
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -141,7 +188,14 @@ const fetchGetDealsItems = async () => {
 
 	const response3 = await fetch(apiUrl + path, options);
 
-	return await response3.json();
+	if (response3.ok) {
+
+		return await response3.json();
+
+	}
+
+	throw new Error(`Error status: ${response3.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -179,7 +233,14 @@ const fetchGetSeasonItems = async () => {
 
 	const response3 = await fetch(apiUrl + path, options);
 
-	return await response3.json();
+	if (response3.ok) {
+
+		return await response3.json();
+
+	}
+
+	throw new Error(`Error status: ${response3.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -199,7 +260,14 @@ const fetchGetSelectedItem = async (itemId) => {
 
 	const response = await fetch(apiUrl + path, options);
 
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 

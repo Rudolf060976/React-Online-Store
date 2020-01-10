@@ -461,10 +461,11 @@ const actionsAsyncFetchGetCartItems = (userId) => {
 		return fetchCart.fetchGetCartItems(userId).then(json => {
 
 			const { data: { result: cartLines } } = json;
+	
 
 			imagesAllIDs = cartLines.reduce((acc, line) => {
 
-				return [...acc, ...line.item.images];
+				return [...acc, ...line.item[0].images];
 
 			}, []);
 
@@ -493,6 +494,7 @@ const actionsAsyncFetchGetCartItems = (userId) => {
 					const { data: { result: pretotals } } = json3;
 
 					const totals = pretotals[0];
+										
 
 					dispatch(actionsCart.fetchSuccess(cartLines, output, totals));
 

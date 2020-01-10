@@ -21,6 +21,40 @@ const reducer = handleActions({
 			departmentsOpen: false
 		};
 
+	},
+	[actionsIUstate.redirects.cart.true]: (state, action) => {
+
+		return {
+			...state,
+			goCart: true
+		};
+
+	},
+	[actionsIUstate.redirects.cart.false]: (state, action) => {
+
+		return {
+			...state,
+			goCart: false
+		};
+
+
+	},
+	[actionsIUstate.redirects.login.true]: (state, action) => {
+
+		return {
+			...state,
+			goLogin: true
+		};
+
+
+	},
+	[actionsIUstate.redirects.login.false]: (state, action) => {
+
+		return {
+			...state,
+			goLogin: false
+		};
+
 	}
 },
 initialState	

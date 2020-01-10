@@ -18,7 +18,14 @@ const fetchGetCartItems = async (userId) => {
 
 	const response = await fetch(apiUrl + path, options);
 
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -37,7 +44,14 @@ const fetchGetCartTotals = async (userId) => {
 
 	const response = await fetch(apiUrl + path, options);
 
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -63,7 +77,14 @@ const fetchPostCartItem = async (userId, itemId, qty) => {
 
 	const response = await fetch(apiUrl + path, options);
 
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -87,7 +108,14 @@ const fetchPutCartItem = async (lineId, qty) => {
 
 	const response = await fetch(apiUrl + path, options);
 
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -104,7 +132,14 @@ const fetchDeleteCartItem = async lineId => {
 
 	const response = await fetch(apiUrl + path, options);
 
-	return await response.json();
+	if (response.ok) {
+
+		return await response.json();
+
+	}
+
+	throw new Error(`Error status: ${response.status}. There was a problem fetching data.`);
+
 
 };
 
@@ -115,4 +150,4 @@ export {
 	fetchPostCartItem,
 	fetchPutCartItem,
 	fetchDeleteCartItem
-}
+};

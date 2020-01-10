@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 
 const Container = styled.div`
 
@@ -58,12 +56,12 @@ const StyledButton = styled.button`
 
 `;
 
-function SheetBuy({ itemObject }) {
+function SheetBuy({ itemObject, handleAddToCart }) {
 
 	const { stock } = itemObject;
 
-	console.log('STOCK :', stock);
-
+	const [quantity, setQuantity] = useState(0);
+	
 	const createSelect = stk => {
 		
 		const stockInt = Number.parseInt(stk, 10);
@@ -107,11 +105,33 @@ function SheetBuy({ itemObject }) {
 
 	};
 
+	function handleChange(e) {
+
+		setQuantity(e.target.value);
+
+	}
+
+	function handleClick() {
+		
+		const stockInt = Number.parseInt(stock, 10);
+
+		if (stockInt > 0 && quantity === 0) {
+
+			handleAddToCart(1);
+		} else {
+
+			handleAddToCart(quantity);
+
+		}		
+		
+	}
+
 	return (
 		<Container>
-			{ isNumber(stock) ? <StyledLabel>Quantity: <StyledSelect>{ createSelect(stock) }</StyledSelect></StyledLabel> : null}<StyledButton><FontAwesomeIcon icon="shopping-cart" size="sm" />  Add to Cart</StyledButton>				
+			{ isNumber(stock) ? <StyledLabel>Quantity: <StyledSelect onChange={handleChange} value={quantity}>{ createSelect(stock) }</StyledSelect></StyledLabel> : null}<StyledButton onClick={handleClick}><FontAwesomeIcon icon="shopping-cart" size="sm" />  Add to Cart</StyledButton>				
 		</Container>
 	);
 }
+
 
 export default SheetBuy;

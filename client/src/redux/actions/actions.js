@@ -27,7 +27,19 @@ const actionsIUstate = createActions({
 	DEPARTMENTS: {
 		OPEN: val => val,
 		CLOSE: val => val
+	},
+	REDIRECTS: {
+
+		CART: {
+			TRUE: val => val,
+			FALSE: val => val
+		},
+		LOGIN: {
+			TRUE: val => val,
+			FALSE: val => val
+		}
 	}
+
 });
 
 const actionsItemsData = createActions({

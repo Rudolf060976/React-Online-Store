@@ -1,7 +1,25 @@
 import React from 'react';
-import './FetchError.scss';
+import styled from 'styled-components';
 import image from '../../assets/images/errorIcon..svg';
 import boy from '../../assets/images/FETCH_ERROR.jpg';
+
+
+const FetchErrorContainer = styled.div`
+
+	width: 100%;
+	height: 50vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+`;
+
+const FetchErrorImage = styled.img`
+
+	max-width: 100px;
+
+`;
+
 
 function FetchError({ type, message }) {
 
@@ -16,10 +34,9 @@ function FetchError({ type, message }) {
 	}
 
 	return (
-		<div className="fetching-error-container">
-			<img className="fetching-error-image" src={errorImage} alt="Error..." />
-			{ message ? (<p>{ message }</p>) : null }
-		</div>
+		<FetchErrorContainer>
+			<FetchErrorImage src={errorImage} alt="Error..." />
+		</FetchErrorContainer>			
 	);
 }
 

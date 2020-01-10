@@ -12,10 +12,12 @@ import UserNav from '../../UserNav/UserNav';
 import Search from '../../Search/Search';
 import Cart from '../../Cart/Cart';
 import Avatar from '../../Avatar/Avatar';
-import { getIsLoggedUser, getUserProfile, getErrorMessages, getIsDepartmentOpen } from '../../../redux/selectors';
+import { getIsLoggedUser, getUserProfile, getErrorMessages, getIsDepartmentOpen, getCartTotals } from '../../../redux/selectors';
 import { fetchGetLoginUser, fetchGetLogoutUser } from '../../../modules/fetchFunctions/users';
 import { actionsUser, actionsIUstate } from '../../../redux/actions/actions';
+import { actionsAsyncFetchGetCartItems } from '../../../redux/actions/asyncActions';
 import home from '../../../assets/images/home.svg';
+
 
 class Header extends Component {
 
@@ -29,6 +31,7 @@ class Header extends Component {
 
 		this.handleLogout = this.handleLogout.bind(this);
 		this.handleDepartments = this.handleDepartments.bind(this);
+		this.handleCartClick = this.handleCartClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -43,6 +46,8 @@ class Header extends Component {
 		
 				loginUser(user);
 
+				this.props.fetchCart(user._id);
+
 			} else {
 				logoutUser();
 			}
@@ -53,6 +58,7 @@ class Header extends Component {
 
 		});
 
+		
 	}
 
 	handleLogout() {
@@ -90,11 +96,17 @@ class Header extends Component {
 			openDepartments();
 		}
 	}
+
+	handleCartClick() {
+					
+		this.props.handleCartClick();
+	}
 	
 	render() {
 		const { isLoggedUser, userProfile } = this.props;
 		const { error, errorMessage } = this.state;
-
+		const { cartTotals } = this.props;
+		const cartCount = cartTotals.count || 0;		 
 		const errorIcon = (<FontAwesomeIcon icon="exclamation-triangle" size="sm" />);
 		
 		const ErrorAlert = ({ msg }) => (
@@ -126,7 +138,7 @@ class Header extends Component {
 					<UserNav />
 				</div>
 				<div id="header-cart">
-					<Cart size="lg" value={isLoggedUser ? 0 : null} fgColor={this.props.theme.colorYellowDark} bgColor={this.props.theme.colorBlueBase} counterColor="white" pxChangeLargeToSmall="680px" />	
+					<Cart size="lg" value={isLoggedUser ? cartCount : null} fgColor={this.props.theme.colorYellowDark} bgColor={this.props.theme.colorBlueBase} counterColor="white" pxChangeLargeToSmall="680px" handleClick={this.handleCartClick} />	
 				</div>						
 				<div id="header-new-user">										
 					{ 
@@ -179,7 +191,8 @@ const mapStateToProps = state => {
 		isLoggedUser: getIsLoggedUser(state),
 		userProfile: getUserProfile(state),
 		getErrorMessage: code => getErrorMessages(state)[code],
-		isDepartmentsOpen: getIsDepartmentOpen(state)
+		isDepartmentsOpen: getIsDepartmentOpen(state),
+		cartTotals: getCartTotals(state)
 	};
 
 };
@@ -190,7 +203,8 @@ const mapDispatchToProps = dispatch => {
 		loginUser: user => dispatch(actionsUser.userLogin(user)),
 		logoutUser: () => dispatch(actionsUser.userLogout()),
 		openDepartments: () => dispatch(actionsIUstate.departments.open()),
-		closeDepartments: () => dispatch(actionsIUstate.departments.close())
+		closeDepartments: () => dispatch(actionsIUstate.departments.close()),
+		fetchCart: userId => dispatch(actionsAsyncFetchGetCartItems(userId))		
 	};
 
 };

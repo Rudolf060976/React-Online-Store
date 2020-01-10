@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,15 +10,17 @@ import Footer from './components/layout/Footer/Footer';
 import Home from './pages/Home';
 import ItemSheet from './pages/ItemSheet/ItemSheet';
 import Departments from './components/Departments/Departments';
-import { getIsDepartmentOpen, getErrorMessages } from './redux/selectors';
+import CartPage from './pages/CartPage/CartPage';
+import { getIsDepartmentOpen, getErrorMessages, getIsLoggedUser, getRedirectGoCart, getRedirectGoLogin } from './redux/selectors';
 import { actionsAsyncFetchCategories, actionsAsyncFetchAllSubcategories, actionsAsyncFetchDealsItems, actionsAsyncFetchSeasonItems } from './redux/actions/asyncActions';
+import { actionsIUstate } from './redux/actions/actions';
 
-function App({ isDepartmentsOpen, dispatch, getErrorMessage }) {
+function App({ isDepartmentsOpen, dispatch, getErrorMessage, isUserLogged, getGoCart, getGoLogin, setGoCartTrue, setGoCartFalse, setGoLoginTrue, setGoLoginFalse }) {
 
 	const [load, setLoad] = useState(false);
 	const [error, setError] = useState(false);
 	const [errorMessage, setErrorMessage] = useState(null);
-
+	
 	useEffect(() => {
 		
 		dispatch(actionsAsyncFetchCategories()).then(() => {
@@ -53,11 +55,40 @@ function App({ isDepartmentsOpen, dispatch, getErrorMessage }) {
 			</div>
 		</CSSTransition>
 	);
+	
 
+	const handleCartClick = () => {
+
+		if (isUserLogged) {
+
+			setGoCartTrue();
+
+			setTimeout(() => {
+				
+				setGoCartFalse();
+
+			}, 500);
+
+		} else {
+
+			setGoLoginTrue();
+			
+
+			setTimeout(() => {
+				
+				setGoLoginFalse();
+
+			}, 500);
+		}
+
+	};
+	
 	return (
 		<>
 			{ error ? <ErrorAlert msg={errorMessage} /> : null}
-			<Header />
+			{ getGoLogin ? <Redirect push to="/login" /> : null }
+			{ getGoCart ? <Redirect push to="/cart" /> : null }
+			<Header handleCartClick={handleCartClick} />
 			<div id="max-width-container">
 				{isDepartmentsOpen ? <Departments /> : null }
 				<div id="app-container">
@@ -65,8 +96,10 @@ function App({ isDepartmentsOpen, dispatch, getErrorMessage }) {
 						<Route path="/itemsheet/:itemId">
 							<ItemSheet />
 						</Route>
-						<Route path="/" component={Home} />
-						
+						<Route path="/cart">
+							<CartPage />
+						</Route>						
+						<Route path="/" component={Home} />						
 					</Switch>
 				</div>		
 			</div>				
@@ -79,9 +112,24 @@ const mapStateToProps = state => {
 
 	return {
 		isDepartmentsOpen: getIsDepartmentOpen(state),
-		getErrorMessage: code => getErrorMessages(state)[code]		
+		getErrorMessage: code => getErrorMessages(state)[code],
+		isUserLogged: getIsLoggedUser(state),
+		getGoCart: getRedirectGoCart(state),
+		getGoLogin: getRedirectGoLogin(state)		
 	};
 };
 
+const mapDispatchToProps = dispatch => {
 
-export default connect(mapStateToProps, null)(App);
+	return {
+		dispatch,
+		setGoCartTrue: () => dispatch(actionsIUstate.redirects.cart.true()),
+		setGoCartFalse: () => dispatch(actionsIUstate.redirects.cart.false()),
+		setGoLoginTrue: () => dispatch(actionsIUstate.redirects.login.true()),
+		setGoLoginFalse: () => dispatch(actionsIUstate.redirects.login.false())
+	};
+
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

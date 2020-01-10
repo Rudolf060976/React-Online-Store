@@ -1,7 +1,25 @@
 import React from 'react';
-import './Loading.scss';
+import styled from 'styled-components';
 import image from '../../assets/gifs/loading-arrow.gif';
 import image2 from '../../assets/gifs/loading-gear.gif';
+
+
+const LoadingContainer = styled.div`
+
+	width: 100%;
+	height: 50vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+`;
+
+const LoadingImage = styled.img`
+
+	max-width: 100px;
+
+`;
+
 
 function Loading({ type }) {
 
@@ -16,9 +34,9 @@ function Loading({ type }) {
 	}
 
 	return (
-		<div className="loading-arrow-container">
-			<img className="loading-arrow-image" src={loadingImage} alt="Loading..." />
-		</div>
+		<LoadingContainer>
+			<LoadingImage src={loadingImage} alt="Loading..." />
+		</LoadingContainer>		
 	);
 }
 

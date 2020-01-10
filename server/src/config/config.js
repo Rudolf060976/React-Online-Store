@@ -7,7 +7,8 @@ const nconf = require('nconf');
 
 nconf.argv()
 	.env()
-	.file( { file: path.join(__dirname + './../../' + 'config.json')});
+	.file( { file: path.join(__dirname,'..','..','config.json')});
+	//.file( { file: path.join(__dirname + './../../' + 'config.json')});
 
 nconf.set('USER_JWT_SECRET','32KJKK44/*/*--DF44T3AFSDAS');
 nconf.set('RANDOM_STRING',randomstring.generate(10));

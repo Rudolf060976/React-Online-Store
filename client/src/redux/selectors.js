@@ -271,3 +271,90 @@ export const getSelectedItemImages = state => {
 	return outputArray;
 
 };
+
+// ************* CART Selectors ***********************
+
+export const getIsCartFetching = state => {
+
+	return state.cart.isFetching;
+
+};
+
+export const getIsCartError = state => {
+
+	return state.cart.error;
+
+};
+
+export const getCartErrorMessage = state => {
+
+	return state.cart.errorMessage;
+
+};
+
+export const getCartLines = state => {
+
+	const { allIDs } = state.cart;
+
+	const { byId } = state.cart;
+
+	const outputArray = [];
+
+	for (let i = 0; i < allIDs.length; i++) {
+
+		const line = byId[allIDs[i]];
+
+		outputArray.push(line);
+
+	}
+
+	return outputArray;
+
+};
+
+export const getCartItemImages = (state, itemId) => {
+
+	if (getCartLines(state).length > 0) {
+		
+		const LineItemObject = getCartLines(state).find(line => line.item[0]._id === itemId);
+		
+		const imagesArray = LineItemObject.item[0].images;
+
+		const allImagesObject = state.cart.images.byId;
+
+		const outputArray = [];
+
+		for (let i = 0; i < imagesArray.length; i++) {
+
+			const item = allImagesObject[imagesArray[i]];
+
+			outputArray.push(item);
+
+		}
+
+		return outputArray;
+
+	}
+
+	return [];
+
+
+};
+
+
+export const getCartTotals = state => {
+	
+	const { count, subtotal, tax, total } = state.cart;
+	
+	return {
+		count,
+		subtotal,
+		tax,
+		total
+	};
+};
+
+
+export const getRedirectGoCart = state => state.iuState.goCart;
+
+export const getRedirectGoLogin = state => state.iuState.goLogin;
