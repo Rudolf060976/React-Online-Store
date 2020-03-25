@@ -65,11 +65,15 @@ const itemsData = {
 	filteredItems: {
 		isFetching: false,
 		error: false,
-		errorMessage: '',
+		errorMessage: null,
 		items: {
 			allIDs: [],
 			byId: {}
 		},
+		images: {
+			allIDs: [],
+			byId: {}
+		},		
 		filter: {}
 	},
 	selectedItem: {

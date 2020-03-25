@@ -421,7 +421,96 @@ const reducer = handleActions({
 
 		};
 
-	}
+	},
+	[actionsItemsData.filteredItems.fetch]: (state, action) => {
+
+		return {
+			...state,
+			filteredItems: {
+				isFetching: true,
+				error: false,
+				errorMessage: null,
+				items: {
+					allIDs: [],
+					byId: {}
+				},
+				images: {
+					allIDs: [],
+					byId: {}
+				},
+				filter: {}
+			}
+		};
+	},
+	[actionsItemsData.filteredItems.fetchSuccess]: (state, action) => {
+
+		const { payload: { filter, docs, images } } = action;
+
+		const allIDs = docs.map(item => item._id);
+
+		const byId = docs.reduce((acc, item) => {
+
+			return {
+				...acc,
+				[item._id]: item
+			};
+
+		}, {});
+
+		const imagesAllIDs = images.map(item => (
+			item._id
+		));
+
+		const imagesById = images.reduce((acc, item) => {
+
+			return {
+				...acc,
+				[item._id]: item
+			};
+		}, {});
+
+		return {
+			...state,
+			filteredItems: {
+				isFetching: false,
+				error: false,
+				errorMessage: null,
+				items: {
+					allIDs,
+					byId
+				},
+				images: {
+					allIDs: imagesAllIDs,
+					byId: imagesById
+				},
+				filter 
+			}
+		};
+
+	},
+	[actionsItemsData.filteredItems.fetchFailure]: (state, action) => {
+
+		const { payload: { errorMessage } } = action;
+
+		return {
+			...state,
+			filteredItems: {
+				isFetching: false,
+				error: true,
+				errorMessage,
+				items: {
+					allIDs: [],
+					byId: {}
+				},
+				images: {
+					allIDs: [],
+					byId: {}
+				},
+				filter: {}
+			}
+		};
+	},
+
 },
 initialState
 );

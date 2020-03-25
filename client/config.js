@@ -1,4 +1,4 @@
-import { functionBuildUrlFromFilterPageLimit } from './src/modules/urlFunctions';
+import { functionBuildUrlFromFilterPageLimitSort } from './src/modules/urlFunctions';
 
 
 const configDEV = {
@@ -43,9 +43,9 @@ const Config = {
 			}
 		},
 		ITEMS: {
-			GET_ItemsByFilter: (filter, page, limit) =>{
+			GET_ItemsByFilter: (filter, page, limit, sort) =>{
 				
-				const myUrl = functionBuildUrlFromFilterPageLimit(filter, page, limit);
+				const myUrl = functionBuildUrlFromFilterPageLimitSort(filter, page, limit, sort);
 							
 				return `/api/items?${myUrl}`;
 				
@@ -53,12 +53,12 @@ const Config = {
 			GET_ItemById: (itemId) => {
 				return `/api/items/${itemId}`;
 			},
-			GET_ItemsByCategory: (categoryId) => {
-				return `/api/items/category/${categoryId}`;
-			},
-			GET_ItemsBySubCategory: (subcategoryId) => {
-				return `/api/items/subcategory/${subcategoryId}`;
-			},
+			// GET_ItemsByCategory: (categoryId) => {
+			// return `/api/items/category/${categoryId}`;
+			// },
+			// GET_ItemsBySubCategory: (subcategoryId) => {
+			// return `/api/items/subcategory/${subcategoryId}`;
+			// },
 			GET_Image: (imageId) => {
 				return `/api/items/images/${imageId}`;
 			},
@@ -112,6 +112,9 @@ const Config = {
 			}
 		}		
 
+	},
+	APP: {
+		ItemsResultsLimitByDefault: 20
 	}
 
 

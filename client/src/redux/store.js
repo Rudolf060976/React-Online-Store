@@ -14,6 +14,7 @@ const rootReducer = combineReducers({
 	cart
 });
 
+//const unsubscribe = store.subscribe(() => console.log('STORE:', JSON.stringify(store.getState(), null, 2));
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 

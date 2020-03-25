@@ -104,15 +104,17 @@ const actionsItemsData = createActions({
 	},
 	FILTERED_ITEMS: {
 		FETCH: val => val,
-		FETCH_SUCCESS: docs => ({
-			docs
+		FETCH_SUCCESS: (filter, docs, images) => ({
+			filter,
+			docs,
+			images
 		}),
 		FETCH_FAILURE: errorMessage => ({
 			errorMessage
-		}),
+		})/* ,
 		APPLY_FILTER: filter => ({
 			filter
-		})
+		}) */
 	},
 	SELECTED_ITEM: {
 		FETCH: val => val,

@@ -8,7 +8,8 @@
 	flex-flow: row nowrap;
 	justify-content: flex-start;	
 	padding: 10px 0 10px 25px;
-	box-shadow: $lightShadow;
+	//box-shadow: $lightShadow;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	height: auto;
 	border: $Blue-Base 1px solid;
 	z-index: 1000;

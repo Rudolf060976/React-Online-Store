@@ -14,6 +14,7 @@ import CartPage from './pages/CartPage/CartPage';
 import { getIsDepartmentOpen, getErrorMessages, getIsLoggedUser, getRedirectGoCart, getRedirectGoLogin } from './redux/selectors';
 import { actionsAsyncFetchCategories, actionsAsyncFetchAllSubcategories, actionsAsyncFetchDealsItems, actionsAsyncFetchSeasonItems } from './redux/actions/asyncActions';
 import { actionsIUstate } from './redux/actions/actions';
+import SubDepartmentPage from './pages/SubDepartmentPage/SubDepartmentPage';
 
 function App({ isDepartmentsOpen, dispatch, getErrorMessage, isUserLogged, getGoCart, getGoLogin, setGoCartTrue, setGoCartFalse, setGoLoginTrue, setGoLoginFalse }) {
 
@@ -98,6 +99,9 @@ function App({ isDepartmentsOpen, dispatch, getErrorMessage, isUserLogged, getGo
 						</Route>
 						<Route path="/cart">
 							<CartPage />
+						</Route>
+						<Route path="/subdepartment/list/:subdepId">
+							<SubDepartmentPage />	
 						</Route>						
 						<Route path="/" component={Home} />						
 					</Switch>

@@ -1,7 +1,7 @@
 {
     "User_Block_Duration_Minutes": 1,
 	"User_Max_Failed_Login_Attemps": 3,
-	"User_Session_Duration_Minutes": 30,
+	"User_Session_Duration_Minutes": 500,
 	"User_Validation_Token_Duration_Minutes": 10,
 	"DB_NAME": "OnlineStore",
 	"App_Email_Address": "onlinestoreintelligentzona@gmail.com",

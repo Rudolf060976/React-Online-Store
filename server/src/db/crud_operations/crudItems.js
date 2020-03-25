@@ -442,6 +442,7 @@ const getItemById = (itemId) => {
 
 };
 
+/*
 
 const getItemsByCategory = (categoryId, page, limit, sort) => {
 
@@ -484,7 +485,7 @@ const getItemsByCategory = (categoryId, page, limit, sort) => {
 
 			Item.paginate({ category: ObjectID.createFromHexString(categoryId) }, options).then(result => {
 			
-				/* result is an Object with the following properties:
+				 result is an Object with the following properties:
 
 			- docs {Array} - Array of documents
 			- totalDocs {Number} - Total number of documents in collection that match a query
@@ -499,7 +500,7 @@ const getItemsByCategory = (categoryId, page, limit, sort) => {
 			- pagingCounter {Number} - The starting sl. number of first document.
 			- meta {Object} - Object of pagination meta data (Default false). 
 			
-			*/					
+								
 				resolve(result);
 
 			}).catch(err => {
@@ -567,7 +568,7 @@ const getItemsBySubcategory = (subcategoryId, page, limit, sort) => {
 
 			Item.paginate({ subcategory: ObjectID.createFromHexString(subcategoryId) }, options).then(result => {
 
-				/* result is an Object with the following properties:
+				 result is an Object with the following properties:
 
 			- docs {Array} - Array of documents
 			- totalDocs {Number} - Total number of documents in collection that match a query
@@ -582,7 +583,7 @@ const getItemsBySubcategory = (subcategoryId, page, limit, sort) => {
 			- pagingCounter {Number} - The starting sl. number of first document.
 			- meta {Object} - Object of pagination meta data (Default false). 
 			
-			*/					
+								
 					
 				resolve(result);
 
@@ -608,6 +609,7 @@ const getItemsBySubcategory = (subcategoryId, page, limit, sort) => {
 
 };
 
+*/
 
 const getItems = (filter, page, limit, sort) => {
 
@@ -1267,8 +1269,6 @@ module.exports =  {
 	updateItem,
 	getImageFromStore,
 	deleteImageFromStore,
-	getItemsByCategory,
-	getItemsBySubcategory,
 	deleteAllItems,
 	deleteItem,
 	deleteManyItemImages,

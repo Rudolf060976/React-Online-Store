@@ -5,7 +5,7 @@ import * as fetchCart from '../../modules/fetchFunctions/cart';
 const actionsAsyncFetchCategoriesData = () => {
 	
 	return fetchItemsData.fetchGetAllCategories().then(json => {
-
+		
 		if (json.ok) {
 
 			const { data: { categories: docs } } = json;
@@ -24,15 +24,15 @@ const actionsAsyncFetchCategoriesData = () => {
 };
 
 const actionsAsyncFetchCategories = () => {
-
+	
 	return (dispatch, getState) => {
-
+		
 		dispatch(actionsItemsData.categories.fetch());
-
+		
 		let imagesAllIDs = null;
-
+		
 		return actionsAsyncFetchCategoriesData().then(docs => {
-
+			
 			imagesAllIDs = docs.reduce((acc, item) => {
 
 				return [...acc, ...item.images];
@@ -468,7 +468,7 @@ const actionsAsyncFetchGetCartItems = (userId) => {
 				return [...acc, ...line.item[0].images];
 
 			}, []);
-
+			
 			return fetchItemsData.fetchGetManyImages(imagesAllIDs).then(json2 => {
 
 				const { data } = json2;
@@ -494,7 +494,17 @@ const actionsAsyncFetchGetCartItems = (userId) => {
 					const { data: { result: pretotals } } = json3;
 
 					const totals = pretotals[0];
-										
+					
+					if(!totals) {
+						const totalsZero = {
+							count: 0,
+							subtotal: 0,
+							tax: 0,
+							total: 0
+						};
+
+						return dispatch(actionsCart.fetchSuccess(cartLines, output, totalsZero));
+					}
 
 					dispatch(actionsCart.fetchSuccess(cartLines, output, totals));
 

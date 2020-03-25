@@ -4,7 +4,7 @@ import './DealsItem.scss';
 
 function DealsItem({ itemObject, imageObject }) {
 
-	const articlePath = `/itemsheet/${itemObject._id}`;
+	const itemPath = `/itemsheet/${itemObject._id}`;
 
 	return (
 		<div className="deals-item">
@@ -12,7 +12,7 @@ function DealsItem({ itemObject, imageObject }) {
 			<div className="deals-items-image-container">
 				<div className="deals-items-image-center">
 					<img src={imageObject.imageURL} alt="" className="deals-items-image" />
-					<Link to={articlePath}>
+					<Link to={itemPath}>
 						<button type="button" className="deals-items-button">Quick Look</button>
 					</Link>
 				</div>

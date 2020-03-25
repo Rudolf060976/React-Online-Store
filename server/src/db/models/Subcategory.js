@@ -28,7 +28,7 @@ const subcategorySchema = new mongoose.Schema({
 	description: {
 		type: String,
 		trim: true,			//REQUIRED
-		maxlength: 200
+		maxlength: 600
 	},
 	images: [types.ObjectId]
 });

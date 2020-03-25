@@ -78,6 +78,25 @@ const fileFilterImages = (req, file, cb) => {
 
 	cb(null, true);
 
+	/*
+		MULTER WILL PUT THE FILE INFO IN req.file:
+
+	{
+		fieldname: 'image',
+		originalname: 'christmas.jpg',
+		encoding: '7bit',
+		mimetype: 'image/jpeg',
+		destination: 'xxxx',
+		filename: '123443klj3422434234342',
+		path: 'xxxxcxxx',
+		size: 84201
+	}
+
+	IF YOU WANT TO reject a File, call cb(null, false)
+
+	*/
+
+
 };
 
 

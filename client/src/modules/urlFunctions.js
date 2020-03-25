@@ -1,33 +1,27 @@
-const functionBuildUrlFromFilterPageLimit = (filter, page, limit) => {
+const functionBuildUrlFromFilterPageLimitSort = (filter, page, limit, sort) => {
 
 	// NOTE: filter, page & limit CAN BE UNDEFINED...
 	
-	const params = new URLSearchParams();			
+	const { field, order } = sort;
 
-	if (page) {
-		params.append('page', page);
-	}
+	const query = {
+		page,
+		limit,
+		filter: JSON.stringify(filter),
+		sort: JSON.stringify({
+			field,
+			order
+		})
+	};
 
-	if (limit) {
-		params.append('limit', limit);
-	}
-
-	if (Object.keys(filter) > 0) {
-
-		Object.keys(filter).forEach(key => {
-
-			params.append(key, filter[key]);
-
-		});
-					
-	}			
+	const params = new URLSearchParams(query);			
 	
 	return params.toString();
-
+	
 };
 
 export { 
 	
 	// eslint-disable-next-line
-	functionBuildUrlFromFilterPageLimit
+	functionBuildUrlFromFilterPageLimitSort
 };

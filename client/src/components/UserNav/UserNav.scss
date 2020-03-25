@@ -35,7 +35,7 @@
 			display: inline-block;
 			text-decoration: none;
 			transition: all .2s linear;
-			text-shadow: $Light-Header-Text-Shadow;
+			//text-shadow: $Light-Header-Text-Shadow;
 			letter-spacing: $mainSpacing1;
 			
 			@include forSmallScreens(1240) {

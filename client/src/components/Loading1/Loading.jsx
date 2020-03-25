@@ -7,7 +7,7 @@ import image2 from '../../assets/gifs/loading-gear.gif';
 const LoadingContainer = styled.div`
 
 	width: 100%;
-	height: 50vh;
+	height: ${props => props.height || '50vh'};
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -16,12 +16,12 @@ const LoadingContainer = styled.div`
 
 const LoadingImage = styled.img`
 
-	max-width: 100px;
+	max-width: ${props => props.arrowWidth || '70px'};
 
 `;
 
 
-function Loading({ type }) {
+function Loading({ type, height, arrowWidth }) {
 
 	let loadingImage = image;
 
@@ -34,8 +34,8 @@ function Loading({ type }) {
 	}
 
 	return (
-		<LoadingContainer>
-			<LoadingImage src={loadingImage} alt="Loading..." />
+		<LoadingContainer height={height}>
+			<LoadingImage src={loadingImage} arrowWidth={arrowWidth} alt="Loading..." />
 		</LoadingContainer>		
 	);
 }

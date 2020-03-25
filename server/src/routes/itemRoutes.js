@@ -111,8 +111,9 @@ router.get('/images/:imageId', (req, res) => {
 	
 });
 
+/*
 
-router.get('/category/:categoryId', paginate.middleware(10, 50), (req, res) => {
+router.get('/category/:categoryId', paginate.middleware(20, 50), (req, res) => {
 	
 	const { page, limit, sort } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
 	// sort example:     sort = { field:'name', order: 'ASC' }      sort = { field: 'age', order: 'DESC'}
@@ -162,7 +163,7 @@ router.get('/category/:categoryId', paginate.middleware(10, 50), (req, res) => {
 });
 
 
-router.get('/subcategory/:subcategoryId', paginate.middleware(10, 50), (req, res) => {
+router.get('/subcategory/:subcategoryId', paginate.middleware(20, 50), (req, res) => {
 	
 	const { page, limit, sort } = req.query; // IF QUERYSTRING DOES NOT SUPPLY page and limit parameters, express-paginate will give default values.
 	
@@ -212,6 +213,7 @@ router.get('/subcategory/:subcategoryId', paginate.middleware(10, 50), (req, res
 			
 });
 
+*/
 
 router.get('/many', (req, res) => {
 	
@@ -343,7 +345,7 @@ router.get('/:itemId', (req, res) => {
 	
 });
 
-router.get('/', paginate.middleware(10, 50), (req, res) => {
+router.get('/', paginate.middleware(20, 50), (req, res) => {
 	// RESPONSES all items OR items by filter (query string)
 	
 	const { page, limit, sort, filter } = getObjectParamsFromQS1(req);

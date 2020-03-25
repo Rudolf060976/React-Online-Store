@@ -1,5 +1,6 @@
 /* eslint jsx-a11y/anchor-is-valid: "off" */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function SubdepList({ subDepartmentsList, closeDepartments, selectedDepartment }) {
 	
@@ -15,11 +16,13 @@ function SubdepList({ subDepartmentsList, closeDepartments, selectedDepartment }
 
 	const subDepartmentLine = (id, name, handleMouse) => {
 
+		const subdepPath = subId => `/subdepartment/list/${subId}`;
+
 		return (
 			<li className="subdepartments-list-line" key={id}>
-				<a href="#" className="subdepartments-list-line-link" onClick={handleMouse}>
-					{name}
-				</a>
+				<Link to={subdepPath(id)} className="subdepartments-list-line-link" onClick={handleMouse}>
+					{name}			
+				</Link>				
 			</li>
 		);
 

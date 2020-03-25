@@ -719,8 +719,24 @@ router.post('/:categoryId/images/all', secureAdmin(), uploadCategoryImages.array
 
 router.post('/:categoryId/images/one', secureAdmin(), uploadCategoryImages.single('image'),
 	(req, res) => {
-	// RECEIVES ONE IMAGES FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
+	// RECEIVES ONE IMAGE FROM MULTER IN FORM DATA FORMAT AND SAVE THEM IN GRIDFS
 	// uploadImageFiles SAVES THE FILE ON GFS AND SAVES THE ID ON images FIELD IN THE ITEM DOCUMENT
+
+	/*
+		MULTER WILL PUT THE FILE INFO IN req.file:
+
+		{
+			fieldname: 'image',
+			originalname: 'christmas.jpg',
+			encoding: '7bit',
+			mimetype: 'image/jpeg',
+			destination: 'xxxx',
+			filename: '123443klj3422434234342',
+			path: 'xxxxcxxx',
+			size: 84201
+		}
+
+	*/
 
 		if(req.params.categoryId) {
 

@@ -15,9 +15,21 @@ function Season({ getItems, getItemImages, isFetching }) {
 	const carouselItemArray = [];
 	
 	for (let i = 0; i < maxCount; i += 2) {
-
+		console.log('getItems:' , getItems);
 		const imageObject1 = getItemImages(getItems[i]._id)[0];
-		const imageObject2 = getItemImages(getItems[i + 1]._id)[0];
+		
+		let imageObject2 = null;
+		
+		if (getItems[i + 1]) {
+
+			imageObject2 = getItemImages(getItems[i + 1]._id)[0];
+
+		} else {
+
+			imageObject2 = {
+				imageURL: ''
+			};
+		}		
 
 		const element = (
 			<div key={getItems[i]._id}>			
@@ -44,7 +56,7 @@ function Season({ getItems, getItemImages, isFetching }) {
 
 	return (
 		<>
-			{ isFetching ? <Loading type="gear" /> : container }
+			{ isFetching ? <Loading type="arrow" height="20vh" /> : container }
 		</>
 	);
 }

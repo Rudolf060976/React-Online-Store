@@ -122,7 +122,7 @@ class Header extends Component {
 					<img id="header-logo" src={Logo} alt="Logo" />
 				</div>
 				<button type="button" id="btnDepartments" onClick={this.handleDepartments}>
-					<FontAwesomeIcon id="icon-departments" icon="caret-down" />
+					<FontAwesomeIcon id="icon-departments" icon={this.props.isDepartmentsOpen ? "caret-up" : "caret-down"} size="lg" />
 					Departments
 				</button>
 				<button type="button" id="mobile-btnDepartments" onClick={this.handleDepartments}><FontAwesomeIcon id="mobile-icon-departments" icon="align-justify" size="lg" />
@@ -135,28 +135,26 @@ class Header extends Component {
 					<Search />
 				</div>
 				<div id="header-user-nav">
-					<UserNav />
-				</div>
+					{ isLoggedUser ? <UserNav /> : null }	
+				</div>			
 				<div id="header-cart">
 					<Cart size="lg" value={isLoggedUser ? cartCount : null} fgColor={this.props.theme.colorYellowDark} bgColor={this.props.theme.colorBlueBase} counterColor="white" pxChangeLargeToSmall="680px" handleClick={this.handleCartClick} />	
-				</div>						
-				<div id="header-new-user">										
+				</div>			
 					{ 
-						!isLoggedUser ? (	
-							<>						
+						!isLoggedUser ? (
+							<div id="header-new-user">
 								<p id="new-to-bitzone"><Badge variant="warning">New</Badge> to BitZone? <span id="signup-container"><Link to="/signup"><FontAwesomeIcon icon="user-shield" className="icon-main-nav icon-signup" />Sign Up</Link></span></p>
-								<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link></p>							
-							</>
+								<p id="login-container"><Link to="/login"><FontAwesomeIcon icon="sign-in-alt" className="icon-main-nav icon-login" />Login</Link></p>		
+							</div>
 						) : null
-					}										
-				</div>
-				<div id="header-logged-user">									
+					}				
 					{ 
-						isLoggedUser ? (							
-							<Avatar avatarColor={this.props.theme.colorPurpleClear} arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorBg1} handleLogout={this.handleLogout} />	
+						isLoggedUser ? (
+							<div id="header-logged-user">
+								<Avatar arrowColor="white" textColor={this.props.theme.colorBlueBase} value={userProfile.firstname} borderColor="white" menuColor={this.props.theme.colorBg1} handleLogout={this.handleLogout} />
+							</div>	
 						) : null
-					}										
-				</div>
+					}			
 				<div id="header-mobile-new-user">				
 					{ 
 						!isLoggedUser ? (

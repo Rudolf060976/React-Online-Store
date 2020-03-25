@@ -1,6 +1,9 @@
+import axios from 'axios';
 import Config from '../../../config';
 
-const apiUrl = Config.URL.apiURL;
+const { apiURL } = Config.URL;
+
+const { ItemsResultsLimitByDefault } = Config.APP;
 
 /*
 
@@ -18,9 +21,9 @@ default credentials policy to same-origin. Firefox changed since 61.0b13.)
 
 const fetchGetAllCategories = async () => {
 	
-
+	
 	const path = Config.ROUTES.CATEGORIES.GET_AllCategories;
-
+	
 	const options = {
 		method: 'GET',
 		credentials: 'include',
@@ -29,8 +32,8 @@ const fetchGetAllCategories = async () => {
 		},
 		mode: 'cors'
 	};
-
-	const response = await fetch(apiUrl + path, options);		
+	
+	const response = await fetch(apiURL + path, options);		
 	
 	if (response.ok) {
 	
@@ -57,7 +60,7 @@ const fetchGetImage = async (imageId) => {
 		mode: 'cors'
 	};
 
-	const response = await fetch(apiUrl + path, options);		
+	const response = await fetch(apiURL + path, options);		
 	
 	if (response.ok) {
 
@@ -91,7 +94,7 @@ const fetchGetManyImages = async (ids) => {
 		mode: 'cors'
 	};
 
-	const response = await fetch(apiUrl + path, options);		
+	const response = await fetch(apiURL + path, options);		
 		
 	if (response.ok) {
 
@@ -116,7 +119,7 @@ const fetchGetAllSubCategories = async () => {
 		},
 		mode: 'cors'
 	};
-	const response = await fetch(apiUrl + path, options);		
+	const response = await fetch(apiURL + path, options);		
 		
 	if (response.ok) {
 
@@ -142,7 +145,7 @@ const fetchGetAllSubCategoriesByCategoryId = async (categoryId) => {
 		mode: 'cors'
 	};
 
-	const response = await fetch(apiUrl + path, options);		
+	const response = await fetch(apiURL + path, options);		
 		
 	if (response.ok) {
 
@@ -168,7 +171,7 @@ const fetchGetDealsItems = async () => {
 		mode: 'cors'
 	};
 
-	const response = await fetch(apiUrl + path, options);
+	const response = await fetch(apiURL + path, options);
 
 	const response2 = await response.json();
 
@@ -186,7 +189,7 @@ const fetchGetDealsItems = async () => {
 
 	path = Config.ROUTES.ITEMS.GET_Many_Items(qs);
 
-	const response3 = await fetch(apiUrl + path, options);
+	const response3 = await fetch(apiURL + path, options);
 
 	if (response3.ok) {
 
@@ -213,7 +216,7 @@ const fetchGetSeasonItems = async () => {
 		mode: 'cors'
 	};
 
-	const response = await fetch(apiUrl + path, options);
+	const response = await fetch(apiURL + path, options);
 
 	const response2 = await response.json();
 
@@ -231,7 +234,7 @@ const fetchGetSeasonItems = async () => {
 
 	path = Config.ROUTES.ITEMS.GET_Many_Items(qs);
 
-	const response3 = await fetch(apiUrl + path, options);
+	const response3 = await fetch(apiURL + path, options);
 
 	if (response3.ok) {
 
@@ -258,7 +261,7 @@ const fetchGetSelectedItem = async (itemId) => {
 		mode: 'cors'
 	};
 
-	const response = await fetch(apiUrl + path, options);
+	const response = await fetch(apiURL + path, options);
 
 	if (response.ok) {
 
@@ -271,6 +274,27 @@ const fetchGetSelectedItem = async (itemId) => {
 
 };
 
+const fetchGetItemsByFilter = async (filter, page, sort) => {
+
+	const limit = ItemsResultsLimitByDefault;
+		
+	const path = Config.ROUTES.ITEMS.GET_ItemsByFilter(filter, page, limit, sort);
+
+	const options = {
+		url: apiURL + path,
+		method: 'GET',
+		/* params: {
+			page,
+			limit,
+			sort
+		}, */
+		responseType: 'json',
+		withCredentials: false
+	};
+	
+	return await axios(options);
+
+};
 
 export {
 	fetchGetAllCategories,
@@ -280,5 +304,6 @@ export {
 	fetchGetManyImages,
 	fetchGetDealsItems,
 	fetchGetSeasonItems,
-	fetchGetSelectedItem
+	fetchGetSelectedItem,
+	fetchGetItemsByFilter
 };
