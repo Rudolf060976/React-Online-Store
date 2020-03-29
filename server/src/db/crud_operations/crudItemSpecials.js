@@ -115,14 +115,18 @@ const updateItemSpecials = (id, filter) => {
 					
 			}
 
-			const { bestSellerItems, dealOfTheDayItems, freeShippingItems, mustHaveItems, seasonDealItems} = filter;
+			const { bestSellerItems, dealOfTheDayItems, freeShippingItems, mustHaveItems, seasonDealItems, familyEntertainment, learningForKids, workoutAtHome, healthCare} = filter;
 
 			const data = {
 				bestSellerItems,
 				dealOfTheDayItems,
 				freeShippingItems,
 				mustHaveItems,
-				seasonDealItems
+				seasonDealItems,
+				familyEntertainment,
+				learningForKids,
+				workoutAtHome,
+				healthCare
 			};
 
 			
@@ -236,11 +240,42 @@ const getItemSpecialById = (id) => {
 
 };
 
+const deleteAllItemSpecials = async () => {
+
+	try {
+
+		if (db.readyState === 1 || db.readyState === 2) {
+
+			await ItemSpecials.deleteMany({});
+
+		} else {
+
+			throw createError(500, 'DB CONNECTION ERROR!!');
+
+		}
+
+		
+	} catch (error) {
+
+		if (!error.status) {
+
+			error.status = 500;
+
+		}
+
+		throw createError(500, error.message);
+		
+	}
+
+
+};
+
 
 module.exports = {
 	addNewSpecialWithFilter,
 	getItemsSpecialsAdmin,
 	getItemsSpecials,
 	updateItemSpecials,
-	getItemSpecialById
+	getItemSpecialById,
+	deleteAllItemSpecials
 };

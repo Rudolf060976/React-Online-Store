@@ -45,7 +45,11 @@ async function CreateItemSpecials() {
 		bestSellerItems: [],
 		seasonDealItems: [],
 		mustHaveItems: [],
-		freeShippingItems: []
+		freeShippingItems: [],
+		familyEntertainment: [],
+		learningForKids: [],
+		workoutAtHome: [],
+		healthCare: []
 	}
 
 	await crudItemSpecials.addNewSpecialWithFilter(filter);
@@ -71,6 +75,10 @@ async function DeleteAll() {
 		console.log('DELETING CATEGORIES...');
 
 		await crudCategories.deleteAllCategories();
+
+		console.log('DELETING ITEM SPECIALS...');
+
+		await crudItemSpecials.deleteAllItemSpecials();
 		
 
 	} catch (error) {
@@ -103,11 +111,11 @@ async function loadData() {
 
 		// *** WE HAVE TO DELETE ALL THE DATA ***
 
-		await CreateCodes();
-
-		await CreateItemSpecials();
+		await CreateCodes();		
 
 		await DeleteAll();
+
+		await CreateItemSpecials();
 		
 		await InsertCategories();
 	
