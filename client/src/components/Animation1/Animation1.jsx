@@ -1,5 +1,5 @@
 import React from 'react';
-import video from '../../assets/gifs/Animation1.gif';
+import video from '../../assets/images/OFFICE.jpg';
 import './Animation1.scss';
 
 function Animation1() {

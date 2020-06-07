@@ -2,7 +2,9 @@
 
 
 .deals-item {
-	margin: 30px 0;
+	
+	max-height: 220px;
+	margin: 10px 0 50px 0;
 }
 
 .deals-items-image-container {
@@ -13,7 +15,7 @@
 }
 
 .deals-items-image-center {
-	width: 30%;
+	width: 40%;
 	position: relative;	
 	max-height: 200px;
 	
@@ -34,20 +36,22 @@
 }
 
 .deals-items-image {
-
+	width: 100%;
 	max-width: 200px;	
 	transition: all .1s linear;
 		
 }
 
 .deals-item-caption {
-	@include fontSize(1.6);
+	@include fontSize(1.3);
 	color: black;
-	font-family: 'Squada One', Verdana, Geneva, Tahoma, sans-serif;
-	width: 100%;
+	font-family: 'Montserrat', Verdana, Geneva, Tahoma, sans-serif;	
+	font-weight: bold;
 	text-align: center;
-	margin: 0;
-	padding: 5px 0;
+	margin: 0 auto;
+	padding: 10px 0;
+	max-width: 500px;
+	line-height: 1.5rem;
 	
 }
 
@@ -58,5 +62,6 @@
 	opacity: 0;
 	transition: all .1s linear;
 	@extend %quick-look-button;
+	
 	
 }

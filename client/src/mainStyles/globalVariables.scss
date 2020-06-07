@@ -111,17 +111,18 @@ $PageMaxWidth: 1280px;
 
   %quick-look-button {
 	background: $Blue-Base;
-	color: white;
+	color: $LightBlue;
 	border: 1px solid $Blue-Base;
-	border-radius: 3px;
+	border-radius: 5px;
 	@include fontSize(1);
 	padding: 0 10px;
 
 	&:hover {
-		background: white;
-		color: $Blue-Base;
+		background: rgba($Blue-Clear, .70);
+		color: white;
 	}
 }
 
-  
+
+
 

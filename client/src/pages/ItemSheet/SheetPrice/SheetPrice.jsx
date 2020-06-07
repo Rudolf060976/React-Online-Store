@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Container = styled.div`
 	grid-area: price;
 	background-color: white;
-	padding: 30px 10px;
+	padding: 30px 15px;
 	
 `;
 
@@ -13,12 +13,12 @@ const StyledTitle = styled.p`
 	color: #354069;
 	padding: 0;
 	margin: 0;
-	font-family: "Squada One", Verdana, Geneva, Tahoma, sans-serif;
+	font-family: "Lilita One", Verdana, Geneva, Tahoma, sans-serif;
 	letter-spacing: 1px;
-	line-height: 2rem;
-	font-size: 1.6rem;
+	line-height: 1.6rem;
+	font-size: 1.5rem;	
 	margin-bottom: 15px;
-	text-align: center;
+	text-align: left;
 	
 `; 
 
@@ -27,11 +27,11 @@ const StyledPrice = styled.p`
 	color: black;
 	padding: 0;
 	margin: 0;
-	font-family: "Rubik", Verdana, Geneva, Tahoma, sans-serif;
-	font-size: 1.4rem;
-	font-weight: 500;
+	font-family: "Montserrat", Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 1.2rem;
+	font-weight: bold;
 	margin-bottom: 15px;
-	padding-left: 20px;
+	
 `;
 
 const StyledCondition = styled.p`
@@ -42,7 +42,7 @@ const StyledCondition = styled.p`
 	font-family: "Rubik", Verdana, Geneva, Tahoma, sans-serif;
 	font-size: 1.2rem;
 	font-weight: 400;
-	padding-left: 20px;
+	
 `;
 
 const StyledSpan = styled.span`

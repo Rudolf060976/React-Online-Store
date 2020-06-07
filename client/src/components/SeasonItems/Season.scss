@@ -4,6 +4,7 @@
 	background: white;
 	grid-area: season;
 	min-width: 300px;
+	max-height: 320px;
 
 	h6 {
 		margin: 0;
@@ -13,15 +14,15 @@
 			text-decoration: none;
 			font-family: 'Lilita One';
 			@include fontSize(2);
-			color: $Blue-Clear;
-			text-shadow: 0 0 2px $Yellow-Dark;
+			color: white;
+			text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
 			transition: all .2s linear;
 			letter-spacing: 1px;
 						
 		}
 
 		a:hover {
-			color: darken($Purple-Clear,10%);
+			color: darken($Purple-Clear,10%);		
 			
 		}
 

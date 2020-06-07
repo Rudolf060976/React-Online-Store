@@ -31,7 +31,7 @@ function Deals({ getItems, getItemImages, isFetching }) {
 
 	return (
 		<>
-			{ isFetching ? <div style={{ gridArea: 'deals' }}><Loading type="arrow" height="30vh" /></div> : container }
+			{ isFetching ? <div style={{ gridArea: 'deals', width:'100%', display:'flex', alignItems:'center', justifyContent:'center', height: '25rem' }}><Loading type="arrow" /></div> : container }
 		</>			
 	);
 }

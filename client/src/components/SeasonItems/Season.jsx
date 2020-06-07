@@ -46,7 +46,7 @@ function Season({ getItems, getItemImages, isFetching }) {
 
 	const container = (
 		<div id="season-items-container">
-			<h6><Link to="/">Christmas Deals</Link></h6>		
+			<h6><Link to="/">Season Deals</Link></h6>		
 			<Carousel indicators={false} interval={4000} fade>
 				{ carouselItemArray }
 			</Carousel>
@@ -56,7 +56,7 @@ function Season({ getItems, getItemImages, isFetching }) {
 
 	return (
 		<>
-			{ isFetching ? <Loading type="arrow" height="20vh" /> : container }
+			{ isFetching ? <div style={{ gridArea: 'season', width:'100%', display:'flex', alignItems:'center', justifyContent:'center', height: '25rem' }}><Loading type="arrow" height="20rem" /></div> : container }
 		</>
 	);
 }

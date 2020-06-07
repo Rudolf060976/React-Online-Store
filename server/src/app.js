@@ -89,14 +89,19 @@ app.all('*', (req, res) => {
 });
 
 // error handler
-app.use( (err, req, res) => {
+app.use( (err, req, res, next) => {
 		
-  
-	return res.status(err.status).json({
+	// when you add a custom error handler, you must delegate to the default Express error handler, when the headers have already been sent to the client:
+
+	if (res.headersSent) {
+		return next(err)
+	  }
+
+	return res.status(err.status || 500).json({
 		error: createError(err.status, err.message),
 		ok: false,
 		status: err.status,
-		message: 'ERROR',
+		message: 'INTERNAL ERROR: ' + err.message,
 		data: null
 	});
   

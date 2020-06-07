@@ -1,9 +1,11 @@
 #animation1-gif {
-	grid-area: anim1;
+	grid-area: anim1;	
 	min-width: 200px;
-	
+	max-height: 320px;
+		
 }
 
 #animation1-gif img {
+	width: 100%;
 	max-width: 100%;
 }

@@ -10,6 +10,7 @@ const Container = styled.div`
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
+	padding: 15px 0;
 	
 `;
 
@@ -18,6 +19,7 @@ const StyledSelect = styled.select`
 	font-family: "Rubik", Verdana, Geneva, Tahoma, sans-serif;	
 	font-size: 1.2rem;
 	margin-left: 5px;
+	padding: 5px;
 
 `;
 

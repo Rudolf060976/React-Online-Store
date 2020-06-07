@@ -10,6 +10,7 @@
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: repeat(2, auto);
 	gap: 10px;
+	
 }
 
 #item-sheet-big-image-container {
@@ -17,8 +18,10 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	min-height: 500px;
 }
 
 #item-sheet-big-image {
 	max-width: 500px;
+	max-height: 500px;
 }
