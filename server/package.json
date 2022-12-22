@@ -24,7 +24,7 @@
     "express-paginate": "^1.0.0",
     "express-session": "^1.16.2",
     "http-errors": "^1.7.3",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.24.0",
     "mongo-gridfs-storage": "^3.0.1",
     "mongodb": "^3.3.0-beta2",
